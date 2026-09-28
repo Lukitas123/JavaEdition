@@ -23,3 +23,11 @@ La materia evaluará qué hizo cada uno. **Cada uno debe commitear con SU usuari
 
 ### 4. Tests
 Antes de subir algo, corran de local `./gradlew test` o verifiquen que todo compile en IntelliJ.
+
+### 5. Estructura de Carpetas (`grupo03/tp2/`)
+- `estructuras/` (Franco): Estructuras propias **SIN java.util** (Pila, Cola, Lista, ColaDePrioridad, TablaHash, ABB).
+- `entidades/` (Sofia Toledo): `monstruos/` y `cofres/` (Las clases abstractas y sus 5/10 implementaciones polimórficas).
+- `generador/` (Lukas): Implementación del generador usando Backtracking y el validador de las 11 reglas usando BFS/Dijkstra.
+- `modelo/` (Sabri): Núcleo del juego (`Mazmorra`, `Heroe`, `Agenda`, terrenos).
+- `persistencia/` y `vista/` (Sofi R): Lectura/Escritura de JSON (Gson permitido), ranking y generación obligatoria de la ventana u archivos `.bmp`.
+- **Integración general** (Santi): `main` del juego (consola `w a s d`), E2E tests, y pegamento de todas las piezas.

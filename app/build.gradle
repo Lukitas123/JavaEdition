@@ -17,7 +17,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'ar.uba.fi.cb100.tp2.modelo.Mazmorra'
+    mainClass = 'grupo03.tp2.modelo.Mazmorra'
 }
 
 test {

@@ -1,4 +1,4 @@
-package ar.uba.fi.cb100.tp2.generador;
+package grupo03.tp2.generador;
 
 /**
  * Genera un plano de la mazmorra a partir de los parametros que recibe.

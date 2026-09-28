@@ -1,4 +1,4 @@
-package ar.uba.fi.cb100.tp2.estructuras;
+package grupo03.tp2.estructuras;
 
 /**
  * Nodo genérico para las estructuras enlazadas propias (Pila, Cola, Lista).

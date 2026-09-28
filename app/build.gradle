@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Tests Estandar de la Materia
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    
+    // JSON: Gson o Jackson estan permitidos por enunciado
+    implementation 'com.google.code.gson:gson:2.10.1' 
+}
+
+application {
+    mainClass = 'ar.uba.fi.cb100.tp2.modelo.Mazmorra'
+}
+
+test {
+    useJUnitPlatform()
+}

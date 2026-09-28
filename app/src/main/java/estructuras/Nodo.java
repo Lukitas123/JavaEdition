@@ -1,4 +1,4 @@
-package grupo03.tp2.estructuras;
+package estructuras;
 
 /**
  * Nodo genérico para las estructuras enlazadas propias (Pila, Cola, Lista).

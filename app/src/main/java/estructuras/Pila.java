@@ -1,4 +1,4 @@
-package grupo03.tp2.estructuras;
+package estructuras;
 
 /**
  * TAD Pila (LIFO) implementado con Nodos dinámicos.

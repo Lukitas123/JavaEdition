@@ -3,7 +3,7 @@
 ## 📋 Reglas de Organización del Grupo
 
 ### 1. Sistema de Ramas (Branches)
-- **NUNCA trabajamos directo en `main`.** La rama `main` siempre debe compilar y tener una versión que pase las pruebas.
+- **NUNCA trabajaMOS directo en `main`.** La rama `main` siempre debe compilar y tener una versión que pase las pruebas.
 - Para desarrollar algo nuevo, crea una rama desde *main* con el formato: `tipo/nombre-de-la-tarea`.
   - Ejemplos: `feat/estructuras-pila`, `feat/vista-bmp`, `fix/bug-generador` o `docs/agregar-manual`.
 - Cuando terminas, haces un *Pull Request* hacia main y avisas así otro lo revisa antes de mezclarlo.
@@ -24,10 +24,26 @@ La materia evaluará qué hizo cada uno. **Cada uno debe commitear con SU usuari
 ### 4. Tests
 Antes de subir algo, corran de local `./gradlew test` o verifiquen que todo compile en IntelliJ.
 
-### 5. Estructura de Carpetas
-- `estructuras/` (Franco): Estructuras propias **SIN java.util** (Pila, Cola, Lista, ColaDePrioridad, TablaHash, ABB).
-- `entidades/` (Sofia Toledo): `monstruos/` y `cofres/` (Las clases abstractas y sus 5/10 implementaciones polimórficas).
-- `generador/` (Lukas): Implementación del generador usando Backtracking y el validador de las 11 reglas usando BFS/Dijkstra.
-- `modelo/` (Sabri): Núcleo del juego (`Mazmorra`, `Heroe`, `Agenda`, terrenos).
-- `persistencia/` y `vista/` (Sofi R): Lectura/Escritura de JSON (Gson permitido), ranking y generación obligatoria de la ventana u archivos `.bmp`.
-- **Integración general** (Santi): `main` del juego (consola `w a s d`), E2E tests, y pegamento de todas las piezas.
+### 5. Estructura de código: ¿Qué archivo .java va en cada carpeta?
+Dado que estamos aprendiendo POO, Interfaces y Herencias, así se dividen físicamente nuestras piezas del rompecabezas:
+
+- `estructuras/` **(Herramientas genéricas)**
+  Acá van las clases como `Pila<T>.java`, `Cola<T>.java`, `Lista<T>.java`. Funciona igual que lo que vimos en la teórica. NO se permiten imports de `java.util`.
+
+- `entidades/` **(Herencia y Polimorfismo)**
+  - `monstruos/`: Acá va la clase abstracta `Monstruo.java`, y una clase por cada hijo (ej: `Cazador.java extends Monstruo`, `Errante.java extends Monstruo`).
+  - `cofres/`: Mismo concepto. Clase abstracta `Cofre.java`, y sus 10 clases hijas separadas (`ZapatosDeAgua.java extends Cofre`, etc).
+
+- `generador/` **(Interfaces)**
+  Acá va la interfaz obligatoria dictada por el profe `GeneradorDeLaberinto.java`, nuestra clase `NnuestroGenerador.java implements GeneradorDeLaberinto`, y las clases matemáticas como `ValidadorDePlanos.java` (el que hace los chequeos BFS R1-R11).
+
+- `modelo/` **(El Cerebro 🧠 - Clases con Lógica y Estado)**
+  Acá van las clases que representan la lógica del TP: `Mazmorra.java` (el TDA principal), `Plano.java`, `Heroe.java`, `Agenda.java` (eventos temporales).
+  *⚠️ REGLA DE ORO: Las clases de esta carpeta NUNCA tienen código para dibujar en pantalla. Cero uso de `java.awt` o `BufferedImage`.*
+
+- `vista/` **(Los Ojos 👁️ - Exportador gráfico)**
+  Acá van las clases que literalmente "leen" los objetos de `modelo/` y dibujan píxeles. Ejemplo: `VistaBmp.java`.
+  *⚠️ REGLA DE ORO: La vista jamás altera la vida del héroe, solo la muestra.*
+
+- `persistencia/` **(La Memory Card 💾 - Archivos externos)**
+  Acá van los administradores de archivos del disco duro: `LectorDeConfiguracion.java` (que lee los .json y arma objetos), y el del ranking. 

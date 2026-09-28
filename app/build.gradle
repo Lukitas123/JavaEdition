@@ -17,7 +17,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'grupo03.tp2.modelo.Mazmorra'
+    mainClass = 'modelo.Mazmorra'
 }
 
 test {

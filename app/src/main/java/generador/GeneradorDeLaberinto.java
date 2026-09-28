@@ -1,4 +1,4 @@
-package grupo03.tp2.generador;
+package generador;
 
 /**
  * Genera un plano de la mazmorra a partir de los parametros que recibe.

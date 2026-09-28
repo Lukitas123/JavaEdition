@@ -17,7 +17,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'modelo.Mazmorra'
+    mainClass = 'App'
 }
 
 test {

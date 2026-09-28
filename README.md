@@ -24,7 +24,7 @@ La materia evaluará qué hizo cada uno. **Cada uno debe commitear con SU usuari
 ### 4. Tests
 Antes de subir algo, corran de local `./gradlew test` o verifiquen que todo compile en IntelliJ.
 
-### 5. Estructura de Carpetas (`grupo03/tp2/`)
+### 5. Estructura de Carpetas
 - `estructuras/` (Franco): Estructuras propias **SIN java.util** (Pila, Cola, Lista, ColaDePrioridad, TablaHash, ABB).
 - `entidades/` (Sofia Toledo): `monstruos/` y `cofres/` (Las clases abstractas y sus 5/10 implementaciones polimórficas).
 - `generador/` (Lukas): Implementación del generador usando Backtracking y el validador de las 11 reglas usando BFS/Dijkstra.

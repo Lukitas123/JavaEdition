@@ -45,8 +45,8 @@ public class Pila<T> {
         if (estaVacia()) {
             throw new NoSuchElementException("No se puede desapilar de una pila vacia.");
         }
-        T dato = this.cima.getDato();
-        this.cima = this.cima.getSiguiente();
+        T dato = this.cima.dato;
+        this.cima = this.cima.siguiente;
         this.cantidad--;
         return dato;
     }
@@ -63,7 +63,7 @@ public class Pila<T> {
         if (estaVacia()) {
             throw new IllegalStateException("La pila esta vacía");
         }
-        return this.cima.getDato();
+        return this.cima.dato;
     }
 
     /**

@@ -37,13 +37,13 @@ Dado que estamos aprendiendo POO, Interfaces y Herencias, así se dividen físic
 - `generador/` **(Interfaces)**
   Acá va la interfaz obligatoria dictada por el profe `GeneradorDeLaberinto.java`, nuestra clase `NnuestroGenerador.java implements GeneradorDeLaberinto`, y las clases matemáticas como `ValidadorDePlanos.java` (el que hace los chequeos BFS R1-R11).
 
-- `modelo/` **(El Cerebro 🧠 - Clases con Lógica y Estado)**
+- `modelo/` **(Clases con Lógica y Estado)**
   Acá van las clases que representan la lógica del TP: `Mazmorra.java` (el TDA principal), `Plano.java`, `Heroe.java`, `Agenda.java` (eventos temporales).
   *⚠️ REGLA DE ORO: Las clases de esta carpeta NUNCA tienen código para dibujar en pantalla. Cero uso de `java.awt` o `BufferedImage`.*
 
-- `vista/` **(Los Ojos 👁️ - Exportador gráfico)**
+- `vista/` **(Exportador gráfico)**
   Acá van las clases que literalmente "leen" los objetos de `modelo/` y dibujan píxeles. Ejemplo: `VistaBmp.java`.
   *⚠️ REGLA DE ORO: La vista jamás altera la vida del héroe, solo la muestra.*
 
-- `persistencia/` **(La Memory Card 💾 - Archivos externos)**
+- `persistencia/` **(Archivos externos)**
   Acá van los administradores de archivos del disco duro: `LectorDeConfiguracion.java` (que lee los .json y arma objetos), y el del ranking. 

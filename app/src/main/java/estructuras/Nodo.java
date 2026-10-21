@@ -15,5 +15,11 @@ class Nodo<T> {
     Nodo(T dato){
          this(dato, null);
     }
+
+     Nodo(T dato) {
+        this(dato, null);
+    }
+
+
 }
 

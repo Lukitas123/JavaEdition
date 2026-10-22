@@ -1,0 +1,17 @@
+# Build y compilados
+.gradle/
+build/
+app/build/
+bin/
+out/
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

@@ -7,19 +7,12 @@ class Nodo<T> {
     T dato;
     Nodo<T> siguiente;
 
-     Nodo(T dato, Nodo<T> siguiente) {
+    Nodo(T dato, Nodo<T> siguiente) {
         this.dato = dato;
         this.siguiente = siguiente;
     }
 
-    Nodo(T dato){
-         this(dato, null);
-    }
-
-     Nodo(T dato) {
+    Nodo(T dato) {
         this(dato, null);
     }
-
-
 }
-

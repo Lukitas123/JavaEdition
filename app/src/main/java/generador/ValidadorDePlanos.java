@@ -1,6 +1,7 @@
 package generador;
 
 import com.google.gson.Gson;
+import modelo.Direccion;
 import modelo.Posicion;
 import java.util.List;
 
@@ -133,6 +134,150 @@ public class ValidadorDePlanos {
             }
         }
 
+        return true;
+    }
+
+    public boolean validarBifurcacionesR6 (PlanoDto dto){
+        //guardo las variables a usar
+        String[] plano = dto.plano();
+        int filas = dto.parametros().filas();
+        int columnas = dto.parametros().columnas();
+        int transitables = 0;
+        int conTresOMasVecinos = 0;
+
+        //recorro las celdas internas buscando cuales son transitables (todo lo que no sea '#')
+        for (int f = 1; f < filas - 1; f++){
+            for (int c = 1; c < columnas - 1; c++){
+                if (plano[f].charAt(c) != '#'){
+                    transitables++;
+                    int vecinosTransitables = 0;
+                    //miro sus 4 vecinos usando Direccion (arriba, abajo, izquierda, derecha)
+                    for (Direccion dir : Direccion.values()){
+                        int filaVecino = f + dir.getDeltaFila();
+                        int colVecino = c + dir.getDeltaColumna();
+                        if (plano[filaVecino].charAt(colVecino) != '#'){
+                            vecinosTransitables++;
+                        }
+                    }
+                    //si tiene 3 o mas vecinos transitables es una bifurcacion
+                    if (vecinosTransitables >= 3){
+                        conTresOMasVecinos++;
+                    }
+                }
+            }
+        }
+
+        //al menos el 10% de las transitables deben tener 3 o mas vecinos transitables
+        if (transitables == 0){
+            return false;
+        }
+        return (conTresOMasVecinos * 100) >= (transitables * 10);
+    }
+
+    public boolean validarProporcionR7 (PlanoDto dto){
+        //guardo las variables a usar
+        String[] plano = dto.plano();
+        int filas = dto.parametros().filas();
+        int columnas = dto.parametros().columnas();
+        int totalCeldas = filas * columnas;
+        int transitables = 0;
+
+        //cuento cuantas celdas transitables hay en todo el plano
+        for (String cadena : plano){
+            for (char simbolo : cadena.toCharArray()){
+                if (simbolo != '#'){
+                    transitables++;
+                }
+            }
+        }
+
+        //valido que las transitables esten entre el 30% y el 60% del total de celdas
+        double proporcion = (double) transitables / totalCeldas;
+        if (proporcion < 0.30 || proporcion > 0.60){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validarCantidadesR8 (PlanoDto dto){
+        //guardo las variables a usar
+        String[] plano = dto.plano();
+        int cofresEsperados = dto.parametros().cofres();
+        int monstruosEsperados = dto.parametros().monstruos();
+        if (cofresEsperados < 0 || monstruosEsperados < 0){
+            return false;
+        }
+
+        int cofresContados = 0;
+        int monstruosContados = 0;
+
+        //recorro cada cadena y cuento las C y las M
+        for (String cadena : plano){
+            for (char simbolo : cadena.toCharArray()){
+                if (simbolo == 'C'){
+                    cofresContados++;
+                }
+                if (simbolo == 'M'){
+                    monstruosContados++;
+                }
+            }
+        }
+
+        //compruebo que coincidan exactamente con lo que dicen los parametros
+        if (cofresContados != cofresEsperados || monstruosContados != monstruosEsperados){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validarAguaYLavaR10 (PlanoDto dto){
+        //guardo las variables a usar
+        String[] plano = dto.plano();
+        int transitables = 0;
+        int aguaYLava = 0;
+
+        //cuento las celdas transitables y cuantas de ellas son agua (~) o lava (^)
+        for (String cadena : plano){
+            for (char simbolo : cadena.toCharArray()){
+                if (simbolo != '#'){
+                    transitables++;
+                }
+                if (simbolo == '~' || simbolo == '^'){
+                    aguaYLava++;
+                }
+            }
+        }
+
+        //entre las dos deben ser como mucho el 25% de las transitables
+        if (transitables == 0){
+            return false;
+        }
+        double proporcion = (double) aguaYLava / transitables;
+        if (proporcion > 0.25){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validarDistanciaMonstruosR11 (PlanoDto dto){
+        //guardo las variables a usar
+        String[] plano = dto.plano();
+        int filas = dto.parametros().filas();
+        int columnas = dto.parametros().columnas();
+        Posicion entrada = dto.entrada();
+
+        //recorro el plano buscando cada M y calculo su distancia Manhattan a la entrada E
+        for (int f = 0; f < filas; f++){
+            String cadena = plano[f];
+            for (int c = 0; c < columnas; c++){
+                if (cadena.charAt(c) == 'M'){
+                    Posicion posMonstruo = new Posicion(f + 1, c + 1);
+                    if (posMonstruo.distanciaManhattan(entrada) < 3){
+                        return false;
+                    }
+                }
+            }
+        }
         return true;
     }
 }

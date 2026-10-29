@@ -64,4 +64,44 @@ class HeroeTest {
         heroe.registrarCofreAbierto();
         assertEquals(2, heroe.getCofresAbiertos());
     }
+
+    @Test
+    void inventarioGuardaObjetosRepetidos() {
+        heroe.agregarObjeto("pocion");
+        heroe.agregarObjeto("pocion");
+        assertEquals(2, heroe.cantidadDeObjetos());
+        assertTrue(heroe.quitarObjeto("pocion"));
+        assertTrue(heroe.tieneObjeto("pocion"));
+        assertTrue(heroe.quitarObjeto("pocion"));
+        assertFalse(heroe.tieneObjeto("pocion"));
+    }
+
+    @Test
+    void quitarObjetoQueNoTieneDevuelveFalse() {
+        assertFalse(heroe.quitarObjeto("daga"));
+    }
+
+    @Test
+    void quitarObjetoPorIndice() {
+        heroe.agregarObjeto("daga");
+        heroe.agregarObjeto("brujula");
+        assertEquals("daga", heroe.quitarObjetoEn(0));
+        assertEquals("brujula", heroe.objetoEn(0));
+        assertEquals(1, heroe.cantidadDeObjetos());
+    }
+
+    @Test
+    void efectosSeActivanYSeDesactivan() {
+        assertFalse(heroe.tieneEfecto("zapatos"));
+        heroe.activarEfecto("zapatos");
+        assertTrue(heroe.tieneEfecto("zapatos"));
+        heroe.desactivarEfecto("zapatos");
+        assertFalse(heroe.tieneEfecto("zapatos"));
+    }
+
+    @Test
+    void idsInvalidosLanzanExcepcion() {
+        assertThrows(IllegalArgumentException.class, () -> heroe.agregarObjeto(null));
+        assertThrows(IllegalArgumentException.class, () -> heroe.activarEfecto(" "));
+    }
 }

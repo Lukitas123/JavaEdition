@@ -170,4 +170,97 @@ class ValidadorDePlanosTest {
                 () -> validador.validar(planoR4));
         assertTrue(ex.getMessage().contains("R4"));
     }
+
+    @Test
+    void rechazaPlanoQueViolaR5NoConexo() {
+        // Se bloquea el unico puente entre izquierda y derecha en (8, 5) con '#'
+        String planoR5 = """
+                {
+                  "version": 1,
+                  "generador": "Grupo 03",
+                  "parametros": {
+                    "version": 1, "dificultad": "MEDIO", "filas": 9, "columnas": 12,
+                    "semilla": 7, "cofres": 1, "monstruos": 1, "conSalida": true
+                  },
+                  "entrada": { "fila": 2, "columna": 2 },
+                  "salida": { "fila": 8, "columna": 10 },
+                  "plano": [
+                    "############",
+                    "#E..#......#",
+                    "#.#.#.##.#.#",
+                    "#.#..##..~.#",
+                    "#.###.#.##.#",
+                    "#...#...C..#",
+                    "#.#.#.#.##.#",
+                    "#.M.#...#S.#",
+                    "############"
+                  ]
+                }
+                """;
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validar(planoR5));
+        assertTrue(ex.getMessage().contains("R5"));
+    }
+
+    @Test
+    void rechazaPlanoQueViolaR6SinBifurcaciones() {
+        // Pasillo unico en serpentina sin ninguna celda con 3 o mas vecinos transitables
+        String planoR6 = """
+                {
+                  "version": 1,
+                  "generador": "Grupo 03",
+                  "parametros": {
+                    "version": 1, "dificultad": "MEDIO", "filas": 9, "columnas": 12,
+                    "semilla": 7, "cofres": 1, "monstruos": 1, "conSalida": true
+                  },
+                  "entrada": { "fila": 2, "columna": 2 },
+                  "salida": { "fila": 8, "columna": 11 },
+                  "plano": [
+                    "############",
+                    "#E.........#",
+                    "##########.#",
+                    "#..........#",
+                    "#.##########",
+                    "#...C......#",
+                    "##########.#",
+                    "#.M.......S#",
+                    "############"
+                  ]
+                }
+                """;
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validar(planoR6));
+        assertTrue(ex.getMessage().contains("R6"));
+    }
+
+    @Test
+    void rechazaPlanoQueViolaR7ProporcionDeTransitables() {
+        // Tiene menos del 30% de celdas transitables (12 de 108 = 11%), pero cumple R1..R6
+        String planoR7 = """
+                {
+                  "version": 1,
+                  "generador": "Grupo 03",
+                  "parametros": {
+                    "version": 1, "dificultad": "MEDIO", "filas": 9, "columnas": 12,
+                    "semilla": 7, "cofres": 1, "monstruos": 1, "conSalida": true
+                  },
+                  "entrada": { "fila": 2, "columna": 2 },
+                  "salida": { "fila": 4, "columna": 6 },
+                  "plano": [
+                    "############",
+                    "#E...#######",
+                    "#.C..#######",
+                    "#.M..S######",
+                    "############",
+                    "############",
+                    "############",
+                    "############",
+                    "############"
+                  ]
+                }
+                """;
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validar(planoR7));
+        assertTrue(ex.getMessage().contains("R7"));
+    }
 }

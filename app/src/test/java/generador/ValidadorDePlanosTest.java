@@ -263,4 +263,128 @@ class ValidadorDePlanosTest {
                 () -> validador.validar(planoR7));
         assertTrue(ex.getMessage().contains("R7"));
     }
+
+    @Test
+    void rechazaPlanoQueViolaR8CantidadDeCofresOMonstruos() {
+        // Parametros piden 2 cofres pero en el plano hay solo 1 'C'
+        String planoR8 = """
+                {
+                  "version": 1,
+                  "generador": "Grupo 03",
+                  "parametros": {
+                    "version": 1, "dificultad": "MEDIO", "filas": 9, "columnas": 12,
+                    "semilla": 7, "cofres": 2, "monstruos": 1, "conSalida": true
+                  },
+                  "entrada": { "fila": 2, "columna": 2 },
+                  "salida": { "fila": 8, "columna": 10 },
+                  "plano": [
+                    "############",
+                    "#E..#......#",
+                    "#.#.#.##.#.#",
+                    "#.#...#..~.#",
+                    "#.###.#.##.#",
+                    "#...#...C..#",
+                    "#.#.#.#.##.#",
+                    "#.M.....#S.#",
+                    "############"
+                  ]
+                }
+                """;
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validar(planoR8));
+        assertTrue(ex.getMessage().contains("R8"));
+    }
+
+    @Test
+    void rechazaPlanoQueViolaR9SalidaNoEsLaMasLejana() {
+        // Caso del Anexo B.5: la salida S esta en (8, 11) a distancia 15 en vez de (8, 10) a distancia 16
+        String planoR9 = """
+                {
+                  "version": 1,
+                  "generador": "Grupo 03",
+                  "parametros": {
+                    "version": 1, "dificultad": "MEDIO", "filas": 9, "columnas": 12,
+                    "semilla": 7, "cofres": 1, "monstruos": 1, "conSalida": true
+                  },
+                  "entrada": { "fila": 2, "columna": 2 },
+                  "salida": { "fila": 8, "columna": 11 },
+                  "plano": [
+                    "############",
+                    "#E..#......#",
+                    "#.#.#.##.#.#",
+                    "#.#...#..~.#",
+                    "#.###.#.##.#",
+                    "#...#...C..#",
+                    "#.#.#.#.##.#",
+                    "#.M.....#.S#",
+                    "############"
+                  ]
+                }
+                """;
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validar(planoR9));
+        assertTrue(ex.getMessage().contains("R9"));
+    }
+
+    @Test
+    void rechazaPlanoQueViolaR10ExcesoDeAguaYLava() {
+        // Supera el 25% de celdas transitables con agua (~) y lava (^)
+        String planoR10 = """
+                {
+                  "version": 1,
+                  "generador": "Grupo 03",
+                  "parametros": {
+                    "version": 1, "dificultad": "MEDIO", "filas": 9, "columnas": 12,
+                    "semilla": 7, "cofres": 1, "monstruos": 1, "conSalida": true
+                  },
+                  "entrada": { "fila": 2, "columna": 2 },
+                  "salida": { "fila": 8, "columna": 10 },
+                  "plano": [
+                    "############",
+                    "#E~~#~~~~~~#",
+                    "#~#~#~##~#.#",
+                    "#~#^^^#..~.#",
+                    "#.###.#.##.#",
+                    "#...#...C..#",
+                    "#.#.#.#.##.#",
+                    "#.M.....#S.#",
+                    "############"
+                  ]
+                }
+                """;
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validar(planoR10));
+        assertTrue(ex.getMessage().contains("R10"));
+    }
+
+    @Test
+    void rechazaPlanoQueViolaR11MonstruoCercaDeLaEntrada() {
+        // El monstruo M esta en (2, 3), a distancia Manhattan 1 de la entrada E en (2, 2)
+        String planoR11 = """
+                {
+                  "version": 1,
+                  "generador": "Grupo 03",
+                  "parametros": {
+                    "version": 1, "dificultad": "MEDIO", "filas": 9, "columnas": 12,
+                    "semilla": 7, "cofres": 1, "monstruos": 1, "conSalida": true
+                  },
+                  "entrada": { "fila": 2, "columna": 2 },
+                  "salida": { "fila": 8, "columna": 10 },
+                  "plano": [
+                    "############",
+                    "#EM.#......#",
+                    "#.#.#.##.#.#",
+                    "#.#...#..~.#",
+                    "#.###.#.##.#",
+                    "#...#...C..#",
+                    "#.#.#.#.##.#",
+                    "#.......#S.#",
+                    "############"
+                  ]
+                }
+                """;
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> validador.validar(planoR11));
+        assertTrue(ex.getMessage().contains("R11"));
+    }
 }

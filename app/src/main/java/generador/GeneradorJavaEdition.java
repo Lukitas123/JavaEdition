@@ -2,6 +2,7 @@ package generador;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import estructuras.Cola;
 import estructuras.Pila;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,32 @@ public class GeneradorJavaEdition implements GeneradorDeLaberinto {
         Random random = (params.semilla() != null) ? new Random(params.semilla()) : new Random();
         char[][] grilla = construirLaberintoBase(params, random);
 
-        throw new UnsupportedOperationException("Pendiente de decorar plano con entrada, salida, agua, lava y entidades.");
+        //4) decoramos el plano: entrada E, salida S por BFS, monstruos M (R11), cofres C (R8) y agua/lava (R10)
+        Posicion entrada = colocarEntrada(grilla, params, random);
+        Posicion salida = null;
+        if (params.conSalida()) {
+            salida = colocarSalidaMasLejanaBfs(grilla, params.filas(), params.columnas(), entrada, random);
+        }
+
+        colocarMonstruos(grilla, params.filas(), params.columnas(), entrada, params.monstruos(), random);
+        colocarCofres(grilla, params.filas(), params.columnas(), params.cofres(), random);
+        colocarAguaYLava(grilla, params, random);
+
+        String[] lineasPlano = new String[params.filas()];
+        for (int f = 0; f < params.filas(); f++) {
+            lineasPlano[f] = new String(grilla[f]);
+        }
+
+        PlanoDto resultado = new PlanoDto(
+                params.version(),
+                NOMBRE_GENERADOR,
+                params,
+                entrada,
+                salida,
+                lineasPlano
+        );
+
+        return gson.toJson(resultado);
     }
 
     private void validarParametros(ParametrosDto params) {
@@ -179,6 +205,149 @@ public class GeneradorJavaEdition implements GeneradorDeLaberinto {
             grilla[elegida.fila()][elegida.columna()] = '.';
             transitables++;
         }
+    }
+
+    private Posicion colocarEntrada(char[][] grilla, ParametrosDto params, Random random) {
+        List<Posicion> pisos = obtenerCeldasPisoLibres(grilla, params.filas(), params.columnas());
+        List<Posicion> candidatas = new ArrayList<>();
+        int minimoLejanas = params.monstruos() + (params.conSalida() ? 1 : 0);
+
+        for (Posicion candidata : pisos) {
+            int lejanas = 0;
+            for (Posicion otra : pisos) {
+                if (candidata.distanciaManhattan(otra) >= 3) {
+                    lejanas++;
+                }
+            }
+            if (lejanas >= minimoLejanas) {
+                candidatas.add(candidata);
+            }
+        }
+
+        if (candidatas.isEmpty()) {
+            throw new IllegalArgumentException("No hay suficientes celdas a distancia Manhattan >= 3 para ubicar los monstruos.");
+        }
+
+        Posicion elegida = candidatas.get(random.nextInt(candidatas.size()));
+        grilla[elegida.fila() - 1][elegida.columna() - 1] = 'E';
+        return elegida;
+    }
+
+    private Posicion colocarSalidaMasLejanaBfs(char[][] grilla, int filas, int columnas,
+                                               Posicion entrada, Random random) {
+        int[][] distancias = new int[filas][columnas];
+        for (int f = 0; f < filas; f++) {
+            for (int c = 0; c < columnas; c++) {
+                distancias[f][c] = -1;
+            }
+        }
+
+        Cola<Posicion> cola = new Cola<>();
+        distancias[entrada.fila() - 1][entrada.columna() - 1] = 0;
+        cola.encolar(entrada);
+        int distanciaMaxima = 0;
+
+        while (!cola.estaVacia()) {
+            Posicion actual = cola.desencolar();
+            int distActual = distancias[actual.fila() - 1][actual.columna() - 1];
+
+            for (Direccion dir : Direccion.values()) {
+                Posicion vecino = actual.mover(dir);
+                int fVecino = vecino.fila() - 1;
+                int cVecino = vecino.columna() - 1;
+
+                if (fVecino >= 0 && fVecino < filas && cVecino >= 0 && cVecino < columnas) {
+                    if (grilla[fVecino][cVecino] != '#' && distancias[fVecino][cVecino] == -1) {
+                        distancias[fVecino][cVecino] = distActual + 1;
+                        if (distancias[fVecino][cVecino] > distanciaMaxima) {
+                            distanciaMaxima = distancias[fVecino][cVecino];
+                        }
+                        cola.encolar(vecino);
+                    }
+                }
+            }
+        }
+
+        List<Posicion> masLejanas = new ArrayList<>();
+        for (int f = 1; f < filas - 1; f++) {
+            for (int c = 1; c < columnas - 1; c++) {
+                if (grilla[f][c] == '.' && distancias[f][c] == distanciaMaxima) {
+                    masLejanas.add(new Posicion(f + 1, c + 1));
+                }
+            }
+        }
+
+        Posicion salida = masLejanas.get(random.nextInt(masLejanas.size()));
+        grilla[salida.fila() - 1][salida.columna() - 1] = 'S';
+        return salida;
+    }
+
+    private void colocarMonstruos(char[][] grilla, int filas, int columnas,
+                                  Posicion entrada, int cantidadMonstruos, Random random) {
+        List<Posicion> candidatas = new ArrayList<>();
+        for (Posicion pos : obtenerCeldasPisoLibres(grilla, filas, columnas)) {
+            if (pos.distanciaManhattan(entrada) >= 3) {
+                candidatas.add(pos);
+            }
+        }
+
+        if (candidatas.size() < cantidadMonstruos) {
+            throw new IllegalArgumentException("No alcanzan las celdas a distancia Manhattan >= 3 de la entrada para los monstruos.");
+        }
+
+        for (int i = 0; i < cantidadMonstruos; i++) {
+            Posicion elegida = candidatas.remove(random.nextInt(candidatas.size()));
+            grilla[elegida.fila() - 1][elegida.columna() - 1] = 'M';
+        }
+    }
+
+    private void colocarCofres(char[][] grilla, int filas, int columnas,
+                               int cantidadCofres, Random random) {
+        List<Posicion> candidatas = obtenerCeldasPisoLibres(grilla, filas, columnas);
+        if (candidatas.size() < cantidadCofres) {
+            throw new IllegalArgumentException("No alcanzan las celdas libres para colocar los cofres.");
+        }
+
+        for (int i = 0; i < cantidadCofres; i++) {
+            Posicion elegida = candidatas.remove(random.nextInt(candidatas.size()));
+            grilla[elegida.fila() - 1][elegida.columna() - 1] = 'C';
+        }
+    }
+
+    private void colocarAguaYLava(char[][] grilla, ParametrosDto params, Random random) {
+        int transitables = contarTransitables(grilla, params.filas(), params.columnas());
+        int topeReglaR10 = (int) Math.floor(transitables * 0.25);
+
+        double proporcionDeseada = switch (params.dificultad().toUpperCase()) {
+            case "FACIL" -> 0.08;
+            case "MEDIO" -> 0.14;
+            case "DIFICIL" -> 0.20;
+            default -> 0.10;
+        };
+
+        List<Posicion> pisosLibres = obtenerCeldasPisoLibres(grilla, params.filas(), params.columnas());
+        int cantidadDecorar = Math.min(topeReglaR10, (int) Math.floor(transitables * proporcionDeseada));
+        cantidadDecorar = Math.min(cantidadDecorar, pisosLibres.size());
+
+        for (int i = 0; i < cantidadDecorar; i++) {
+            Posicion elegida = pisosLibres.remove(random.nextInt(pisosLibres.size()));
+            boolean esLava = "DIFICIL".equalsIgnoreCase(params.dificultad())
+                    ? random.nextDouble() < 0.65
+                    : random.nextDouble() < 0.35;
+            grilla[elegida.fila() - 1][elegida.columna() - 1] = esLava ? '^' : '~';
+        }
+    }
+
+    private List<Posicion> obtenerCeldasPisoLibres(char[][] grilla, int filas, int columnas) {
+        List<Posicion> libres = new ArrayList<>();
+        for (int f = 1; f < filas - 1; f++) {
+            for (int c = 1; c < columnas - 1; c++) {
+                if (grilla[f][c] == '.') {
+                    libres.add(new Posicion(f + 1, c + 1));
+                }
+            }
+        }
+        return libres;
     }
 
     private int contarTransitables(char[][] grilla, int filas, int columnas) {

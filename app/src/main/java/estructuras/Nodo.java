@@ -12,10 +12,6 @@ class Nodo<T> {
         this.siguiente = siguiente;
     }
 
-    Nodo(T dato){
-         this(dato, null);
-    }
-
      Nodo(T dato) {
         this(dato, null);
     }

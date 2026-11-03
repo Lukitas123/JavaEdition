@@ -5,6 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="917a9be6-d92e-4dad-8e6d-74b40487aee9" name="Changes" comment="Creación de Tabla hash">
+      <change afterPath="$PROJECT_DIR$/app/build/classes/java/test/estructuras/PilaTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/build/reports/tests/test/classes/estructuras.PilaTest.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/build/test-results/test/TEST-estructuras.PilaTest.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/build/tmp/compileJava/compileTransaction/stash-dir/Pila.class.uniqueId0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/build/tmp/compileTestJava/compileTransaction/stash-dir/ColaTest.class.uniqueId0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/estructuras/PilaTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.bin" afterDir="false" />

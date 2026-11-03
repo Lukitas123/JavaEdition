@@ -1,0 +1,10 @@
+{
+  "energiaInicial": 100,
+  "costos": { "piso": 1, "agua": 3, "lava": 8 },
+  "semilla": null,
+  "dificultades": {
+    "FACIL":   { "tableros": 1, "pisos": 1, "filas": 25, "columnas": 40, "cofres": 12, "monstruos": 4  },
+    "MEDIO":   { "tableros": 1, "pisos": 3, "filas": 15, "columnas": 20, "cofres": 6,  "monstruos": 6  },
+    "DIFICIL": { "tableros": 3, "pisos": 3, "filas": 15, "columnas": 20, "cofres": 3,  "monstruos": 10 }
+  }
+}

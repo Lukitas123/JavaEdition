@@ -11,13 +11,14 @@ dependencies {
     // Tests Estandar de la Materia
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     
     // JSON: Gson o Jackson estan permitidos por enunciado
     implementation 'com.google.code.gson:gson:2.10.1' 
 }
 
 application {
-    mainClass = 'modelo.Mazmorra'
+    mainClass = 'App'
 }
 
 test {

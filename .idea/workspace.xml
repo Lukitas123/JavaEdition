@@ -5,31 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="917a9be6-d92e-4dad-8e6d-74b40487aee9" name="Changes" comment="Creación de Tabla hash">
-      <change afterPath="$PROJECT_DIR$/app/build/classes/java/test/estructuras/PilaTest.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/build/reports/tests/test/classes/estructuras.PilaTest.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/build/test-results/test/TEST-estructuras.PilaTest.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/build/tmp/compileJava/compileTransaction/stash-dir/Pila.class.uniqueId0" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/build/tmp/compileTestJava/compileTransaction/stash-dir/ColaTest.class.uniqueId0" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/estructuras/PilaTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Configuracion.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/cofres/Cofre.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/cofres/CofreDePuntos.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/monstruos/Errante.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/monstruos/Monstruo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/generador/GeneradorJavaEdition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/generador/ValidadorDePlanos.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Conexion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Configuracion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Costo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Dificultad.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Dificultades.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Direccion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/EstadoPartida.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/EventoProgramado.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Heroe.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/ParametrosDeDificultad.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Posicion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Terreno.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Ubicacion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/persistencia/LectorConfiguracion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/generador/GeneradorJavaEditionTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/generador/ValidadorDePlanosTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/modelo/HeroeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/modelo/PosicionTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/persistencia/LectorConfiguracionTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.13/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/Pila.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/Pila.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/classes/java/test/estructuras/ColaTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/test/estructuras/ColaTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/reports/tests/test/classes/estructuras.ColaTest.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/reports/tests/test/classes/estructuras.ColaTest.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/reports/tests/test/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/reports/tests/test/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/reports/tests/test/packages/estructuras.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/reports/tests/test/packages/estructuras.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/test-results/test/TEST-estructuras.ColaTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/test-results/test/TEST-estructuras.ColaTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/test-results/test/binary/results.bin" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/test-results/test/binary/results.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/tmp/compileTestJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/tmp/compileTestJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/estructuras/Pila.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/estructuras/Pila.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/estructuras/Nodo.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/estructuras/Nodo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,17 +123,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.ColaTest.testEncolarElementoNuloLanzaExcepcion.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat/estructuras-pila-cola&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.ColaTest.testEncolarElementoNuloLanzaExcepcion.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "Merging feat/estructuras-pila-cola",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="ColaTest.testEncolarElementoNuloLanzaExcepcion" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>

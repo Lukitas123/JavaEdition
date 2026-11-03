@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - TablaHashTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>TablaHashTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/estructuras.html">estructuras</a> &gt; TablaHashTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">14</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.009s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a href="#">Tests</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">Claves con hashCode negativo extremo se mapean a índices válidos sin desbordar</td>
+<td class="success">testClaveConHashCodeNegativo()</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Inicializar la tabla con capacidad menor o igual a cero debe lanzar IllegalArgumentException</td>
+<td class="success">testConstructorConCapacidadInvalidaLanzaExcepcion()</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Una tabla hash con capacidad personalizada inicializa y opera correctamente</td>
+<td class="success">testConstructorConCapacidadPersonalizada()</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">contiene retorna true para claves presentes y false para ausentes o nulas</td>
+<td class="success">testContieneClave()</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Eliminar una clave existente retorna el valor eliminado y reduce la cantidad</td>
+<td class="success">testEliminarClaveExistente()</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Eliminar una clave inexistente o null retorna null sin alterar la tabla</td>
+<td class="success">testEliminarClaveInexistenteONulaRetornaNull()</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Insertar una clave nula debe lanzar IllegalArgumentException</td>
+<td class="success">testInsertarClaveNulaLanzaExcepcion()</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Insertar una clave ya existente sobrescribe el valor y mantiene la cantidad</td>
+<td class="success">testInsertarSobrescribeValorExistente()</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Insertar un par clave-valor incrementa la cantidad y permite su obtención</td>
+<td class="success">testInsertarUnElemento()</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Manejo de colisiones: claves con igual hashCode coexisten y se gestionan independientemente</td>
+<td class="success">testManejoDeColisiones()</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">obtener con clave inexistente o null debe retornar null</td>
+<td class="success">testObtenerClaveInexistenteONulaRetornaNull()</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Verificar integridad de la tabla hash bajo prueba de volumen y estrés</td>
+<td class="success">testPruebaDeVolumen()</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">La tabla hash puede reutilizarse normalmente tras haber sido vaciada</td>
+<td class="success">testReutilizacionTrasVaciar()</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Una tabla hash recién creada debe estar vacía y tener cantidad cero</td>
+<td class="success">testTablaNuevaEstaVacia()</td>
+<td class="success">0s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 8.13</a> at 2 nov. 2026 23:53:58</p>
+</div>
+</div>
+</body>
+</html>

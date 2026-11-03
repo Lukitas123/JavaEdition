@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="estructuras.ListaTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-11-03T02:53:58.063Z" hostname="ALEFRANVAL" time="0.04">
+  <properties/>
+  <testcase name="Obtener con índices inválidos (negativos, iguales o mayores a la cantidad) debe lanzar excepción" classname="estructuras.ListaTest" time="0.018"/>
+  <testcase name="eliminarElemento remueve el último elemento y actualiza el puntero 'ultimo'" classname="estructuras.ListaTest" time="0.002"/>
+  <testcase name="Agregar múltiples elementos conserva el orden de inserción" classname="estructuras.ListaTest" time="0.001"/>
+  <testcase name="Eliminar el único elemento de la lista la deja vacía con punteros limpios" classname="estructuras.ListaTest" time="0.001"/>
+  <testcase name="Eliminar por índice en la cabeza remueve el primer elemento y reajusta la lista" classname="estructuras.ListaTest" time="0.0"/>
+  <testcase name="Una lista recién creada debe estar vacía y tener cantidad cero" classname="estructuras.ListaTest" time="0.001"/>
+  <testcase name="Eliminar por índice el último elemento actualiza el puntero final correctamente" classname="estructuras.ListaTest" time="0.001"/>
+  <testcase name="Agregar un elemento incrementa la cantidad y deja de estar vacía" classname="estructuras.ListaTest" time="0.001"/>
+  <testcase name="eliminarElemento sólo remueve la primera ocurrencia ante duplicados" classname="estructuras.ListaTest" time="0.0"/>
+  <testcase name="Eliminar con índice inválido debe lanzar IndexOutOfBoundsException" classname="estructuras.ListaTest" time="0.001"/>
+  <testcase name="La lista puede reutilizarse normalmente tras vaciarla por completo" classname="estructuras.ListaTest" time="0.0"/>
+  <testcase name="Agregar un elemento nulo debe lanzar IllegalArgumentException sin alterar la lista" classname="estructuras.ListaTest" time="0.0"/>
+  <testcase name="Eliminar por índice en una posición intermedia conecta los nodos vecinos" classname="estructuras.ListaTest" time="0.001"/>
+  <testcase name="eliminarElemento retorna false si el elemento no existe, es null o la lista está vacía" classname="estructuras.ListaTest" time="0.0"/>
+  <testcase name="eliminarElemento remueve correctamente un elemento en el medio" classname="estructuras.ListaTest" time="0.0"/>
+  <testcase name="Verificar integridad de la lista con múltiples elementos (prueba de volumen)" classname="estructuras.ListaTest" time="0.003"/>
+  <testcase name="eliminarElemento remueve correctamente el elemento si está en la cabeza" classname="estructuras.ListaTest" time="0.0"/>
+  <testcase name="contiene retorna true si el elemento existe y false en caso contrario o con null" classname="estructuras.ListaTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

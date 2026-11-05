@@ -1,8 +1,9 @@
 package entidades.cofres;
 
-import com.sun.tools.attach.AgentInitializationException;
 import modelo.Heroe;
 import modelo.Posicion;
+import modelo.Agenda;
+import modelo.Plano;
 
 public abstract class Cofre {
     private final Posicion posicion;

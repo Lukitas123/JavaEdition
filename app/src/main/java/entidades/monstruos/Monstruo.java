@@ -2,6 +2,8 @@ package entidades.monstruos;
 
 import modelo.Heroe;
 import modelo.Posicion;
+import modelo.Agenda;
+import modelo.Plano;
 
 /**
  * Representa un monstruo que puede actuar en el plano y afectar al heroe.
@@ -53,12 +55,12 @@ public abstract class Monstruo {
         }
         if(activo){
             Posicion destino = decidirMovimiento(plano, heroe.getUbicacion().posicion());
-             if (destino != null ){ //falta condicion del plano
-                 posicion = destino;
-             }
-             if (posicion.equals(heroe.getUbicacion().posicion())){
-                 alcanzarAlHeroe(heroe, agenda);
-             }
+            if (destino != null ){ //falta condicion del plano
+                posicion = destino;
+            }
+            if (posicion.equals(heroe.getUbicacion().posicion())){
+                alcanzarAlHeroe(heroe, agenda);
+            }
         }
 
     }

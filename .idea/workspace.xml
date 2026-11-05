@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="917a9be6-d92e-4dad-8e6d-74b40487aee9" name="Changes" comment="Creación de Tabla hash">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Configuracion.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/cofres/Cofre.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/cofres/CofreDePuntos.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/monstruos/Errante.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/monstruos/Monstruo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/generador/GeneradorJavaEdition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/generador/ValidadorDePlanos.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Conexion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Configuracion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Costo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Dificultad.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Dificultades.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Direccion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/EstadoPartida.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/EventoProgramado.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Heroe.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/ParametrosDeDificultad.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Posicion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Terreno.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Ubicacion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/persistencia/LectorConfiguracion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/generador/GeneradorJavaEditionTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/generador/ValidadorDePlanosTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/modelo/HeroeTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/modelo/PosicionTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/persistencia/LectorConfiguracionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/estructuras/Nodo.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/estructuras/Nodo.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/Usuario/Programacion/UBA/2. Segundo cuatrimestre/Algoritmos y estructura de datos/TP 2/JavaEdition" value="3K0NAPHBtTETE1pu6GEz1wQEKGd" />
+    </persistenceIdMap>
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="tp2-mazmorra" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;yapu115&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Lukitas123/JavaEdition.git&quot;,
+    &quot;accountId&quot;: &quot;ae32dfc4-9c61-4898-b89e-baf381907ca5&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="3K0GhjpD0gtBC9P8OgbAAXvf2wL" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectSessionTemplates">
+    <option name="inlineTemplate">
+      <template>
+        <option name="modeId" value="Agent" />
+        <option name="model">
+          <model>
+            <option name="modelType" value="builtin_id" />
+            <option name="modelValue" value="auto" />
+          </model>
+        </option>
+        <option name="targetType" value="BACKGROUND" />
+        <option name="worktreeMode" value="WORKSPACE" />
+      </template>
+    </option>
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.ColaTest.testEncolarElementoNuloLanzaExcepcion.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "Merging feat/estructuras-lista-tablaHash",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="ColaTest.testEncolarElementoNuloLanzaExcepcion" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":app:test" />
+            <option value="--tests" />
+            <option value="&quot;estructuras.ColaTest.testEncolarElementoNuloLanzaExcepcion&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.ColaTest.testEncolarElementoNuloLanzaExcepcion" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="917a9be6-d92e-4dad-8e6d-74b40487aee9" name="Changes" comment="" />
+      <created>1790687193270</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1790687193270</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Agrega Nodo y Pila modificados">
+      <option name="closed" value="true" />
+      <created>1790690994155</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1790690994155</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Agrega Cola y modificación funcional de Nodo para ambas estructuras">
+      <option name="closed" value="true" />
+      <created>1790691753682</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1790691753682</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Creación de lista">
+      <option name="closed" value="true" />
+      <created>1790694051342</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1790694051342</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Creación de Tabla hash">
+      <option name="closed" value="true" />
+      <created>1790696098285</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1790696098285</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Creación de Tabla hash">
+      <option name="closed" value="true" />
+      <created>1793661438154</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1793661438154</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Agrega Nodo y Pila modificados" />
+    <MESSAGE value="Agrega Cola y modificación funcional de Nodo para ambas estructuras" />
+    <MESSAGE value="Creación de lista" />
+    <MESSAGE value="Creación de Tabla has" />
+    <MESSAGE value="Creación de Tabla hash" />
+    <option name="LAST_COMMIT_MESSAGE" value="Creación de Tabla hash" />
+  </component>
+</project>

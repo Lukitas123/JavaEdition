@@ -2,6 +2,8 @@ package entidades.monstruos;
 
 import modelo.Heroe;
 import modelo.Posicion;
+import modelo.Agenda;
+import modelo.Plano;
 
 import java.util.Random;
 

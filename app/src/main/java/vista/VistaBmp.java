@@ -29,7 +29,10 @@ public class VistaBmp implements Vista{
     public VistaBmp(int tamañoCelda) {
         this.tamañoCelda = tamañoCelda;
     }
-
+    /**
+     * Crea un bitmap a partir de un plano junto con la cantidad de energia del heroe 
+     * 
+    */
     @Override
     public void mostrarPartida(Plano plano, Heroe heroe, int numeroPaso){
         int filas=plano.getFilas();

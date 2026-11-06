@@ -5,35 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="917a9be6-d92e-4dad-8e6d-74b40487aee9" name="Changes" comment="Creación de Tabla hash">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Configuracion.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/cofres/Cofre.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/cofres/CofreDePuntos.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/monstruos/Errante.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/monstruos/Monstruo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/generador/GeneradorJavaEdition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/generador/ValidadorDePlanos.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Conexion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Configuracion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Costo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Dificultad.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Dificultades.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Direccion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/EstadoPartida.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/EventoProgramado.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Heroe.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/ParametrosDeDificultad.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Posicion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Terreno.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Ubicacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/persistencia/LectorConfiguracion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/generador/GeneradorJavaEditionTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/generador/ValidadorDePlanosTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/modelo/HeroeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/modelo/PosicionTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/persistencia/LectorConfiguracionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/estructuras/Nodo.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/estructuras/Nodo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/Principal/MainV1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/Cola.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/Cola.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/Lista.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/Lista.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/Nodo.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/Nodo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/Pila.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/Pila.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/TablaHash$Entrada.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/TablaHash$Entrada.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/TablaHash.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/main/estructuras/TablaHash.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/classes/java/main/generador/GeneradorDeLaberinto.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/main/generador/GeneradorDeLaberinto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,10 +60,16 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="package-info" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feat/agenda-plano" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -89,9 +81,68 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Lukitas123/JavaEdition.git&quot;,
-    &quot;accountId&quot;: &quot;ae32dfc4-9c61-4898-b89e-baf381907ca5&quot;
+    &quot;accountId&quot;: &quot;dbf64718-2571-41ae-922b-7b9e3c4f9a05&quot;
   }
 }</component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000056551628487" />
+      <entry key="S2" value="1.0487653425108565" />
+      <entry key="S5" value="1.2987063888455266" />
+      <entry key="S10" value="1.546540381715319" />
+      <entry key="S30" value="1.8175997659337721" />
+      <entry key="S60" value="1.9044163050325205" />
+      <entry key="M2" value="1.983862996755085" />
+      <entry key="M5" value="3.0774451305905894" />
+      <entry key="M10" value="7.5221035401009475" />
+      <entry key="M15" value="12.994377305907449" />
+      <entry key="M30" value="26.383867382755078" />
+      <entry key="H1" value="39.98274331322702" />
+      <entry key="H2" value="49.95286243979385" />
+      <entry key="H4" value="56.033692824455194" />
+      <entry key="D1" value="61.77176196043633" />
+      <entry key="W1" value="62.822811958714034" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="2.897323755634879E-136" />
+      <entry key="S5" value="6.0925459162365685E-55" />
+      <entry key="S10" value="7.805476229056709E-28" />
+      <entry key="S30" value="9.20760398873105E-10" />
+      <entry key="S60" value="3.0512777304486797E-5" />
+      <entry key="M2" value="0.005934279636877141" />
+      <entry key="M5" value="0.19771955471847136" />
+      <entry key="M10" value="0.9363447592774694" />
+      <entry key="M15" value="1.735637285870061" />
+      <entry key="M30" value="3.397606021778137" />
+      <entry key="H1" value="4.847500621435551" />
+      <entry key="H2" value="5.816714056448013" />
+      <entry key="H4" value="6.378719932008163" />
+      <entry key="D1" value="6.892066609256113" />
+      <entry key="W1" value="6.984469796061762" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.9592641193252643" />
+      <entry key="MS500" value="0.9917222236403566" />
+      <entry key="S2" value="1.0463344335544935" />
+      <entry key="S5" value="1.2970066231653412" />
+      <entry key="S10" value="1.5453296094582214" />
+      <entry key="S30" value="1.8170645413533004" />
+      <entry key="S60" value="1.9041578030952158" />
+      <entry key="M2" value="1.9896099333938484" />
+      <entry key="M5" value="3.2741709960828924" />
+      <entry key="M10" value="8.454682752285168" />
+      <entry key="M15" value="14.724550252331875" />
+      <entry key="M30" value="29.775306113083396" />
+      <entry key="H1" value="44.825558493149224" />
+      <entry key="H2" value="55.76668159245627" />
+      <entry key="H4" value="62.41080280837365" />
+      <entry key="D1" value="68.663535284235" />
+      <entry key="W1" value="69.80723921199908" />
+    </decayedShown>
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
   </component>
@@ -124,15 +175,63 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Gradle.ColaTest.testEncolarElementoNuloLanzaExcepcion.executor": "Run",
+    "Gradle.JavaEdition [:app:Principal.MainPrueba.main()].executor": "Run",
+    "Gradle.JavaEdition [:app:Principal.mainV1.main()].executor": "Run",
+    "Gradle.JavaEdition [:app:mainV1.main()].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "copilot.chat.legacySessionMetadata.migrated": "true",
-    "git-widget-placeholder": "Merging feat/estructuras-lista-tablaHash",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+    "git-widget-placeholder": "feat/main-provisional",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "to.speed.mode.migration.done": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.mainV1">
+    <configuration name="MainPrueba" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Principal.MainPrueba" />
+      <module name="tp2-mazmorra.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Principal.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="mainV1 (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="mainV1" />
+      <module name="tp2-mazmorra.app.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="mainV1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Principal.mainV1" />
+      <module name="tp2-mazmorra.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Principal.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ColaTest.testEncolarElementoNuloLanzaExcepcion" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -153,8 +252,11 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>true</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
     <configuration default="true" type="JetRunConfigurationType">
@@ -178,7 +280,9 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
       <module name="" />
+      <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -197,13 +301,33 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
+      <option name="RUN_TOOL" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.MainPrueba" />
+      <item itemvalue="Application.mainV1" />
+      <item itemvalue="Application.mainV1 (1)" />
+      <item itemvalue="Gradle.ColaTest.testEncolarElementoNuloLanzaExcepcion" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.ColaTest.testEncolarElementoNuloLanzaExcepcion" />
+        <item itemvalue="Application.mainV1 (1)" />
+        <item itemvalue="Application.mainV1" />
+        <item itemvalue="Application.MainPrueba" />
+        <item itemvalue="Gradle.ColaTest.testEncolarElementoNuloLanzaExcepcion" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-34e2839f716b-intellij.indexing.shared.core-IU-262.9437.185" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.9437.185" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -255,6 +379,9 @@
     </task>
     <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Agrega Nodo y Pila modificados" />

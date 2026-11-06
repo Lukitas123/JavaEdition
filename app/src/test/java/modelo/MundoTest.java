@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import entidades.cofres.CofreDePuntos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import entidades.monstruos.Errante;
+import java.util.Random;
 
 class MundoTest {
     private Mundo mundo;
@@ -121,6 +123,13 @@ class MundoTest {
     void conexionEnCofreLanzaExcepcion() {
         cargarPlanos();
         mundo.planoEn(1, 1).agregarCofre(new CofreDePuntos(new Posicion(3, 3)));
+        assertThrows(IllegalArgumentException.class, () -> mundo.agregarConexion(escalera(3, 3)));
+    }
+
+    @Test
+    void conexionEnMonstruoLanzaExcepcion() {
+        cargarPlanos();
+        mundo.planoEn(1, 1).agregarMonstruo(new Errante(new Posicion(3, 3), new Random(1)));
         assertThrows(IllegalArgumentException.class, () -> mundo.agregarConexion(escalera(3, 3)));
     }
 

@@ -204,6 +204,9 @@ public class Mundo {
         if (plano.cofreEn(posicion) != null) {
             throw new IllegalArgumentException("El extremo de la conexion no puede estar sobre un cofre");
         }
+        if (plano.monstruoEn(posicion) != null) {
+            throw new IllegalArgumentException("El extremo de la conexion no puede estar sobre un monstruo.");
+        }
         if (conexionEn(extremo) != null) {
             throw new IllegalArgumentException("Ya hay una conexion en esa celda");
         }

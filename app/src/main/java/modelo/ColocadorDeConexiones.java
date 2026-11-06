@@ -166,6 +166,28 @@ public class ColocadorDeConexiones {
         return pasillo;
     }
 
+    /**
+     * Conecta todo el mundo: una escalera entre cada par de pisos consecutivos de cada
+     * tablero y un pasillo en el piso 1 entre cada par de tableros consecutivos. Después
+     * verifica con el grafo del mundo que la salida sea alcanzable
+     *
+     * @throws IllegalStateException si no se pudo colocar alguna conexión o si la salida
+     * no es alcanzable (por ejemplo, si no hay ninguna)
+     */
+    public void conectarTodo(Mundo mundo) {
+        for (int t = 1; t <= mundo.getTableros(); t++) {
+            for (int p = 1; p < mundo.getPisos(); p++) {
+                colocarEscalera(mundo, t, p);
+            }
+        }
+        for (int t = 1; t < mundo.getTableros(); t++) {
+            colocarPasillo(mundo, t, t + 1, 1);
+        }
+        if (!mundo.salidaEsAlcanzable()) {
+            throw new IllegalStateException("La salida no es alcanzable desde la entrada del primer plano.");
+        }
+    }
+
     private Lista<Posicion> celdasLibresEnAmbos(Mundo mundo, int tablero, int piso, Plano abajo, Plano arriba) {
         Lista<Posicion> candidatas = new Lista<>();
         for (int f = 1; f <= abajo.getFilas(); f++) {

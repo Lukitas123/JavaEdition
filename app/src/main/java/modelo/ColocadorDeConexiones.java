@@ -97,6 +97,75 @@ public class ColocadorDeConexiones {
         return escalera;
     }
 
+    private Posicion elegirBorde(Mundo mundo, int tablero, int piso, Plano plano) {
+        Lista<Posicion> candidatas = new Lista<>();
+        for (int f = 1; f <= plano.getFilas(); f++) {
+            for (int c = 1; c <= plano.getColumnas(); c++) {
+                Posicion borde = new Posicion(f, c);
+                Posicion interior = vecinaInterior(borde, plano.getFilas(), plano.getColumnas());
+                if (interior != null
+                        && plano.esTransitable(interior)
+                        && mundo.conexionEn(new Ubicacion(tablero, piso, borde)) == null) {
+                    candidatas.agregar(borde);
+                }
+            }
+        }
+        if (candidatas.estaVacia()) {
+            throw new IllegalStateException(
+                    "No se pudo colocar el pasillo: el plano del tablero " + tablero + " no tiene un borde posible.");
+        }
+        return elegir(candidatas);
+    }
+
+    /** La celda interior pegada a una celda del borde, o null si no es del borde o es una esquina. */
+    private Posicion vecinaInterior(Posicion pos, int filas, int columnas) {
+        boolean bordeLateral = pos.columna() == 1 || pos.columna() == columnas;
+        boolean bordeSuperiorOInferior = pos.fila() == 1 || pos.fila() == filas;
+        if (bordeLateral == bordeSuperiorOInferior) {
+            return null; // ninguno: celda interior, ambos: esquina
+        }
+        if (pos.fila() == 1) {
+            return new Posicion(2, pos.columna());
+        }
+        if (pos.fila() == filas) {
+            return new Posicion(filas - 1, pos.columna());
+        }
+        if (pos.columna() == 1) {
+            return new Posicion(pos.fila(), 2);
+        }
+        return new Posicion(pos.fila(), columnas - 1);
+    }
+
+    /**
+     * Coloca un pasillo entre los planos de dos tableros distintos en el mismo piso.
+     * En cada plano elige una celda del borde (sin contar esquinas) cuya vecina interior sea
+     * transitable, y la abre convirtiéndola en piso. Si alguno de los dos no tiene una
+     * celda posible, no modifica nada
+     *
+     * @return la conexión creada, que también queda guardada en el mundo
+     * @throws IllegalArgumentException si los tableros son el mismo o no tienen plano en ese piso
+     * @throws IllegalStateException    si algún plano no tiene un borde posible
+     */
+    public Conexion colocarPasillo(Mundo mundo, int tableroA, int tableroB, int piso) {
+        if (tableroA == tableroB) {
+            throw new IllegalArgumentException("Un pasillo debe unir dos tableros distintos.");
+        }
+        Plano a = mundo.planoEn(tableroA, piso);
+        Plano b = mundo.planoEn(tableroB, piso);
+
+        Posicion bordeA = elegirBorde(mundo, tableroA, piso, a);
+        Posicion bordeB = elegirBorde(mundo, tableroB, piso, b);
+
+        a.cambiarTerreno(bordeA, Terreno.PISO);
+        b.cambiarTerreno(bordeB, Terreno.PISO);
+
+        Conexion pasillo = new Conexion(
+                new Ubicacion(tableroA, piso, bordeA),
+                new Ubicacion(tableroB, piso, bordeB));
+        mundo.agregarConexion(pasillo);
+        return pasillo;
+    }
+
     private Lista<Posicion> celdasLibresEnAmbos(Mundo mundo, int tablero, int piso, Plano abajo, Plano arriba) {
         Lista<Posicion> candidatas = new Lista<>();
         for (int f = 1; f <= abajo.getFilas(); f++) {

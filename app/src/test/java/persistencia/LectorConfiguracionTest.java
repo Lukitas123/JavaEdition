@@ -18,7 +18,7 @@ public class LectorConfiguracionTest {
     /**Si el archivo existe, el lector tira el contenido del archivo que contiene a energiaInicial*/
     @Test 
     void leeArchivo(){
-        String config=LectorConfiguracion.leerConfiguracion("Configuracion.json");
+        String config=LectorConfiguracion.leerConfiguracion("configuracion.json");
         assertTrue(config.contains("energiaInicial"));
     }
     /**Chequeo que la informacion del json este en el objeto creado*/

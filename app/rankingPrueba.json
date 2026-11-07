@@ -1,0 +1,4 @@
+[
+  {"nombre": "Juan", "puntaje": 300, "dificultad": "MEDIO", "fecha": "2026-11-07"},
+  {"nombre": "Tom", "puntaje": 500, "dificultad": "FACIL", "fecha": "2026-11-06"}
+]

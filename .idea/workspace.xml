@@ -5,35 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="917a9be6-d92e-4dad-8e6d-74b40487aee9" name="Changes" comment="Creación de Tabla hash">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Configuracion.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/cofres/Cofre.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/cofres/CofreDePuntos.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/monstruos/Errante.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/entidades/monstruos/Monstruo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/generador/GeneradorJavaEdition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/generador/ValidadorDePlanos.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Conexion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Configuracion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Costo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Dificultad.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Dificultades.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Direccion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/EstadoPartida.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/EventoProgramado.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Heroe.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/ParametrosDeDificultad.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Posicion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Terreno.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/modelo/Ubicacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/persistencia/LectorConfiguracion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/generador/GeneradorJavaEditionTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/generador/ValidadorDePlanosTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/modelo/HeroeTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/modelo/PosicionTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/persistencia/LectorConfiguracionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/estructuras/Nodo.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/estructuras/Nodo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +100,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "copilot.chat.legacySessionMetadata.migrated": "true",
-    "git-widget-placeholder": "Merging feat/estructuras-lista-tablaHash",
+    "git-widget-placeholder": "feat/ABB",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>

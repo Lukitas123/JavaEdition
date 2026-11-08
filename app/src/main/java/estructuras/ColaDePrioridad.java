@@ -13,18 +13,33 @@ public class ColaDePrioridad<T extends Comparable<T>> {
     private T[] elementos;
     private int cantidad;
 
-
     /**
-     * Constructor por defecto: inicializa el arreglo y la cantidad en cero.
+     * Inicializa una cola de prioridad con una capacidad inicial especificada.
+     *
+     * @param capacidadInicial Capacidad base del arreglo interno (debe ser mayor a 0).
+     * @throws IllegalArgumentException si capacidadInicial es menor o igual a 0.
      */
     @SuppressWarnings("unchecked")
-    public ColaDePrioridad() {
-        this.elementos = (T[]) new Comparable[CAPACIDAD_INICIAL];
+    public ColaDePrioridad(int capacidadInicial) {
+        if (capacidadInicial <= 0) {
+            throw new IllegalArgumentException("La capacidad inicial debe ser mayor a 0.");
+        }
+        this.elementos = (T[]) new Comparable[capacidadInicial];
         this.cantidad = 0;
     }
 
     /**
+     * Constructor por defecto: inicializa el arreglo con la capacidad estándar (10)
+     * y la cantidad en cero.
+     */
+    public ColaDePrioridad() {
+        this(CAPACIDAD_INICIAL);
+    }
+
+    /**
      * Verifica si la cola de prioridad se encuentra vacía.
+     * Complejidad: O(1)
+     *
      * @return true si no contiene elementos, false en caso contrario.
      */
     public boolean estaVacia() {
@@ -33,9 +48,21 @@ public class ColaDePrioridad<T extends Comparable<T>> {
 
     /**
      * Retorna la cantidad de elementos actuales en la estructura.
+     * Complejidad: O(1)
+     *
      * @return tamaño de la cola.
      */
     public int getCantidad() {
+        return this.cantidad;
+    }
+
+    /**
+     * Alias de getCantidad() para consistencia con el resto de las estructuras del proyecto.
+     * Complejidad: O(1)
+     *
+     * @return tamaño de la cola.
+     */
+    public int cantidad() {
         return this.cantidad;
     }
 
@@ -77,7 +104,10 @@ public class ColaDePrioridad<T extends Comparable<T>> {
 
     /**
      * Inserta un nuevo elemento en la cola de prioridad respetando la propiedad de Min-Heap.
+     * Complejidad: O(log N)
+     *
      * @param valor Elemento a insertar.
+     * @throws IllegalArgumentException si el valor es nulo.
      */
     public void insertar(T valor) {
         if (valor == null) {
@@ -109,7 +139,10 @@ public class ColaDePrioridad<T extends Comparable<T>> {
 
     /**
      * Retorna el elemento con mayor prioridad (el menor valor) sin removerlo.
+     * Complejidad: O(1)
+     *
      * @return El elemento al frente de la cola.
+     * @throws NoSuchElementException si la cola está vacía.
      */
     public T obtenerProximo() {
         if (estaVacia()) {
@@ -120,7 +153,10 @@ public class ColaDePrioridad<T extends Comparable<T>> {
 
     /**
      * Remueve y retorna el elemento con mayor prioridad (el menor valor).
+     * Complejidad: O(log N)
+     *
      * @return El elemento extraído de la cima.
+     * @throws NoSuchElementException si la cola está vacía.
      */
     public T extraerProximo() {
         if (estaVacia()) {
@@ -159,5 +195,27 @@ public class ColaDePrioridad<T extends Comparable<T>> {
             intercambiar(i, menor);
             hundir(menor);
         }
+    }
+
+    /**
+     * Verifica que el arreglo interno cumpla estrictamente la propiedad de Min-Heap
+     * (cada nodo padre es menor o igual a sus hijos izquierdo y derecho).
+     * Método auxiliar de prueba a nivel paquete.
+     *
+     * @return true si cumple la invariante de Min-Heap, false en caso contrario.
+     */
+    boolean esMinHeapValido() {
+        for (int i = 0; i < this.cantidad; i++) {
+            int izq = hijoIzquierda(i);
+            int der = hijoDerecha(i);
+
+            if (izq < this.cantidad && this.elementos[i].compareTo(this.elementos[izq]) > 0) {
+                return false;
+            }
+            if (der < this.cantidad && this.elementos[i].compareTo(this.elementos[der]) > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

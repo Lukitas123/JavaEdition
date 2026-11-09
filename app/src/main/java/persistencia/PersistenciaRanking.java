@@ -1,6 +1,7 @@
 package persistencia;
 
 import modelo.EntradaDeRanking;
+import modelo.Ranking;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,5 +52,16 @@ public class PersistenciaRanking {
         } catch (IOException e) {
             throw new IllegalArgumentException("No se pudo guardar: " + ruta, e);
         }
+    }
+    /**Lee el archivo y devuelve un ranking con todas sus entradas */
+    public static Ranking armarRanking(String ruta){
+        Ranking ranking = new Ranking();
+
+        EntradaDeRanking[] entradas = cargarRanking(ruta);
+
+        for (int i = 0; i < entradas.length; i++) {
+            ranking.agregar(entradas[i]);
+        }
+        return ranking;
     }
 }

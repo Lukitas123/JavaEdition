@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 
 import estructuras.Lista;
 
-/**Lee, carga y guarda las entradas del ranking */
+/**Lee, carga y guarda las entradas del ranking (a partir de un json) */
 public class PersistenciaRanking {
     /**Lee el archivo json con las entradas en formato string */
     public static String leerRanking(String ruta){

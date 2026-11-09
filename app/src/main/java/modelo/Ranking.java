@@ -31,4 +31,8 @@ public class Ranking {
         }
         return mejores;
     }
+    //**Devuelve TODAS las entradas en orden */
+    public Lista<EntradaDeRanking> totalEntradas(){
+        return entradas.inorden();
+    }
 }

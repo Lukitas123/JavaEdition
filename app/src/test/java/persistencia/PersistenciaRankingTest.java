@@ -6,6 +6,8 @@ import java.nio.file.Path;
 
 import modelo.Dificultad;
 import modelo.EntradaDeRanking;
+import modelo.Ranking;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -42,14 +44,20 @@ public class PersistenciaRankingTest {
     @Test
     void guardarYCargarDaLoMismo(@TempDir Path carpeta) {
         String ruta = carpeta.resolve("rankingJunit.json").toString();
-        EntradaDeRanking[] original = {new EntradaDeRanking
-            ("Pedro", 800, Dificultad.FACIL, "2026-11-07")
-        };
 
-        PersistenciaRanking.guardarRanking(original,ruta);
-        EntradaDeRanking[] cargarOriginal = PersistenciaRanking.cargarRanking(ruta);
+        Ranking ranking = new Ranking();
 
-        assertArrayEquals(original, cargarOriginal);
+        ranking.agregar(new EntradaDeRanking("Pedro", 800, Dificultad.FACIL, "2026-11-07"));
+        ranking.agregar(new EntradaDeRanking("Ana", 300, Dificultad.MEDIO, "2026-11-07"));
+        ranking.agregar(new EntradaDeRanking("Caro", 500, Dificultad.MEDIO, "2026-11-07"));
+
+        PersistenciaRanking.guardarRanking(ranking.totalEntradas(), ruta);
+        EntradaDeRanking[] cargadas = PersistenciaRanking.cargarRanking(ruta);
+
+        assertEquals(3, cargadas.length);
+        assertEquals("Pedro", cargadas[0].nombre());
+        assertEquals("Ana", cargadas[2].nombre());
+        assertEquals("Caro", cargadas[1].nombre());
     }
 }
 

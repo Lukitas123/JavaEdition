@@ -22,10 +22,7 @@ public class GrafoConPesosTest {
         this.grafo = new GrafoConPesos<>();
     }
 
-    // ==========================================
-    // 1. ESTADO INICIAL
-    // ==========================================
-
+    // ESTADO INICIAL
     /**
      * Verifica que un grafo recién instanciado se encuentre vacío y con 0 vértices.
      */
@@ -52,9 +49,7 @@ public class GrafoConPesosTest {
         assertFalse(this.grafo.contieneArista("A", "B"));
     }
 
-    // ==========================================
-    // 2. GESTIÓN DE VÉRTICES
-    // ==========================================
+    // GESTIÓN DE VÉRTICES
 
     /**
      * Valida que agregar un vértice incremente la cantidad, deje de estar vacío y permita recuperarlo.
@@ -101,9 +96,7 @@ public class GrafoConPesosTest {
         assertTrue(this.grafo.estaVacio());
     }
 
-    // ==========================================
-    // 3. ARISTAS DIRIGIDAS
-    // ==========================================
+    // ARISTAS DIRIGIDAS
 
     /**
      * Valida la creación de una arista dirigida ponderada entre dos vértices.
@@ -177,9 +170,7 @@ public class GrafoConPesosTest {
         assertEquals(1, this.grafo.obtenerVertice("A").cantidadAdyacentes());
     }
 
-    // ==========================================
-    // 4. ARISTAS NO DIRIGIDAS
-    // ==========================================
+    // ARISTAS NO DIRIGIDAS
 
     /**
      * Comprueba que agregar una arista no dirigida cree aristas simétricas con igual peso
@@ -201,9 +192,7 @@ public class GrafoConPesosTest {
         assertEquals(1, this.grafo.obtenerVertice("Habitacion2").cantidadAdyacentes());
     }
 
-    // ==========================================
-    // 5. CONSULTAS DE PESO Y EXCEPCIONES
-    // ==========================================
+    // CONSULTAS DE PESO Y EXCEPCIONES
 
     /**
      * Verifica que intentar obtener el peso de una arista inexistente lance IllegalArgumentException.
@@ -223,9 +212,7 @@ public class GrafoConPesosTest {
         });
     }
 
-    // ==========================================
-    // 6. ADYACENTES Y AUTO-ARISTAS
-    // ==========================================
+    // ADYACENTES Y AUTO-ARISTAS
 
     /**
      * Valida que un vértice pueda tener múltiples aristas salientes hacia distintos destinos.
@@ -259,9 +246,7 @@ public class GrafoConPesosTest {
         assertEquals(1, this.grafo.obtenerVertice("Portal").cantidadAdyacentes());
     }
 
-    // ==========================================
-    // 7. ITERACIÓN SOBRE VÉRTICES
-    // ==========================================
+    // ITERACIÓN SOBRE VÉRTICES
 
     /**
      * Valida que obtenerVertices devuelva una lista con todos los vértices agregados.
@@ -287,9 +272,7 @@ public class GrafoConPesosTest {
         assertTrue(tieneA && tieneB && tieneC);
     }
 
-    // ==========================================
-    // 8. SOPORTE DE TIPOS GENÉRICOS DEL DOMINIO (Posicion)
-    // ==========================================
+    // SOPORTE DE TIPOS GENÉRICOS DEL DOMINIO (Posicion)
 
     /**
      * Comprueba que GrafoConPesos funcione perfectamente con tipos de dominio del juego,
@@ -304,7 +287,7 @@ public class GrafoConPesosTest {
         Posicion p2 = new Posicion(1, 2);
         Posicion p3 = new Posicion(2, 1);
 
-        // Simulamos costo de energía: pasar de p1 a p2 cuesta 3 (agua), de p1 a p3 cuesta 1 (piso)
+        // Simulación de costo de energía: pasar de p1 a p2 cuesta 3 (agua), de p1 a p3 cuesta 1 (piso)
         grafoLaberinto.agregarAristaNoDirigida(p1, p2, 3);
         grafoLaberinto.agregarAristaNoDirigida(p1, p3, 1);
 
@@ -314,9 +297,7 @@ public class GrafoConPesosTest {
         assertEquals(1, grafoLaberinto.obtenerPeso(p1, p3));
     }
 
-    // ==========================================
     // 9. PRUEBA DE VOLUMEN (RED TIPO GRILLA)
-    // ==========================================
 
     /**
      * Prueba de volumen construyendo un grafo tipo grilla 10x10 (100 vértices y aristas bidireccionales).

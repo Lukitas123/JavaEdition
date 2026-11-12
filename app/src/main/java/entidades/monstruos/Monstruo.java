@@ -49,19 +49,34 @@ public abstract class Monstruo {
      * @param agenda agenda de eventos de la partida
      * @throws IllegalArgumentException si algún argumento es {@code null}
      */
-    public void actuar(Plano plano, Heroe heroe, Agenda agenda){ //faltan clases de plano y agenda
+    public void actuar(Plano plano, Heroe heroe, Agenda agenda){ 
         if (plano == null || heroe == null || agenda == null){
             throw new IllegalArgumentException("Plano, heroe y agenda son obligatorios");
         }
-        if(activo){
+        
+
+        antesDeActuar(plano, heroe, agenda);
+
+        if(!activo || !puedeActuar(agenda)){
+            return;
+        }
+
+        if (posicion.equals(heroe.getUbicacion().posicion())){
+            alcanzarAlHeroe(heroe, agenda);
+            return;
+        }
+        
+        if(puedeMoverseEstePaso(agenda)){
             Posicion destino = decidirMovimiento(plano, heroe.getUbicacion().posicion());
-            if (destino != null ){ //falta condicion del plano
-                posicion = destino;
+            if (destino == null || !puedeMoverseA(plano, destino)){ 
+                throw new IllegalArgumentException("El monstruo eligio un destino invalido");
             }
-            if (posicion.equals(heroe.getUbicacion().posicion())){
+            posicion = destino;
+            if(posicion.equals(heroe.getUbicacion().posicion())){
                 alcanzarAlHeroe(heroe, agenda);
             }
         }
+        
 
     }
 
@@ -97,5 +112,37 @@ public abstract class Monstruo {
      * @param agenda agenda donde pueden programarse eventos futuros
      */
     public abstract void alcanzarAlHeroe(Heroe heroe, Agenda agenda);
+
+    /**
+     * Permite actualizar el comportamiento antes de comprobar si puede actuar
+     * Por defecto no hace nada
+     */
+    protected void antesDeActuar(Plano plano, Heroe heroe, Agenda agenda){
+        //casos como dormilon, que se activa segun la cercania, junto con puedeActuar()
+    }
+
+    /**
+     * Indica si puede moverse o aplicar su efecto de encuentro en este turno.
+     * Por defecto puede.
+     */
+    protected boolean puedeActuar(Agenda agenda){
+        return true;
+    }
+
+    /**
+     * Indica si puede moverse este paso, por default puede
+     */
+    protected boolean puedeMoverseEstePaso(Agenda agenda){
+        return true;
+        // Pensado para el fantasma, que pasa las paredes. Lo sobreescribe 
+    }
+
+    /**
+     * Valida un movimiento normal: quedarse en posicion o moverse a la siguiente celda transitable
+     * Pre: plano y destino no son null
+     */
+    protected boolean puedeMoverseA(Plano plano, Posicion destino){
+        return posicion.distanciaManhattan(destino)<=1 && plano.esTransitable(destino);
+    }
 
 }

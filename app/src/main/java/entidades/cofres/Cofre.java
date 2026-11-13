@@ -33,15 +33,22 @@ public abstract class Cofre {
      * Pre: héroe y agenda no son {@code null}.
      * Post: si estaba cerrado, queda abierto,se registra la apertura en el héroe y
      * se aplica el efecto del tipo  concreto. Si ya estaba abierto, no cambia el estado.
+     * 
+     * @throws IllegalArgumentException si algun argumento es null
+     * @throws IllegalStateException si el cofre no pertenece al plano
      */
     public void abrir(Heroe heroe, Plano plano, Agenda agenda){
-        if (heroe == null || agenda == null){
-            throw new IllegalArgumentException("El plano y la agenda no pueden ser null");
+        if (heroe == null || agenda == null || plano == null){
+            throw new IllegalArgumentException("El plano, la agenda y el heroe no pueden ser null");
         }
         if (!abierto){
-            aplicarEfecto(heroe, agenda);
+            if(plano.cofreEn(posicion) != this){
+                throw new IllegalStateException("El cofre no esta registrado en el plano indicado");
+            }
+            aplicarEfecto(heroe, plano, agenda);
             abierto = true;
             heroe.registrarCofreAbierto();
+            plano.quitarCofre(this);
         }
     }
 
@@ -49,5 +56,5 @@ public abstract class Cofre {
      * Aplica el efecto propio del cofre. La implementación vacía se aplica para los
      * cofres de puntos.
      */
-    public abstract void aplicarEfecto(Heroe heroe, Agenda agenda);
+    public abstract void aplicarEfecto(Heroe heroe, Plano plano, Agenda agenda);
 }

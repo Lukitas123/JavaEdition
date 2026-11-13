@@ -5,6 +5,8 @@ import modelo.Posicion;
 import modelo.Agenda;
 import modelo.Plano;
 
+import estructuras.Lista;
+
 import java.util.Random;
 
 /**
@@ -57,6 +59,15 @@ public class Errante extends Monstruo{
      */
     @Override
     public Posicion decidirMovimiento(Plano plano, Posicion posicionHeroe) {
-        return null;
+        if(plano == null || posicionHeroe== null){
+            throw new IllegalArgumentException("El plano y la posicion del heroe no pueden ser null");
+        }
+        Lista<Posicion> vecinos = plano.vecinosTransitables(getPosicion());
+
+        if(vecinos.estaVacia()){
+            return getPosicion();
+        }
+        int indice = random.nextInt(vecinos.cantidad());
+        return vecinos.obtener(indice);
     }
 }

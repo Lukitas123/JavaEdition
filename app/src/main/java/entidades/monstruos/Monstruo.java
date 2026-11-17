@@ -53,11 +53,14 @@ public abstract class Monstruo {
         if (plano == null || heroe == null || agenda == null){
             throw new IllegalArgumentException("Plano, heroe y agenda son obligatorios");
         }
-        
+
+        if (!activo) {
+            return;
+        }
 
         antesDeActuar(plano, heroe, agenda);
 
-        if(!activo || !puedeActuar(agenda)){
+        if (!activo || !puedeActuar(agenda)) {
             return;
         }
 

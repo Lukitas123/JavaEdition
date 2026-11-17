@@ -11,7 +11,7 @@ public class CofreDePuntos extends Cofre{
     }
 
     @Override
-    public void aplicarEfecto(Heroe heroe, Plano plano, Agenda agenda) {
+    protected void aplicarEfecto(Heroe heroe, Plano plano, Agenda agenda) {
         // no tiene que sumar los puntos pq se calcula desde heroe
     }
 }

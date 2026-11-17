@@ -82,11 +82,14 @@ class HeroeTest {
     }
 
     @Test
-    void quitarObjetoPorIndice() {
+    void quitarObjetoNoAfectaLosOtrosTipos() {
         heroe.agregarObjeto("daga");
         heroe.agregarObjeto("brujula");
-        assertEquals("daga", heroe.quitarObjetoEn(0));
-        assertEquals("brujula", heroe.objetoEn(0));
+
+        assertTrue(heroe.quitarObjeto("daga"));
+
+        assertFalse(heroe.tieneObjeto("daga"));
+        assertTrue(heroe.tieneObjeto("brujula"));
         assertEquals(1, heroe.cantidadDeObjetos());
     }
 
@@ -103,5 +106,36 @@ class HeroeTest {
     void idsInvalidosLanzanExcepcion() {
         assertThrows(IllegalArgumentException.class, () -> heroe.agregarObjeto(null));
         assertThrows(IllegalArgumentException.class, () -> heroe.activarEfecto(" "));
+    }
+    @Test
+    void cuentaUnidadesPorTipoYEliminaLaUltima() {
+        heroe.agregarObjeto("pocion");
+        heroe.agregarObjeto("pocion");
+        heroe.agregarObjeto("daga");
+
+        assertEquals(2, heroe.cantidadDe("pocion"));
+        assertEquals(1, heroe.cantidadDe("daga"));
+        assertEquals(0, heroe.cantidadDe("brujula"));
+        assertEquals(3, heroe.cantidadDeObjetos());
+
+        assertTrue(heroe.quitarObjeto("pocion"));
+        assertEquals(1, heroe.cantidadDe("pocion"));
+
+        assertTrue(heroe.quitarObjeto("pocion"));
+        assertFalse(heroe.getInventario().containsKey("pocion"));
+        assertFalse(heroe.quitarObjeto("pocion"));
+
+        assertEquals(1, heroe.cantidadDeObjetos());
+    }
+
+    @Test
+    void consultarInventarioNoPermiteModificarElEstadoDelHeroe() {
+        heroe.agregarObjeto("pocion");
+
+        assertThrows(UnsupportedOperationException.class,
+                () -> heroe.getInventario().put("daga", 1));
+
+        assertFalse(heroe.tieneObjeto("daga"));
+        assertEquals(1, heroe.cantidadDe("pocion"));
     }
 }

@@ -125,4 +125,8 @@ public class Heroe {
             throw new IllegalArgumentException("El identificador no puede ser nulo ni vacio");
         }
     }
+    //Devuelve un listado de los efectos activos
+    public Lista<String> getListaEfectos(){
+        return efectosActivos.claves();
+    }
 }

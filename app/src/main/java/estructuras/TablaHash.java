@@ -167,4 +167,18 @@ public class TablaHash<K, V> {
         int hash = clave.hashCode();
         return (hash & 0x7FFFFFFF) % this.tabla.length;
     }
+
+    /** Devuelve todas las claves de la tabla */
+    public Lista<K> claves(){
+        Lista<K> resultado = new Lista<>();
+
+        for (int i = 0; i < tabla.length; i++){
+            Lista<Entrada<K, V>> balde = tabla[i];
+            
+            for (int j = 0; j < balde.cantidad(); j++){
+                resultado.agregar(balde.obtener(j).getClave());
+            }
+        }
+        return resultado;
+    }
 }

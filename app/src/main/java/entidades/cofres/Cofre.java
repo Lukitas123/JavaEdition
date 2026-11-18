@@ -56,5 +56,5 @@ public abstract class Cofre {
      * Aplica el efecto propio del cofre. La implementación vacía se aplica para los
      * cofres de puntos.
      */
-    public abstract void aplicarEfecto(Heroe heroe, Plano plano, Agenda agenda);
+    protected abstract void aplicarEfecto(Heroe heroe, Plano plano, Agenda agenda);
 }

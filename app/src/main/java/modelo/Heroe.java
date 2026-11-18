@@ -3,6 +3,9 @@ package modelo;
 import estructuras.Lista;
 import estructuras.TablaHash;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * héroe: guarda su energia, donde esta, cuantos cofres abrio,
  * su inventario y los efectos que tiene activos
@@ -12,7 +15,7 @@ public class Heroe {
     private int energia;
     private Ubicacion ubicacion;
     private int cofresAbiertos;
-    private final Lista<String> inventario = new Lista<>();
+    private final Map<String, Integer> inventario = new HashMap<>();
     private final TablaHash<String, Boolean> efectosActivos = new TablaHash<>();
 
     /**
@@ -43,6 +46,14 @@ public class Heroe {
         return cofresAbiertos;
     }
 
+    /**
+     * Devuelve una copia no modificable del inventario.
+     * Permite consultarlo sin alterar directamente el estado del heroe.
+     */
+    public Map<String, Integer> getInventario() {
+        return Map.copyOf(inventario);
+    }
+
     /** Resta energía. Nunca baja de 0. */
     public void perderEnergia(int cantidad) {
         validarNoNegativa(cantidad);
@@ -71,33 +82,72 @@ public class Heroe {
 
     // INVENTARIO --------------------------------------------------------
 
+    /**
+     * Agrega una unidad del objeto al inventario.
+     *
+     * Pre: el identificador no es null ni vacio.
+     * Post: la cantidad de ese objeto aumenta en uno.
+     */
     public void agregarObjeto(String idObjeto) {
         validarId(idObjeto);
-        inventario.agregar(idObjeto);
+        int cantidadActual = inventario.getOrDefault(idObjeto, 0);
+        inventario.put(idObjeto, cantidadActual + 1);
     }
 
-    /** Saca una unidad del objeto, retorna true si lo tenía */
+    /** Saca una unidad del objeto si existe
+
+     * Pre: el identificador no es null ni vacio.
+     * Post: si lo tenia, su cantidad disminuye en uno.
+     * Si era la ultima unidad, elimina la entrada del inventario.
+     *
+     * @return true si quito una unidad; false si no tenia el objeto
+     * */
     public boolean quitarObjeto(String idObjeto) {
-        return inventario.eliminarElemento(idObjeto);
-    }
+        validarId(idObjeto);
+        int cantidadActual = inventario.getOrDefault(idObjeto, 0);
 
+        if (cantidadActual == 0) {
+            return false;
+        }
+
+        if (cantidadActual == 1) {
+            inventario.remove(idObjeto);
+        } else {
+            inventario.put(idObjeto, cantidadActual - 1);
+        }
+
+        return true;
+    }
+    /**
+     * Indica si el heroe tiene al menos una unidad del objeto.
+     *
+     * Pre: el identificador no es null ni vacio.
+     */
     public boolean tieneObjeto(String idObjeto) {
-        return inventario.contiene(idObjeto);
+        validarId(idObjeto);
+        return inventario.containsKey(idObjeto);
     }
 
+    /**
+     * Devuelve la cantidad de unidades de un objeto.
+     *
+     * Pre: el identificador no es null ni vacio.
+     * @return cantidad disponible, o cero si no tiene el objeto
+     */
+    public int cantidadDe(String idObjeto) {
+        validarId(idObjeto);
+        return inventario.getOrDefault(idObjeto, 0);
+    }
     public int cantidadDeObjetos() {
-        return inventario.cantidad();
+        int total = 0;
+
+        for (int cantidad : inventario.values()) {
+            total += cantidad;
+        }
+
+        return total;
     }
 
-    /** objeto en el indice dado (base 0), sin sacarlo, sirve para listar el inventario */
-    public String objetoEn(int indice) {
-        return inventario.obtener(indice);
-    }
-
-    /** saca y devuelve el objeto del indice dado (lo usa el Ladrón) */
-    public String quitarObjetoEn(int indice) {
-        return inventario.eliminar(indice);
-    }
 
     // EFECTOS ACTIVOS -----------------------------------------------
 

@@ -148,7 +148,6 @@ public class Heroe {
         return total;
     }
 
-
     // EFECTOS ACTIVOS -----------------------------------------------
 
     public void activarEfecto(String idEfecto) {

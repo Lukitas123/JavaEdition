@@ -80,4 +80,9 @@ public class Agenda {
         }
         return mejor;
     }
+
+    /** Devuelve el evento de la posicion dada. Utilizado en ConversorAgenda */
+    public EventoProgramado eventoEn(int indice) {
+        return eventos.obtener(indice);
+    }
 }

@@ -82,5 +82,14 @@ public class PersistenciaRankingTest {
         assertEquals("Caro", entradas.obtener(1).nombre());
         assertEquals("Ana", entradas.obtener(2).nombre());
     }
+
+    /**Dos partidas de la misma persona con igual puntaje pero distinta fecha no se confunden */
+    @Test
+    void mismoPuntajeYNombreConDistintaFechaNoEsIgual() {
+        EntradaDeRanking lunes = new EntradaDeRanking("Ana", 300, Dificultad.FACIL, "2026-11-16");
+        EntradaDeRanking martes = new EntradaDeRanking("Ana", 300, Dificultad.FACIL, "2026-11-17");
+
+        assertNotEquals(0, lunes.compareTo(martes));
+    }
 }
 

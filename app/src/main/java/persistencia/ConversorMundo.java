@@ -25,7 +25,7 @@ public class ConversorMundo {
         return new MundoGuardado(planos, conexiones);
     }
 
-    /** Reconstruye el mundo: primero planos, después conexiones, al final las entidades. */
+    /** Reconstruye el mundo. Primero planos, despues conexiones y por ultimo entidades */
     public static Mundo aMundo(MundoGuardado guardado){
         int tableros = guardado.planos().length;
         int pisos = guardado.planos()[0].length;

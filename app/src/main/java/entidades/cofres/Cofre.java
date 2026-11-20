@@ -57,4 +57,13 @@ public abstract class Cofre {
      * cofres de puntos.
      */
     protected abstract void aplicarEfecto(Heroe heroe, Plano plano, Agenda agenda);
+
+    /** Nombre del tipo (devuelve el nombre de la clase) */
+    public String getTipo() {
+        return getClass().getSimpleName();
+    }
+    /**Utilizado en TrampaDeEnergia */
+    public int getDanio(){
+    return 0;
+    }
 }

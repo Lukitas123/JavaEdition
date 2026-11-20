@@ -148,4 +148,31 @@ public abstract class Monstruo {
         return posicion.distanciaManhattan(destino)<=1 && plano.esTransitable(destino);
     }
 
+    /** Nombre del tipo (devuelve el nombre de la clase) */
+    public String getTipo() {
+        return getClass().getSimpleName();
+    }
+
+    /** Devuelve posicion inicial */
+    public Posicion getPosicionInicial() {
+        return posicionInicial;
+    }
+
+    /** Pone la posicion actual al restaurar una partida guardada */
+    public void restaurarPosicion(Posicion posNueva) {
+        if (posNueva == null) {
+            throw new IllegalArgumentException("La posicion no puede ser null");
+        }
+        this.posicion = posNueva;
+    }
+
+    /**Estado propio del tipo como texto */
+    public String exportarEstado() {
+        return null;
+    }
+
+    /** Restaura el estado propio del tipo desde el texto de exportarEstado. */
+    public void importarEstado(String estado) {
+    }
+
 }

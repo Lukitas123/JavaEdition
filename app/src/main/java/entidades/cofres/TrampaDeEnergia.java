@@ -18,10 +18,14 @@ public class TrampaDeEnergia extends Cofre{
         this.danio = danio;
     }
 
-
     @Override
     protected void aplicarEfecto(Heroe heroe, Plano plano, Agenda agenda) {
         heroe.perderEnergia(danio);
 
+    }
+    /**Devuelve danio */
+    @Override
+    public int getDanio() {
+        return danio;
     }
 }

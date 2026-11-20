@@ -1,0 +1,87 @@
+package persistencia;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Random;
+
+import org.junit.jupiter.api.Test;
+
+import com.google.gson.Gson;
+
+import entidades.cofres.Cofre;
+import entidades.cofres.TrampaDeEnergia;
+import entidades.monstruos.Fantasma;
+import entidades.monstruos.Monstruo;
+import modelo.Plano;
+import modelo.Posicion;
+import modelo.Terreno;
+
+public class ConversorPlanoTest {
+
+    private static Terreno[][] terrenoDePrueba() {
+        Terreno p = Terreno.PARED;
+        Terreno o = Terreno.PISO;
+        Terreno a = Terreno.AGUA;
+        return new Terreno[][] {
+            {p, p, p, p},
+            {p, o, a, p},
+            {p, o, o, p},
+            {p, p, p, p}
+        };
+    }
+
+    /** Pasa un plano por JSON y lo reconstruye agregando sus entidades agregadas al final */
+    private static Plano idaYVuelta(Plano original) {
+        Gson gson = new Gson();
+        String json = gson.toJson(ConversorPlano.aGuardado(original));
+        PlanoGuardado leido = gson.fromJson(json, PlanoGuardado.class);
+        Plano restaurado = ConversorPlano.aPlano(leido);
+        ConversorPlano.agregarEntidades(restaurado, leido);
+        return restaurado;
+    }
+
+    /** Se conservan el terreno, las visitadas, la entrada y la salida  */
+    @Test
+    void planoConservaTerrenoYVisitadas() {
+        Plano original = new Plano(terrenoDePrueba(), new Posicion(2, 2), new Posicion(3, 3));
+        original.marcarVisitada(new Posicion(2, 2));
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertEquals(Terreno.AGUA, restaurado.terrenoEn(new Posicion(2, 3)));
+        assertTrue(restaurado.estaVisitada(new Posicion(2, 2)));
+        assertFalse(restaurado.estaVisitada(new Posicion(3, 2)));
+        assertEquals(original.getEntrada(), restaurado.getEntrada());
+        assertEquals(original.getSalida(), restaurado.getSalida());
+    }
+
+    /** Un fantasma dentro de una pared se puede guardar y cargar */
+    @Test
+    void fantasmaEnUnaParedSobrevive() {
+        Plano original = new Plano(terrenoDePrueba(), new Posicion(2, 2), new Posicion(3, 3));
+        Fantasma fantasma = new Fantasma(new Posicion(2, 3), new Random(1));
+        original.agregarMonstruo(fantasma);
+        fantasma.restaurarPosicion(new Posicion(1, 3));   // la celda (1,3) es pared
+
+        Plano restaurado = idaYVuelta(original);
+
+        Monstruo monstruo = restaurado.getMonstruos().obtener(0);
+        assertEquals(new Posicion(1, 3), monstruo.getPosicion());
+        assertEquals(new Posicion(2, 3), monstruo.getPosicionInicial());
+    }
+
+    /** Un cofre conserva su tipo, su posicion y su daño */
+    @Test
+    void trampaConservaSuDanio() {
+        Plano original = new Plano(terrenoDePrueba(), new Posicion(2, 2), new Posicion(3, 3));
+        original.agregarCofre(new TrampaDeEnergia(new Posicion(3, 2), 25));
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertEquals(1, restaurado.getCofres().cantidad());
+        Cofre cofre = restaurado.getCofres().obtener(0);
+        assertEquals("TrampaDeEnergia", cofre.getTipo());
+        assertEquals(new Posicion(3, 2), cofre.getPosicion());
+        assertEquals(25, cofre.getDanio());
+    }
+}

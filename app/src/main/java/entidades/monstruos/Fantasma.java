@@ -105,4 +105,16 @@ public class Fantasma extends Monstruo{
         heroe.perderEnergia(30);
         volverAlInicio();
     }
+
+    /** Guarda si le toca moverse este turno */
+    @Override
+    public String exportarEstado() {
+        return String.valueOf(moverEsteTurno);
+    }
+
+    /** Restaura si le toca moverse este turno */
+    @Override
+    public void importarEstado(String estado) {
+        moverEsteTurno = Boolean.parseBoolean(estado);
+    }
 }

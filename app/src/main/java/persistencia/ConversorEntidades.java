@@ -1,0 +1,37 @@
+package persistencia;
+
+import entidades.cofres.Cofre;
+import entidades.monstruos.Monstruo;
+
+/** Convierte monstruos y cofres en MonstruoGuardado y CofreGuardado y viceversa */
+public class ConversorEntidades {
+
+    /** Copia el estado de un monstruo */
+    public static MonstruoGuardado monstruoAGuardado(Monstruo monstruo){
+        return new MonstruoGuardado(monstruo.getTipo(), monstruo.getPosicion(),
+        monstruo.getPosicionInicial(), monstruo.estaActivo(), monstruo.exportarEstado());
+    }
+
+    /** Recrea el monstruo en su posicion inicial, con su estado activo y su estado propio */
+    public static Monstruo aMonstruo(MonstruoGuardado guardado){
+        Monstruo monstruo = CrearEntidades.crearMonstruo(guardado.tipo(), guardado.posicionInicial());
+        if (guardado.activo()){
+            monstruo.activar();
+        } 
+        else{
+            monstruo.desactivar();
+        }
+        monstruo.importarEstado(guardado.estado());
+        return monstruo;
+    }
+
+    /** Copia el tipo y la posición de un cofre. */
+    public static CofreGuardado cofreAGuardado(Cofre cofre) {
+        return new CofreGuardado(cofre.getTipo(), cofre.getPosicion(), cofre.getDanio());
+    }
+
+    /** Recrea un cofre cerrado. */
+    public static Cofre aCofre(CofreGuardado guardado) {
+        return CrearEntidades.crearCofre(guardado.tipo(), guardado.posicion(), guardado.danio());
+    }
+}

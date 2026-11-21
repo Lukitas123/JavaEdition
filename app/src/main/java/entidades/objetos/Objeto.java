@@ -6,5 +6,5 @@ import modelo.Plano;
 
 
 public interface Objeto {
-    void usar(Heroe heroe, Plano plano, Agenda agenda);
+    boolean usar(Heroe heroe, Plano plano, Agenda agenda);
 }

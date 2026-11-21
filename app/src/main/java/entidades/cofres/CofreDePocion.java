@@ -9,18 +9,10 @@ import modelo.Posicion;
 /**
  * Cofre que agrega una posion de energia al inventario del Héroe
  */
-public class CofreDePocion extends Cofre{
+public class CofreDePocion extends CofreDeObjeto{
     public CofreDePocion(Posicion posicion){
-        super(posicion);
+        super(posicion, PocionDeEnergia.id);
     }
 
-    /**
-     * Agrega la pocion al inventario, sin recuperar energia hasta no ser usado
-     * Pre: heroe, agenda y plano no son null
-     * Post: el inventario contiene la pocion de energia
-     */
-    @Override
-    protected void aplicarEfecto(Heroe heroe, Plano plano, Agenda agenda) {
-        heroe.agregarObjeto(PocionDeEnergia.id);
-    }
+
 }

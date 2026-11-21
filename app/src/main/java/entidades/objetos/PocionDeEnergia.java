@@ -23,10 +23,11 @@ public class PocionDeEnergia implements Objeto{
      * Post: la energia del heroe aumenta la cantidad configurada
      */
     @Override
-    public void usar(Heroe heroe, Plano plano, Agenda agenda) {
+    public boolean usar(Heroe heroe, Plano plano, Agenda agenda) {
         if(heroe== null || plano == null || agenda == null){
             throw new IllegalArgumentException("Heroe, plano y agenda son obligatorios");
         }
         heroe.ganarEnergia(energiaQueRecupera);
+        return true;
     }
 }

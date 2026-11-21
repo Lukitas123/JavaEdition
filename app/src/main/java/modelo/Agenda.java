@@ -2,6 +2,7 @@ package modelo;
 
 import estructuras.Lista;
 
+
 /**
  * Lista de cosas que pasan en pasos futuros (vencimiento de zapatos de agua,
  * despertar de un dormilón, fin de un congelamiento, etc.).
@@ -34,15 +35,17 @@ public class Agenda {
      * @param tipo            qué clase de evento es (no vacío).
      * @param dato            información extra del evento, puede ser null.
      */
-    public void programar(int pasosDesdeAhora, String tipo, String dato) {
+    public void programar(int pasosDesdeAhora, TipoEvento tipo, String dato) {
         if (pasosDesdeAhora < 1) {
             throw new IllegalArgumentException("Los pasos desde ahora deben ser al menos 1.");
         }
-        if (tipo == null || tipo.isBlank()) {
+        if (tipo == null ) {
             throw new IllegalArgumentException("El tipo de evento no puede ser nulo ni vacio.");
         }
+
         eventos.agregar(new EventoProgramado(pasoActual + pasosDesdeAhora, tipo, dato));
     }
+
 
     /** Pasa al paso siguiente. No ejecuta nada: eso lo hace quien saca los eventos. */
     public void avanzarPaso() {
@@ -79,6 +82,19 @@ public class Agenda {
             }
         }
         return mejor;
+    }
+
+    /**
+     * Restaura un evento conservando su paso de vencimiento original.
+     * Puede estar vencido al momento de cargar la partida.
+     */
+    public void restaurarEvento(EventoProgramado evento) {
+        if (evento == null || evento.tipo() == null
+                || evento.pasoDeVencimiento() < 0) {
+            throw new IllegalArgumentException("Evento guardado invalido");
+        }
+
+        eventos.agregar(evento);
     }
 
     /** Devuelve el evento de la posicion dada. Utilizado en ConversorAgenda */

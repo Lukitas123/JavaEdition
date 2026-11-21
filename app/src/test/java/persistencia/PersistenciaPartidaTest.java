@@ -4,18 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Path;
 
+import modelo.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import entidades.cofres.CofreDePuntos;
-import modelo.Agenda;
-import modelo.Dificultad;
-import modelo.EstadoPartida;
-import modelo.Heroe;
-import modelo.Mundo;
-import modelo.Plano;
-import modelo.Posicion;
-import modelo.Terreno;
 
 public class PersistenciaPartidaTest {
 
@@ -43,12 +36,11 @@ public class PersistenciaPartidaTest {
         Heroe heroe = new Heroe(100, mundo.getInicio());
         heroe.perderEnergia(15);
         heroe.agregarObjeto("pocion");
-        heroe.activarEfecto("zapatos");
+        heroe.activarEfecto("zapatos", 6);
 
         Agenda agenda = new Agenda();
         agenda.avanzarPaso();
-        agenda.programar(5, "zapatos", null);
-
+        agenda.programar(5, TipoEvento.FIN_ZAPATOS_DE_AGUA, null);
         MazmorraGuardada original = ConversorMazmorra.aGuardada(
                 Dificultad.FACIL, EstadoPartida.EN_CURSO, mundo, heroe, agenda);
         PersistenciaMazmorra.guardar(original, ruta);
@@ -65,6 +57,7 @@ public class PersistenciaPartidaTest {
         assertEquals(1, restaurada.agenda().cantidadDeEventos());
         Plano planoActual = restaurada.mundo().planoEn(restaurada.heroe().getUbicacion());
         assertEquals(1, planoActual.getCofres().cantidad());
+        assertEquals(Integer.valueOf(6), restaurada.heroe().vencimientoDe("zapatos"));
     }
 
     /** Cargar sin archivo tira error */

@@ -54,6 +54,9 @@ public class CrearEntidades {
         if ("CofreDeSueno".equals(tipo)) {
             return new CofreDeSueno(posicion);
         }
+        if ("CofreDePuente".equals(tipo)) {
+            return new CofreDePuente(posicion);
+        }
 
         throw new IllegalArgumentException("Tipo de cofre invalido: " + tipo);
     }

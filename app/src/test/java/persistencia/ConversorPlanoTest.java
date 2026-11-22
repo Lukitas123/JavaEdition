@@ -134,5 +134,34 @@ public class ConversorPlanoTest {
         assertTrue(restaurado.monstruosDormidos());
         assertEquals(Integer.valueOf(18), restaurado.getFinSuenoMonstruos());
     }
+    @Test
+    void conservaPuenteYTerrenosAlGuardarYCargar() {
+        Posicion inicio = new Posicion(1, 1);
+        Posicion agua = new Posicion(1, 2);
+        Posicion lavaCubierta = new Posicion(1, 3);
+        Posicion lavaNueva = new Posicion(1, 4);
+
+        Plano original = new Plano(new Terreno[][] {
+                {Terreno.PISO, Terreno.AGUA, Terreno.LAVA, Terreno.PISO}
+        }, inicio, null);
+
+        original.agregarCofre(new CofreDePuente(inicio));
+        original.activarPuente(10, 15);
+        original.cambiarTerreno(lavaNueva, Terreno.LAVA);
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(CofreDePuente.class, restaurado.cofreEn(inicio));
+        assertEquals(Integer.valueOf(26), restaurado.getFinPuente());
+        assertEquals(Terreno.PISO, restaurado.terrenoEn(agua));
+        assertEquals(Terreno.PISO, restaurado.terrenoEn(lavaCubierta));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(lavaNueva));
+
+        restaurado.finalizarPuenteSiVencio(26);
+        assertEquals(Terreno.AGUA, restaurado.terrenoEn(agua));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(lavaCubierta));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(lavaNueva));
+    }
+
 
 }

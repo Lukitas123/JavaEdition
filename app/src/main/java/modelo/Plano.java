@@ -20,6 +20,7 @@ public class Plano {
     private final Lista<Monstruo> monstruos = new Lista<>();
     private final Lista<Cofre> cofres = new Lista<>();
     private Integer finSuenoMonstruos;
+    private final EfectoPuente efectoPuente;
 
     /**
      * @param terreno grilla rectangular de terreno (se copia).
@@ -47,6 +48,7 @@ public class Plano {
         }
         this.visitadas = new boolean[filas][columnas];
 
+        this.efectoPuente = new EfectoPuente(filas, columnas);
         if (entrada == null || !esTransitable(entrada)) {
             throw new IllegalArgumentException("La entrada debe ser una celda transitable del plano.");
         }
@@ -89,6 +91,11 @@ public class Plano {
 
     /** @throws IllegalArgumentException si la posición está fuera del plano. */
     public Terreno terrenoEn(Posicion posicion) {
+        Terreno base = terrenoBaseEn(posicion);
+        return efectoPuente.terrenoVisible(posicion, base);
+    }
+
+    public Terreno terrenoBaseEn(Posicion posicion){
         validarDentro(posicion);
         return celdas[posicion.fila() - 1][posicion.columna() - 1];
     }
@@ -100,6 +107,7 @@ public class Plano {
             throw new IllegalArgumentException("El terreno no puede ser null.");
         }
         celdas[posicion.fila() - 1][posicion.columna() - 1] = nuevo;
+        efectoPuente.retirarCobertura(posicion);
     }
 
     /** Transitable es todo lo que no es pared. Fuera del plano no es transitable. */
@@ -256,5 +264,24 @@ public class Plano {
             throw new IllegalArgumentException("El vencimiento no puede ser negativo");
         }
         finSuenoMonstruos = vencimiento;
+    }
+    public Integer getFinPuente() {
+        return efectoPuente.getVencimiento();
+    }
+
+    public boolean estaCubiertaPorPuente(Posicion posicion) {
+        validarDentro(posicion);
+        return efectoPuente.cubre(posicion);
+    }
+
+    public int activarPuente(int pasoActual, int duracion) {
+        return efectoPuente.activar(this, pasoActual, duracion);
+    }
+
+    public void finalizarPuenteSiVencio(int pasoActual) {
+        efectoPuente.finalizarSiVencio(pasoActual);
+    }
+    public void restaurarPuente(Integer fin, boolean[][] cubiertas) {
+        efectoPuente.restaurar(this, fin, cubiertas);
     }
 }

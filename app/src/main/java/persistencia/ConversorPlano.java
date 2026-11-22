@@ -15,12 +15,14 @@ public class ConversorPlano {
     public static PlanoGuardado aGuardado(Plano plano){
         Terreno[][] terreno = new Terreno[plano.getFilas()][plano.getColumnas()];
         boolean[][] visitadas = new boolean[plano.getFilas()][plano.getColumnas()];
+        boolean[][] cubiertasPorPuente = new boolean[plano.getFilas()][plano.getColumnas()];
 
         for (int fila = 0; fila < plano.getFilas(); fila++){
             for (int colum = 0; colum < plano.getColumnas(); colum++){
                 Posicion pos = new Posicion(fila + 1,colum + 1);
-                terreno[fila][colum]=plano.terrenoEn(pos);
+                terreno[fila][colum] = plano.terrenoBaseEn(pos);
                 visitadas[fila][colum]=plano.estaVisitada(pos);
+                cubiertasPorPuente[fila][colum] = plano.estaCubiertaPorPuente(pos);
             }
         }
           
@@ -37,12 +39,13 @@ public class ConversorPlano {
             cofres[i] = ConversorEntidades.cofreAGuardado(listaCofres.obtener(i));
         }
 
-        return new PlanoGuardado(terreno, visitadas, plano.getEntrada(), plano.getSalida(), monstruos, cofres, plano.getFinSuenoMonstruos());
+        return new PlanoGuardado(terreno, visitadas, plano.getEntrada(), plano.getSalida(), monstruos, cofres, plano.getFinSuenoMonstruos(),  plano.getFinPuente(), cubiertasPorPuente);
     }
 
     /** Crea un Plano a partir deun PlanoGuardado */
     public static Plano aPlano(PlanoGuardado guardado){
         Plano plano = new Plano(guardado.terreno(), guardado.entrada(), guardado.salida());
+        plano.restaurarPuente(guardado.finPuente(), guardado.cubiertasPorPuente());
         plano.restaurarFinSuenoMonstruos(guardado.finSuenoMonstruos());
 
         for (int fila = 0; fila < guardado.visitadas().length; fila++){

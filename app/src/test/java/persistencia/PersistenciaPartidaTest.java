@@ -7,7 +7,10 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import entidades.Catalogo;
+import entidades.cofres.Cofre;
 import entidades.cofres.CofreDePuntos;
+import entidades.monstruos.Monstruo;
 import modelo.Agenda;
 import modelo.Dificultad;
 import modelo.EstadoPartida;
@@ -18,6 +21,14 @@ import modelo.Posicion;
 import modelo.Terreno;
 
 public class PersistenciaPartidaTest {
+
+    private static Catalogo<Cofre> pruebaCofre(){
+        return CatalogosDePrueba.cofres();
+    }
+
+    private static Catalogo<Monstruo> pruebaMonstruos(){
+        return CatalogosDePrueba.monstruos();
+    }
 
     private static Terreno[][] terrenoDePrueba() {
         Terreno p = Terreno.PARED;
@@ -53,7 +64,7 @@ public class PersistenciaPartidaTest {
                 Dificultad.FACIL, EstadoPartida.EN_CURSO, mundo, heroe, agenda);
         PersistenciaMazmorra.guardar(original, ruta);
 
-        Mazmorra restaurada = ConversorMazmorra.aMazmorra(PersistenciaMazmorra.cargar(ruta));
+        Mazmorra restaurada = ConversorMazmorra.aMazmorra(PersistenciaMazmorra.cargar(ruta), pruebaMonstruos(), pruebaCofre());
 
         assertEquals(Dificultad.FACIL, restaurada.dificultad());
         assertEquals(EstadoPartida.EN_CURSO, restaurada.estado());

@@ -3,6 +3,9 @@ package persistencia;
 import estructuras.Lista;
 import modelo.Conexion;
 import modelo.Mundo;
+import entidades.Catalogo;
+import entidades.monstruos.Monstruo;
+import entidades.cofres.Cofre;
 
 /** Convierte un Mundo en MundoGuardado y viceversa */
 public class ConversorMundo {
@@ -26,7 +29,8 @@ public class ConversorMundo {
     }
 
     /** Reconstruye el mundo. Primero planos, despues conexiones y por ultimo entidades */
-    public static Mundo aMundo(MundoGuardado guardado){
+    public static Mundo aMundo(MundoGuardado guardado, Catalogo<Monstruo> monstruos,
+        Catalogo<Cofre> cofres){
         int tableros = guardado.planos().length;
         int pisos = guardado.planos()[0].length;
         Mundo mundo = new Mundo(tableros, pisos);
@@ -41,7 +45,7 @@ public class ConversorMundo {
         }
         for (int i = 1; i <= tableros; i++){
             for (int j = 1; j <= pisos; j++){
-                ConversorPlano.agregarEntidades(mundo.planoEn(i, j), guardado.planos()[i - 1][j - 1]);
+                ConversorPlano.agregarEntidades(mundo.planoEn(i, j), guardado.planos()[i - 1][j - 1], monstruos, cofres);
             }
         }
         return mundo;

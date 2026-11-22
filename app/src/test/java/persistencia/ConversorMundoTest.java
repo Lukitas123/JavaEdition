@@ -6,7 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
 
+import entidades.Catalogo;
+import entidades.cofres.Cofre;
 import entidades.monstruos.Errante;
+import entidades.monstruos.Monstruo;
 import modelo.Conexion;
 import modelo.Mundo;
 import modelo.Plano;
@@ -17,6 +20,14 @@ import modelo.Ubicacion;
 import java.util.Random;
 
 public class ConversorMundoTest {
+
+    private static Catalogo<Monstruo> pruebaMonstruos(){
+        return CatalogosDePrueba.monstruos();
+    }
+
+    private static Catalogo<Cofre> pruebaCofre(){
+        return CatalogosDePrueba.cofres();
+    }
 
     private static Terreno[][] terrenoDePrueba() {
         Terreno p = Terreno.PARED;
@@ -42,7 +53,7 @@ public class ConversorMundoTest {
 
         Gson gson = new Gson();
         String json = gson.toJson(ConversorMundo.aGuardado(original));
-        Mundo restaurado = ConversorMundo.aMundo(gson.fromJson(json, MundoGuardado.class));
+        Mundo restaurado = ConversorMundo.aMundo(gson.fromJson(json, MundoGuardado.class), pruebaMonstruos(), pruebaCofre());
 
         assertEquals(1, restaurado.getConexiones().cantidad());
         assertEquals(1, restaurado.planoEn(1, 1).getMonstruos().cantidad());

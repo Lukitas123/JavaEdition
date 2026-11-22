@@ -21,7 +21,7 @@ public class Daga implements Objeto{
     }
 
     @Override
-    public boolean usar(Heroe heroe, Plano plano, Agenda agenda) {
+    public ResultadoUso usar(Heroe heroe, Plano plano, Agenda agenda) {
         if (heroe == null || plano == null || agenda == null) {
             throw new IllegalArgumentException("Heroe, plano y agenda son obligatorios");
         }
@@ -40,9 +40,9 @@ public class Daga implements Objeto{
         if (!candidatos.estaVacia()) {
             int elegido = random.nextInt(candidatos.cantidad());
             plano.quitarMonstruo(candidatos.obtener(elegido));
-            return true;
+            return new ResultadoUso(true, null);
         }
-        return false;
+        return new ResultadoUso(false, null);
     }
 
 }

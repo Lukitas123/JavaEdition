@@ -1,5 +1,6 @@
 package entidades.monstruos;
 
+import entidades.objetos.Escudo;
 import modelo.Heroe;
 import modelo.Posicion;
 import modelo.Agenda;
@@ -54,7 +55,7 @@ public abstract class Monstruo {
             throw new IllegalArgumentException("Plano, heroe y agenda son obligatorios");
         }
 
-        if (!activo) {
+        if (!activo || plano.monstruosDormidos()) {
             return;
         }
 
@@ -164,6 +165,12 @@ public abstract class Monstruo {
             throw new IllegalArgumentException("La posicion no puede ser null");
         }
         this.posicion = posNueva;
+    }
+
+    protected void daniarAlHeroe(Heroe heroe, int danio){
+        if(!heroe.tieneEfecto(Escudo.ID_EFECTO)){
+            heroe.perderEnergia(danio);
+        }
     }
 
     /**Estado propio del tipo como texto */

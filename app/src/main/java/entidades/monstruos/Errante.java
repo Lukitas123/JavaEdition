@@ -41,7 +41,7 @@ public class Errante extends Monstruo{
      */
     @Override
     public void alcanzarAlHeroe(Heroe heroe, Agenda agenda) {
-        heroe.perderEnergia(30);
+        daniarAlHeroe(heroe,30);
         volverAlInicio();
     }
 

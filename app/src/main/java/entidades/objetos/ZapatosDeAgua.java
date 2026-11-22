@@ -12,7 +12,7 @@ public class ZapatosDeAgua implements Objeto{
     private static final int DURACION = 20;
 
     @Override
-    public boolean usar(Heroe heroe, Plano plano, Agenda agenda) {
+    public ResultadoUso usar(Heroe heroe, Plano plano, Agenda agenda) {
         if (heroe == null || plano == null || agenda == null) {
             throw new IllegalArgumentException("Heroe, plano y agenda son obligatorios");
         }
@@ -30,6 +30,6 @@ public class ZapatosDeAgua implements Objeto{
                 nuevoVencimiento - pasoActual,
                 TipoEvento.FIN_ZAPATOS_DE_AGUA,
                 null);
-        return true;
+        return new ResultadoUso(true, null);
     }
 }

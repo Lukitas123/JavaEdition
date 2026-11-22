@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
 
+import entidades.cofres.CofreDeDaga;
+import entidades.cofres.CofreZapatosDeAgua;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
@@ -83,5 +85,19 @@ public class ConversorPlanoTest {
         assertEquals("TrampaDeEnergia", cofre.getTipo());
         assertEquals(new Posicion(3, 2), cofre.getPosicion());
         assertEquals(25, cofre.getDanio());
+    }
+
+    @Test
+    void cofresZapatosYDagaConservanTipoYPosicion() {
+        Plano original = new Plano(
+                terrenoDePrueba(), new Posicion(2, 2), null);
+        original.agregarCofre(new CofreDeDaga(new Posicion(3, 2)));
+        original.agregarCofre(new CofreZapatosDeAgua(new Posicion(3, 3)));
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(CofreDeDaga.class, restaurado.cofreEn(new Posicion(3, 2)));
+        assertInstanceOf(CofreZapatosDeAgua.class,
+                restaurado.cofreEn(new Posicion(3, 3)));
     }
 }

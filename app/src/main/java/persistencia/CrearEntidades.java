@@ -2,10 +2,7 @@ package persistencia;
 
 import java.util.Random;
 
-import entidades.cofres.Cofre;
-import entidades.cofres.CofreDePocion;
-import entidades.cofres.CofreDePuntos;
-import entidades.cofres.TrampaDeEnergia;
+import entidades.cofres.*;
 import entidades.monstruos.Errante;
 import entidades.monstruos.Fantasma;
 import entidades.monstruos.Monstruo;
@@ -22,6 +19,7 @@ public class CrearEntidades {
         if (tipo.equals("Fantasma")){
             return new Fantasma(posicion, new Random());
         }
+
         throw new IllegalArgumentException("Tipo de monstruo invalido: " + tipo);
     }
 
@@ -36,6 +34,13 @@ public class CrearEntidades {
         if (tipo.equals("TrampaDeEnergia")){
             return new TrampaDeEnergia(posicion,danio);
         }
+        if ("CofreDeDaga".equals(tipo)) {
+            return new CofreDeDaga(posicion);
+        }
+        if ("CofreZapatosDeAgua".equals(tipo)) {
+            return new CofreZapatosDeAgua(posicion);
+        }
+
         throw new IllegalArgumentException("Tipo de cofre invalido: " + tipo);
     }
 

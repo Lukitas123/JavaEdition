@@ -4,6 +4,8 @@ import entidades.cofres.Cofre;
 import entidades.cofres.CofreDePocion;
 import entidades.cofres.CofreDePuntos;
 import java.util.Random;
+
+import entidades.cofres.TrampaDeEnergia;
 import modelo.Posicion;
 import org.junit.jupiter.api.Test;
 
@@ -61,4 +63,7 @@ class CatalogoTest {
             assertEquals(cofreA.getClass(), cofreB.getClass());
         }
     }
+
+    private record DatosTrampa(Posicion posicion, int danio) {}
+
 }

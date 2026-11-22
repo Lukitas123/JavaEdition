@@ -34,4 +34,21 @@ public class ConversorAgendaTest {
         assertTrue(restaurada.hayEventoVencido());
         assertEquals(TipoEvento.FIN_ZAPATOS_DE_AGUA, restaurada.sacarProximo().tipo());
     }
+
+    @Test
+    void conservaUnEventoYaVencidoAlCargar() {
+        Agenda original = new Agenda();
+        original.programar(1, TipoEvento.FIN_INMOVILIZACION, null);
+        original.avanzarPaso();
+        original.avanzarPaso(); // paso 2; el evento vencía en el 1
+
+        Gson gson = new Gson();
+        String json = gson.toJson(ConversorAgenda.aGuardada(original));
+        Agenda restaurada = ConversorAgenda.aAgenda(
+                gson.fromJson(json, AgendaGuardada.class));
+
+        assertEquals(2, restaurada.getPasoActual());
+        assertTrue(restaurada.hayEventoVencido());
+        assertEquals(1, restaurada.sacarProximo().pasoDeVencimiento());
+    }
 }

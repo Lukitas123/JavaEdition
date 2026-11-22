@@ -2,6 +2,7 @@ package persistencia;
 
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
+import modelo.Costo;
 
 /** Convierte monstruos y cofres en MonstruoGuardado y CofreGuardado y viceversa */
 public class ConversorEntidades {
@@ -13,8 +14,8 @@ public class ConversorEntidades {
     }
 
     /** Recrea el monstruo en su posicion inicial, con su estado activo y su estado propio */
-    public static Monstruo aMonstruo(MonstruoGuardado guardado){
-        Monstruo monstruo = CrearEntidades.crearMonstruo(guardado.tipo(), guardado.posicionInicial());
+    public static Monstruo aMonstruo(MonstruoGuardado guardado, Costo costos){
+        Monstruo monstruo = CrearEntidades.crearMonstruo(guardado.tipo(), guardado.posicionInicial(), costos);
         if (guardado.activo()){
             monstruo.activar();
         } 

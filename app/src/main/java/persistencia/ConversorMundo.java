@@ -2,6 +2,7 @@ package persistencia;
 
 import estructuras.Lista;
 import modelo.Conexion;
+import modelo.Costo;
 import modelo.Mundo;
 
 /** Convierte un Mundo en MundoGuardado y viceversa */
@@ -26,7 +27,7 @@ public class ConversorMundo {
     }
 
     /** Reconstruye el mundo. Primero planos, despues conexiones y por ultimo entidades */
-    public static Mundo aMundo(MundoGuardado guardado){
+    public static Mundo aMundo(MundoGuardado guardado, Costo costos){
         int tableros = guardado.planos().length;
         int pisos = guardado.planos()[0].length;
         Mundo mundo = new Mundo(tableros, pisos);
@@ -41,7 +42,7 @@ public class ConversorMundo {
         }
         for (int i = 1; i <= tableros; i++){
             for (int j = 1; j <= pisos; j++){
-                ConversorPlano.agregarEntidades(mundo.planoEn(i, j), guardado.planos()[i - 1][j - 1]);
+                ConversorPlano.agregarEntidades(mundo.planoEn(i, j), guardado.planos()[i - 1][j - 1], costos);
             }
         }
         return mundo;

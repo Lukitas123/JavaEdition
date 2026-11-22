@@ -3,6 +3,7 @@ package persistencia;
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
 import estructuras.Lista;
+import modelo.Costo;
 import modelo.Plano;
 import modelo.Posicion;
 import modelo.Terreno;
@@ -54,10 +55,10 @@ public class ConversorPlano {
         return plano;
     }
 
-    public static void agregarEntidades(Plano plano, PlanoGuardado guardado){
+    public static void agregarEntidades(Plano plano, PlanoGuardado guardado, Costo costos){
         if (guardado.monstruos()!=null){
             for (MonstruoGuardado m: guardado.monstruos()){
-                Monstruo monstruo = ConversorEntidades.aMonstruo(m);
+                Monstruo monstruo = ConversorEntidades.aMonstruo(m, costos);
                 
                 plano.agregarMonstruo(monstruo);
                 monstruo.restaurarPosicion(m.posicion());

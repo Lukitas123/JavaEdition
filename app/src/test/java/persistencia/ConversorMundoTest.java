@@ -2,17 +2,12 @@ package persistencia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import modelo.*;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
 
 import entidades.monstruos.Errante;
-import modelo.Conexion;
-import modelo.Mundo;
-import modelo.Plano;
-import modelo.Posicion;
-import modelo.Terreno;
-import modelo.Ubicacion;
 
 import java.util.Random;
 
@@ -42,7 +37,7 @@ public class ConversorMundoTest {
 
         Gson gson = new Gson();
         String json = gson.toJson(ConversorMundo.aGuardado(original));
-        Mundo restaurado = ConversorMundo.aMundo(gson.fromJson(json, MundoGuardado.class));
+        Mundo restaurado = ConversorMundo.aMundo(gson.fromJson(json, MundoGuardado.class), new Costo(1,3,8));
 
         assertEquals(1, restaurado.getConexiones().cantidad());
         assertEquals(1, restaurado.planoEn(1, 1).getMonstruos().cantidad());

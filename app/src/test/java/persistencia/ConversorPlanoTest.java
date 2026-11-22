@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Random;
 
 import entidades.cofres.*;
+import modelo.Costo;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
@@ -34,7 +35,7 @@ public class ConversorPlanoTest {
         String json = gson.toJson(ConversorPlano.aGuardado(original));
         PlanoGuardado leido = gson.fromJson(json, PlanoGuardado.class);
         Plano restaurado = ConversorPlano.aPlano(leido);
-        ConversorPlano.agregarEntidades(restaurado, leido);
+        ConversorPlano.agregarEntidades(restaurado, leido, new Costo(1,3,8));
         return restaurado;
     }
 

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Path;
 
+import entidades.monstruos.Cazador;
+import entidades.monstruos.Monstruo;
 import modelo.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -42,7 +44,7 @@ public class PersistenciaPartidaTest {
         agenda.avanzarPaso();
         agenda.programar(5, TipoEvento.FIN_ZAPATOS_DE_AGUA, null);
         MazmorraGuardada original = ConversorMazmorra.aGuardada(
-                Dificultad.FACIL, EstadoPartida.EN_CURSO, mundo, heroe, agenda);
+                Dificultad.FACIL, EstadoPartida.EN_CURSO, mundo, heroe, agenda, new Costo(1,3,8));
         PersistenciaMazmorra.guardar(original, ruta);
 
         Mazmorra restaurada = ConversorMazmorra.aMazmorra(PersistenciaMazmorra.cargar(ruta));
@@ -65,4 +67,37 @@ public class PersistenciaPartidaTest {
     void cargarSinArchivoRechaza() {
         assertThrows(IllegalArgumentException.class, () -> PersistenciaMazmorra.cargar("no_existe.json"));
     }
+    @Test
+    void cazadorConservaLosCostosAlGuardarYCargar(@TempDir Path carpeta) {
+        String ruta = carpeta.resolve("partida.json").toString();
+        Costo costos = new Costo(1, 3, 8);
+        Posicion inicio = new Posicion(1, 1);
+        Posicion destino = new Posicion(1, 3);
+
+        Plano plano = new Plano(new Terreno[][] {
+                {Terreno.PISO, Terreno.LAVA, Terreno.PISO},
+                {Terreno.PISO, Terreno.PISO, Terreno.PISO}
+        }, inicio, null);
+        plano.agregarMonstruo(new Cazador(inicio, costos));
+
+        Mundo mundo = new Mundo(1, 1);
+        mundo.agregarPlano(1, 1, plano);
+        Heroe heroe = new Heroe(100, new Ubicacion(1, 1, destino));
+
+        MazmorraGuardada guardada = ConversorMazmorra.aGuardada(
+                Dificultad.FACIL, EstadoPartida.EN_CURSO,
+                mundo, heroe, new Agenda(), costos);
+        PersistenciaMazmorra.guardar(guardada, ruta);
+
+        Mazmorra restaurada = ConversorMazmorra.aMazmorra(
+                PersistenciaMazmorra.cargar(ruta));
+        Plano planoRestaurado = restaurada.mundo().planoEn(1, 1);
+        Monstruo monstruo = planoRestaurado.getMonstruos().obtener(0);
+
+        assertEquals(costos, restaurada.costos());
+        assertInstanceOf(Cazador.class, monstruo);
+        assertEquals(new Posicion(2, 1),
+                monstruo.decidirMovimiento(planoRestaurado, destino));
+    }
+
 }

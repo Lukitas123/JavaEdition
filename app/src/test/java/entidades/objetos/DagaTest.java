@@ -44,7 +44,7 @@ class DagaTest {
         Errante monstruo = new Errante(new Posicion(2, 3), new Random(1));
         plano.agregarMonstruo(monstruo);
 
-        boolean usada = new Daga(new Random(1)).usar(heroe, plano, agenda);
+        boolean usada = new Daga(new Random(1)).usar(heroe, plano, agenda).seConsume();
 
         assertTrue(usada);
         assertNull(plano.monstruoEn(new Posicion(2, 3)));
@@ -55,7 +55,7 @@ class DagaTest {
         Errante diagonal = new Errante(new Posicion(3, 3), new Random(1));
         plano.agregarMonstruo(diagonal);
 
-        boolean usada = new Daga(new Random(1)).usar(heroe, plano, agenda);
+        boolean usada = new Daga(new Random(1)).usar(heroe, plano, agenda).seConsume();
 
         assertFalse(usada);
         assertSame(diagonal, plano.monstruoEn(new Posicion(3, 3)));
@@ -68,7 +68,7 @@ class DagaTest {
         plano.agregarMonstruo(arriba);
         plano.agregarMonstruo(derecha);
 
-        boolean usada = new Daga(new Random(1)).usar(heroe, plano, agenda);
+        boolean usada = new Daga(new Random(1)).usar(heroe, plano, agenda).seConsume();
 
         assertTrue(usada);
         assertEquals(1, plano.getMonstruos().cantidad());

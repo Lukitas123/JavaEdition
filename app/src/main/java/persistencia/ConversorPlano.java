@@ -36,12 +36,13 @@ public class ConversorPlano {
             cofres[i] = ConversorEntidades.cofreAGuardado(listaCofres.obtener(i));
         }
 
-        return new PlanoGuardado(terreno, visitadas, plano.getEntrada(), plano.getSalida(), monstruos, cofres);
+        return new PlanoGuardado(terreno, visitadas, plano.getEntrada(), plano.getSalida(), monstruos, cofres, plano.getFinSuenoMonstruos());
     }
 
     /** Crea un Plano a partir deun PlanoGuardado */
     public static Plano aPlano(PlanoGuardado guardado){
         Plano plano = new Plano(guardado.terreno(), guardado.entrada(), guardado.salida());
+        plano.restaurarFinSuenoMonstruos(guardado.finSuenoMonstruos());
 
         for (int fila = 0; fila < guardado.visitadas().length; fila++){
             for (int colum = 0; colum < guardado.visitadas()[fila].length; colum++){

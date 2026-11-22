@@ -4,14 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
 
-import entidades.cofres.CofreDeDaga;
-import entidades.cofres.CofreZapatosDeAgua;
+import entidades.cofres.*;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
-
-import entidades.cofres.Cofre;
-import entidades.cofres.TrampaDeEnergia;
 import entidades.monstruos.Fantasma;
 import entidades.monstruos.Monstruo;
 import modelo.Plano;
@@ -100,4 +96,42 @@ public class ConversorPlanoTest {
         assertInstanceOf(CofreZapatosDeAgua.class,
                 restaurado.cofreEn(new Posicion(3, 3)));
     }
+    @Test
+    void cofreDeEscudoConservaTipoYPosicion() {
+        Plano original = new Plano(
+                terrenoDePrueba(), new Posicion(2, 2), null);
+        original.agregarCofre(new CofreDeEscudo(new Posicion(3, 2)));
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(
+                CofreDeEscudo.class, restaurado.cofreEn(new Posicion(3, 2)));
+    }
+    @Test
+    void cofreDeBrujulaConservaTipoYPosicion() {
+        Plano original = new Plano(
+                terrenoDePrueba(), new Posicion(2, 2), null);
+        original.agregarCofre(new CofreDeBrujula(new Posicion(3, 2)));
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(
+                CofreDeBrujula.class, restaurado.cofreEn(new Posicion(3, 2)));
+    }
+
+    @Test
+    void conservaCofreYFinDeSueno() {
+        Plano original = new Plano(
+                terrenoDePrueba(), new Posicion(2, 2), null);
+        original.agregarCofre(new CofreDeSueno(new Posicion(3, 2)));
+        original.dormirMonstruos(10, 7);
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(CofreDeSueno.class,
+                restaurado.cofreEn(new Posicion(3, 2)));
+        assertTrue(restaurado.monstruosDormidos());
+        assertEquals(Integer.valueOf(18), restaurado.getFinSuenoMonstruos());
+    }
+
 }

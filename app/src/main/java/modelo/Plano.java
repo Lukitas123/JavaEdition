@@ -19,6 +19,7 @@ public class Plano {
     private final Posicion salida; // null si este plano no tiene la salida
     private final Lista<Monstruo> monstruos = new Lista<>();
     private final Lista<Cofre> cofres = new Lista<>();
+    private Integer finSuenoMonstruos;
 
     /**
      * @param terreno grilla rectangular de terreno (se copia).
@@ -54,6 +55,7 @@ public class Plano {
         }
         this.entrada = entrada;
         this.salida = salida;
+        this.finSuenoMonstruos = null;
     }
 
     public int getFilas() {
@@ -215,5 +217,44 @@ public class Plano {
         if (!estaDentro(posicion)) {
             throw new IllegalArgumentException("Posicion fuera del plano: " + posicion);
         }
+    }
+
+    public boolean monstruosDormidos() {
+        return finSuenoMonstruos != null;
+    }
+
+    public Integer getFinSuenoMonstruos() {
+        return finSuenoMonstruos;
+    }
+
+    public int dormirMonstruos(int pasoActual, int duracion) {
+        if (pasoActual < 0 || duracion <= 0) {
+            throw new IllegalArgumentException("Paso o duracion invalidos");
+        }
+
+        int primerPasoLibre = pasoActual + 1;
+        if (finSuenoMonstruos != null) {
+            primerPasoLibre = Math.max(primerPasoLibre, finSuenoMonstruos);
+        }
+
+        finSuenoMonstruos = primerPasoLibre + duracion;
+        return finSuenoMonstruos;
+    }
+
+    public void despertarMonstruosSiVencio(int pasoActual) {
+        if (pasoActual < 0) {
+            throw new IllegalArgumentException("El paso no puede ser negativo");
+        }
+
+        if (finSuenoMonstruos != null && pasoActual >= finSuenoMonstruos) {
+            finSuenoMonstruos = null;
+        }
+    }
+
+    public void restaurarFinSuenoMonstruos(Integer vencimiento) {
+        if (vencimiento != null && vencimiento < 0) {
+            throw new IllegalArgumentException("El vencimiento no puede ser negativo");
+        }
+        finSuenoMonstruos = vencimiento;
     }
 }

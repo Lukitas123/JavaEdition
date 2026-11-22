@@ -1,5 +1,6 @@
 package persistencia;
 
+import entidades.Catalogo;
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
 import estructuras.Lista;
@@ -9,7 +10,7 @@ import modelo.Terreno;
 /**
  *Convierte un Plano a un PlanoGuardado y viceversa
 */
-public class ConversorPlano {
+public class ConversorPlano{
     /** Copia terreno, celdas visitadas, posicion de entrada y salida, monstruos y cofres */
     public static PlanoGuardado aGuardado(Plano plano){
         Terreno[][] terreno = new Terreno[plano.getFilas()][plano.getColumnas()];
@@ -53,18 +54,18 @@ public class ConversorPlano {
         return plano;
     }
 
-    public static void agregarEntidades(Plano plano, PlanoGuardado guardado){
-        if (guardado.monstruos()!=null){
-            for (MonstruoGuardado m: guardado.monstruos()){
-                Monstruo monstruo = ConversorEntidades.aMonstruo(m);
-                
+    public static void agregarEntidades(Plano plano, PlanoGuardado guardado,
+        Catalogo<Monstruo> monstruos, Catalogo<Cofre> cofres){
+        if (guardado.monstruos() != null){
+            for (MonstruoGuardado m : guardado.monstruos()){
+                Monstruo monstruo = ConversorEntidades.aMonstruo(m, monstruos);
                 plano.agregarMonstruo(monstruo);
                 monstruo.restaurarPosicion(m.posicion());
             }
         }
-        if (guardado.cofres()!=null){
-            for (CofreGuardado c: guardado.cofres()){
-                plano.agregarCofre(ConversorEntidades.aCofre(c));
+        if (guardado.cofres() != null){
+            for (CofreGuardado c : guardado.cofres()){
+                plano.agregarCofre(ConversorEntidades.aCofre(c, cofres));
             }
         }
     }

@@ -15,8 +15,14 @@ import modelo.Plano;
 import modelo.Posicion;
 import modelo.Terreno;
 import modelo.Ubicacion;
+import entidades.Catalogo;
 
 public class ConversorEntidadesTest {
+
+    private static Catalogo<Monstruo> pruebaMonstruos(){
+        return CatalogosDePrueba.monstruos();
+    }
+
 
     private static Terreno[][] terrenoDePrueba() {
         Terreno p = Terreno.PARED;
@@ -35,7 +41,7 @@ public class ConversorEntidadesTest {
         Errante original = new Errante(new Posicion(2, 2), new Random(1));
         original.desactivar();
 
-        Monstruo restaurado = ConversorEntidades.aMonstruo(ConversorEntidades.monstruoAGuardado(original));
+        Monstruo restaurado = ConversorEntidades.aMonstruo(ConversorEntidades.monstruoAGuardado(original), pruebaMonstruos());
 
         assertEquals("Errante", restaurado.getTipo());
         assertFalse(restaurado.estaActivo());
@@ -52,7 +58,7 @@ public class ConversorEntidadesTest {
 
         original.actuar(plano, heroe, new Agenda());
 
-        Monstruo restaurado = ConversorEntidades.aMonstruo(ConversorEntidades.monstruoAGuardado(original));
+        Monstruo restaurado = ConversorEntidades.aMonstruo(ConversorEntidades.monstruoAGuardado(original), pruebaMonstruos());
 
         assertEquals("true", restaurado.exportarEstado());
     }

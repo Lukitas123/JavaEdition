@@ -5,6 +5,9 @@ import modelo.EstadoPartida;
 import modelo.Mundo;
 import modelo.Heroe;
 import modelo.Agenda;
+import entidades.Catalogo;
+import entidades.monstruos.Monstruo;
+import entidades.cofres.Cofre;
 
 /**
  *Convierte una Mazmorra a una MazmorraGuardada y viceversa
@@ -22,8 +25,9 @@ public class ConversorMazmorra {
             return new MazmorraGuardada(dificultad, estado, mundoGuardado, heroeGuardado, agendaGuardada);
     }
     /**Construye una mazmorra a partir de una MazmorraGuarda*/
-    public static Mazmorra aMazmorra(MazmorraGuardada guardado) {
-        Mundo mundo = ConversorMundo.aMundo(guardado.mundo());
+    public static Mazmorra aMazmorra(MazmorraGuardada guardado, Catalogo<Monstruo> monstruos,
+        Catalogo<Cofre> cofres){
+        Mundo mundo = ConversorMundo.aMundo(guardado.mundo(), monstruos, cofres);
         Heroe heroe = ConversorHeroe.aHeroe(guardado.heroe());
         Agenda agenda = ConversorAgenda.aAgenda(guardado.agenda());
         Dificultad dificultad = guardado.dificultad();

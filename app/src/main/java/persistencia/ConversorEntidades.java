@@ -1,5 +1,6 @@
 package persistencia;
 
+import entidades.Catalogo;
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
 
@@ -13,8 +14,8 @@ public class ConversorEntidades {
     }
 
     /** Recrea el monstruo en su posicion inicial, con su estado activo y su estado propio */
-    public static Monstruo aMonstruo(MonstruoGuardado guardado){
-        Monstruo monstruo = CrearEntidades.crearMonstruo(guardado.tipo(), guardado.posicionInicial());
+    public static Monstruo aMonstruo(MonstruoGuardado guardado, Catalogo<Monstruo> catalogo) {
+        Monstruo monstruo = catalogo.crear(guardado.tipo(), guardado.posicionInicial());
         if (guardado.activo()){
             monstruo.activar();
         } 
@@ -31,7 +32,7 @@ public class ConversorEntidades {
     }
 
     /** Recrea un cofre cerrado. */
-    public static Cofre aCofre(CofreGuardado guardado) {
-        return CrearEntidades.crearCofre(guardado.tipo(), guardado.posicion(), guardado.danio());
+    public static Cofre aCofre(CofreGuardado guardado, Catalogo<Cofre> catalogo){
+        return catalogo.crear(guardado.tipo(), guardado.posicion());
     }
 }

@@ -3,10 +3,7 @@ package persistencia;
 import java.util.Random;
 
 import entidades.cofres.*;
-import entidades.monstruos.Cazador;
-import entidades.monstruos.Errante;
-import entidades.monstruos.Fantasma;
-import entidades.monstruos.Monstruo;
+import entidades.monstruos.*;
 import modelo.Costo;
 import modelo.Posicion;
 
@@ -23,6 +20,9 @@ public class CrearEntidades {
         }
         if ("Cazador".equals(tipo)) {
             return new Cazador(posicion, costos);
+        }
+        if ("Dormilon".equals(tipo)) {
+            return new Dormilon(posicion, costos);
         }
 
         throw new IllegalArgumentException("Tipo de monstruo invalido: " + tipo);

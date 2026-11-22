@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.nio.file.Path;
 
 import entidades.monstruos.Cazador;
+import entidades.monstruos.Dormilon;
 import entidades.monstruos.Monstruo;
 import modelo.*;
 import org.junit.jupiter.api.Test;
@@ -100,4 +101,47 @@ public class PersistenciaPartidaTest {
                 monstruo.decidirMovimiento(planoRestaurado, destino));
     }
 
+    @Test
+    void dormilonPendienteSeGuardaConSuEvento(@TempDir Path carpeta) {
+        String ruta = carpeta.resolve("partida.json").toString();
+        Costo costos = new Costo(1, 3, 8);
+        Posicion inicio = new Posicion(1, 1);
+
+        Plano plano = new Plano(new Terreno[][] {
+                {Terreno.PISO, Terreno.PISO, Terreno.PISO}
+        }, inicio, null);
+        Dormilon dormilon = new Dormilon(inicio, costos);
+        plano.agregarMonstruo(dormilon);
+
+        Mundo mundo = new Mundo(1, 1);
+        mundo.agregarPlano(1, 1, plano);
+        Heroe heroe = new Heroe(100, new Ubicacion(1, 1, new Posicion(1, 3)));
+        Agenda agenda = new Agenda();
+
+        dormilon.actuar(plano, heroe, agenda);
+
+        MazmorraGuardada guardada = ConversorMazmorra.aGuardada(
+                Dificultad.FACIL, EstadoPartida.EN_CURSO,
+                mundo, heroe, agenda, costos);
+        PersistenciaMazmorra.guardar(guardada, ruta);
+
+        Mazmorra restaurada = ConversorMazmorra.aMazmorra(
+                PersistenciaMazmorra.cargar(ruta));
+        Plano planoRestaurado = restaurada.mundo().planoEn(1, 1);
+        Dormilon restaurado = assertInstanceOf(
+                Dormilon.class, planoRestaurado.getMonstruos().obtener(0));
+
+        assertFalse(restaurado.estaDespierto());
+        assertEquals(1, restaurada.agenda().cantidadDeEventos());
+
+        restaurada.agenda().avanzarPaso();
+        EventoProgramado evento = restaurada.agenda().sacarProximo();
+        assertEquals(TipoEvento.DESPERTAR_DORMILON, evento.tipo());
+        assertEquals("1,1", evento.dato());
+
+        restaurado.despertarSiCorresponde(restaurada.agenda().getPasoActual());
+        restaurado.actuar(planoRestaurado, restaurada.heroe(), restaurada.agenda());
+        assertTrue(restaurado.estaDespierto());
+        assertEquals(new Posicion(1, 2), restaurado.getPosicion());
+    }
 }

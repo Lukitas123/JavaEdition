@@ -4,5 +4,6 @@ public enum TipoEvento {
     FIN_INMOVILIZACION,
     FIN_ZAPATOS_DE_AGUA,
     FIN_ESCUDO,
-    FIN_SUENO
+    FIN_SUENO,
+    DESPERTAR_DORMILON
 }

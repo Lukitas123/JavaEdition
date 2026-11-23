@@ -3,7 +3,6 @@ package persistencia;
 import entidades.Catalogo;
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
-import modelo.Costo;
 
 /** Convierte monstruos y cofres en MonstruoGuardado y CofreGuardado y viceversa */
 public class ConversorEntidades {
@@ -12,13 +11,6 @@ public class ConversorEntidades {
     public static MonstruoGuardado monstruoAGuardado(Monstruo monstruo){
         return new MonstruoGuardado(monstruo.getTipo(), monstruo.getPosicion(),
         monstruo.getPosicionInicial(), monstruo.estaActivo(), monstruo.exportarEstado());
-    }
-
-    /** Recrea el monstruo en su posicion inicial, con su estado activo y su estado propio */
-    public static Monstruo aMonstruo(MonstruoGuardado guardado, Costo costos){
-        Monstruo monstruo = CrearEntidades.crearMonstruo(guardado.tipo(), guardado.posicionInicial(), costos);
-        restaurarEstado(guardado, monstruo);
-        return monstruo;
     }
 
     public static Monstruo aMonstruo(MonstruoGuardado guardado, Catalogo<Monstruo> catalogo) {
@@ -44,11 +36,14 @@ public class ConversorEntidades {
 
     /** Recrea un cofre cerrado. */
     public static Cofre aCofre(CofreGuardado guardado, Catalogo<Cofre> catalogo){
-        return catalogo.crear(guardado.tipo(), guardado.posicion());
+        Cofre cofre = catalogo.crear(guardado.tipo(), guardado.posicion());
+
+        if (cofre.getDanio() != guardado.danio()) {
+            throw new IllegalArgumentException(
+                    "El daño del catálogo no coincide con la partida guardada");
+        }
+
+        return cofre;
     }
 
-    public static Cofre aCofre(CofreGuardado guardado) {
-        return CrearEntidades.crearCofre(
-                guardado.tipo(), guardado.posicion(), guardado.danio());
-    }
 }

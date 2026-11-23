@@ -83,7 +83,7 @@ public class PersistenciaPartidaTest {
     @Test
     void cazadorConservaLosCostosAlGuardarYCargar(@TempDir Path carpeta) {
         String ruta = carpeta.resolve("partida.json").toString();
-        Costo costos = new Costo(1, 3, 8);
+        Costo costos = new Costo(1, 3, 2);
         Posicion inicio = new Posicion(1, 1);
         Posicion destino = new Posicion(1, 3);
 
@@ -101,15 +101,16 @@ public class PersistenciaPartidaTest {
                 Dificultad.FACIL, EstadoPartida.EN_CURSO,
                 mundo, heroe, new Agenda(), costos);
         PersistenciaMazmorra.guardar(guardada, ruta);
-
+        MazmorraGuardada leida = PersistenciaMazmorra.cargar(ruta);
         Mazmorra restaurada = ConversorMazmorra.aMazmorra(
-                PersistenciaMazmorra.cargar(ruta));
+                leida, CatalogosDePrueba.monstruos(leida.costos()), pruebaCofre());
+
         Plano planoRestaurado = restaurada.mundo().planoEn(1, 1);
         Monstruo monstruo = planoRestaurado.getMonstruos().obtener(0);
 
         assertEquals(costos, restaurada.costos());
         assertInstanceOf(Cazador.class, monstruo);
-        assertEquals(new Posicion(2, 1),
+        assertEquals(new Posicion(1, 2),
                 monstruo.decidirMovimiento(planoRestaurado, destino));
     }
 
@@ -132,13 +133,14 @@ public class PersistenciaPartidaTest {
 
         dormilon.actuar(plano, heroe, agenda);
 
+
         MazmorraGuardada guardada = ConversorMazmorra.aGuardada(
                 Dificultad.FACIL, EstadoPartida.EN_CURSO,
                 mundo, heroe, agenda, costos);
         PersistenciaMazmorra.guardar(guardada, ruta);
-
+        MazmorraGuardada leida = PersistenciaMazmorra.cargar(ruta);
         Mazmorra restaurada = ConversorMazmorra.aMazmorra(
-                PersistenciaMazmorra.cargar(ruta));
+                leida, CatalogosDePrueba.monstruos(leida.costos()), pruebaCofre());
         Plano planoRestaurado = restaurada.mundo().planoEn(1, 1);
         Dormilon restaurado = assertInstanceOf(
                 Dormilon.class, planoRestaurado.getMonstruos().obtener(0));

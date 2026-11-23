@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
 
+import entidades.cofres.Cofre;
+import entidades.cofres.TrampaDeEnergia;
 import modelo.*;
 import org.junit.jupiter.api.Test;
 
@@ -56,5 +58,29 @@ public class ConversorEntidadesTest {
         Monstruo restaurado = ConversorEntidades.aMonstruo(ConversorEntidades.monstruoAGuardado(original), pruebaMonstruos());
 
         assertEquals("true", restaurado.exportarEstado());
+    }
+
+    @Test
+    void catalogoRestauraTrampaConElDanioDeLaPartida() {
+        TrampaDeEnergia original =
+                new TrampaDeEnergia(new Posicion(2, 2), 40);
+        CofreGuardado guardado = ConversorEntidades.cofreAGuardado(original);
+
+        Cofre restaurado = ConversorEntidades.aCofre(
+                guardado, CatalogosDePrueba.cofres(40));
+
+        assertInstanceOf(TrampaDeEnergia.class, restaurado);
+        assertEquals(40, restaurado.getDanio());
+    }
+
+    @Test
+    void rechazaCatalogoConOtroDanio() {
+        TrampaDeEnergia original =
+                new TrampaDeEnergia(new Posicion(2, 2), 40);
+        CofreGuardado guardado = ConversorEntidades.cofreAGuardado(original);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> ConversorEntidades.aCofre(
+                        guardado, CatalogosDePrueba.cofres(25)));
     }
 }

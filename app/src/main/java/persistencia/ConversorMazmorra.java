@@ -25,17 +25,12 @@ public class ConversorMazmorra {
             
             return new MazmorraGuardada(dificultad, estado, mundoGuardado, heroeGuardado, agendaGuardada, costos);
     }
-    /**Construye una mazmorra a partir de una MazmorraGuarda*/
-    public static Mazmorra aMazmorra(MazmorraGuardada guardado) {
-        Costo costos = guardado.costos();
-        if (costos == null) {
+
+
+    public static Mazmorra aMazmorra(MazmorraGuardada guardado, Catalogo<Monstruo> monstruos, Catalogo<Cofre> cofres){
+        if (guardado == null || guardado.costos() == null) {
             throw new IllegalArgumentException("La partida guardada no tiene costos");
         }
-        return reconstruir(guardado, ConversorMundo.aMundo(guardado.mundo(), costos));
-    }
-
-    public static Mazmorra aMazmorra(MazmorraGuardada guardado, Catalogo<Monstruo> monstruos,
-        Catalogo<Cofre> cofres){
         return reconstruir(
                 guardado, ConversorMundo.aMundo(guardado.mundo(), monstruos, cofres));
     }

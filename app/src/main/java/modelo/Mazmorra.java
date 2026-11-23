@@ -17,7 +17,6 @@ import estructuras.Lista;
  */
 public class Mazmorra {
     /** Tipo de evento de la agenda que apaga un efecto del héroe; el dato es el id del efecto. */
-    public static final String EVENTO_VENCE_EFECTO = "VENCE_EFECTO";
     /** Id del efecto de los zapatos de agua: mientras está activo, el agua cuesta como piso. */
     public static final String EFECTO_ZAPATOS_AGUA = ZapatosDeAgua.ID_EFECTO;
 
@@ -91,6 +90,11 @@ public class Mazmorra {
         return new Puntaje(heroe.getCofresAbiertos(), heroe.getEnergia(), agenda.getPasoActual());
     }
 
+    public boolean debeEsperarPorInmovilizacion() {
+        Integer fin = heroe.vencimientoDe(Congelador.INMOVILIZADO);
+        return fin != null && (long) fin > (long) agenda.getPasoActual() + 1;
+    }
+
     /**
      * Cuánta energía cuesta entrar a un terreno. Con el efecto de los zapatos de agua
      * activo, el agua cuesta como piso.
@@ -121,6 +125,9 @@ public class Mazmorra {
         validarEnCurso();
         if (direccion == null) {
             throw new IllegalArgumentException("La direccion no puede ser null.");
+        }
+        if (debeEsperarPorInmovilizacion()) {
+            return false;
         }
         Plano plano = planoActual();
         Posicion destino = heroe.getUbicacion().posicion().mover(direccion);
@@ -175,10 +182,7 @@ public class Mazmorra {
         }
     }
 
-    /**
-     * Ejecuta un evento vencido. Hoy solo hay un tipo: apagar un efecto del héroe.
-     * Los eventos de otro tipo se ignoran (los resuelven quienes los programan).
-     */
+
     private void ejecutarEvento(EventoProgramado evento) {
         int pasoActual = agenda.getPasoActual();
         switch (evento.tipo()) {
@@ -228,7 +232,6 @@ public class Mazmorra {
         Cofre cofre = plano.cofreEn(posicion);
         if (cofre != null) {
             cofre.abrir(heroe, plano, agenda);
-            plano.quitarCofre(cofre);
         }
     }
 

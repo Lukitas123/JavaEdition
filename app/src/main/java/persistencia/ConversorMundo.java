@@ -2,7 +2,6 @@ package persistencia;
 
 import estructuras.Lista;
 import modelo.Conexion;
-import modelo.Costo;
 import modelo.Mundo;
 import entidades.Catalogo;
 import entidades.monstruos.Monstruo;
@@ -29,40 +28,30 @@ public class ConversorMundo {
         return new MundoGuardado(planos, conexiones);
     }
 
-    /** Reconstruye el mundo. Primero planos, despues conexiones y por ultimo entidades */
-    public static Mundo aMundo(MundoGuardado guardado, Costo costos){
-        return reconstruir(guardado, (plano, guardadoPlano) ->
-                ConversorPlano.agregarEntidades(plano, guardadoPlano, costos));
-    }
-
-    public static Mundo aMundo(MundoGuardado guardado, Catalogo<Monstruo> monstruos,
-        Catalogo<Cofre> cofres){
-        return reconstruir(guardado, (plano, guardadoPlano) ->
-                ConversorPlano.agregarEntidades(
-                        plano, guardadoPlano, monstruos, cofres));
-    }
-
-    private static Mundo reconstruir(
-            MundoGuardado guardado,
-            java.util.function.BiConsumer<modelo.Plano, PlanoGuardado> agregarEntidades) {
+    public static Mundo aMundo(MundoGuardado guardado, Catalogo<Monstruo> monstruos, Catalogo<Cofre> cofres) {
         int tableros = guardado.planos().length;
         int pisos = guardado.planos()[0].length;
         Mundo mundo = new Mundo(tableros, pisos);
 
-        for (int i = 1; i <= tableros; i++){
-            for (int j = 1; j <= pisos; j++){
-                mundo.agregarPlano(i, j, ConversorPlano.aPlano(guardado.planos()[i - 1][j - 1]));
+        for (int i = 1; i <= tableros; i++) {
+            for (int j = 1; j <= pisos; j++) {
+                mundo.agregarPlano(i, j,
+                        ConversorPlano.aPlano(guardado.planos()[i - 1][j - 1]));
             }
         }
-        for (int i = 0; i < guardado.conexiones().length; i++){
-            mundo.agregarConexion(guardado.conexiones()[i]);
+
+        for (Conexion conexion : guardado.conexiones()) {
+            mundo.agregarConexion(conexion);
         }
-        for (int i = 1; i <= tableros; i++){
-            for (int j = 1; j <= pisos; j++){
-                agregarEntidades.accept(
-                        mundo.planoEn(i, j), guardado.planos()[i - 1][j - 1]);
+
+        for (int i = 1; i <= tableros; i++) {
+            for (int j = 1; j <= pisos; j++) {
+                ConversorPlano.agregarEntidades(
+                        mundo.planoEn(i, j), guardado.planos()[i - 1][j - 1],
+                        monstruos, cofres);
             }
         }
+
         return mundo;
     }
 }

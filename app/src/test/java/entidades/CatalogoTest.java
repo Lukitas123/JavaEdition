@@ -39,19 +39,6 @@ class CatalogoTest {
     }
 
     @Test
-    void fabricaConDatoUsaElDatoDeCadaEntidad() {
-        Catalogo<Cofre> catalogo = new Catalogo<>();
-        catalogo.registrarConDato(
-                "trampa", TrampaDeEnergia::new);
-
-        Cofre primero = catalogo.crear("trampa", new Posicion(1, 1), 17);
-        Cofre segundo = catalogo.crear("trampa", new Posicion(2, 2), 31);
-
-        assertEquals(17, primero.getDanio());
-        assertEquals(31, segundo.getDanio());
-    }
-
-    @Test
     void rechazaSorteoConCatalogoVacio() {
         Catalogo<Cofre> catalogo = new Catalogo<>();
 

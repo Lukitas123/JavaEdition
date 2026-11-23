@@ -6,5 +6,6 @@ public enum TipoEvento {
     FIN_ESCUDO,
     FIN_SUENO,
     DESPERTAR_DORMILON,
-    FIN_PUENTE
+    FIN_PUENTE,
+    FIN_LAVA
 }

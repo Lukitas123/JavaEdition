@@ -148,4 +148,52 @@ class PlanoTest {
         assertThrows(IllegalArgumentException.class, () -> plano.agregarCofre(enPared));
         assertThrows(IllegalArgumentException.class, () -> plano.agregarCofre(null));
     }
+
+    @Test
+    void lavaPosteriorAlPuenteLoCancelaEnLaCelda() {
+        Posicion inicio = new Posicion(1, 1);
+        Posicion agua = new Posicion(1, 2);
+        Plano plano = new Plano(
+                new Terreno[][] {{Terreno.PISO, Terreno.AGUA}}, inicio, null);
+
+        plano.activarPuente(0, 15);
+        assertEquals(Terreno.PISO, plano.terrenoEn(agua));
+
+        plano.activarLava(agua, 1, 10);
+        assertEquals(Terreno.LAVA, plano.terrenoEn(agua));
+        assertEquals(Terreno.AGUA, plano.terrenoBaseEn(agua));
+
+        // Otra trampa reinicia el vencimiento de esta celda.
+        plano.activarLava(agua, 3, 10);
+        plano.finalizarLavaSiVencio(12);
+        assertEquals(Terreno.LAVA, plano.terrenoEn(agua));
+
+        plano.finalizarLavaSiVencio(14);
+        assertEquals(Terreno.AGUA, plano.terrenoEn(agua));
+        assertEquals(Integer.valueOf(16), plano.getFinPuente());
+    }
+
+    @Test
+    void puentePosteriorCancelaLaLavaTemporal() {
+        Posicion inicio = new Posicion(1, 1);
+        Posicion agua = new Posicion(1, 2);
+        Posicion piso = new Posicion(1, 3);
+        Plano plano = new Plano(
+                new Terreno[][] {{Terreno.PISO, Terreno.AGUA, Terreno.PISO}},
+                inicio, null);
+
+        plano.activarLava(agua, 0, 10);
+        plano.activarLava(piso, 0, 10);
+        plano.activarPuente(1, 15);
+
+        assertEquals(Terreno.PISO, plano.terrenoEn(agua));
+        assertEquals(Terreno.PISO, plano.terrenoEn(piso));
+
+        plano.finalizarLavaSiVencio(11);
+        assertEquals(Terreno.PISO, plano.terrenoEn(agua));
+
+        plano.finalizarPuenteSiVencio(17);
+        assertEquals(Terreno.AGUA, plano.terrenoEn(agua));
+        assertEquals(Terreno.PISO, plano.terrenoEn(piso));
+    }
 }

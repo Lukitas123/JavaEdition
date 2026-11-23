@@ -7,6 +7,10 @@ import modelo.Costo;
 import modelo.Plano;
 import modelo.Posicion;
 import modelo.Terreno;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *Convierte un Plano a un PlanoGuardado y viceversa
 */
@@ -38,14 +42,37 @@ public class ConversorPlano {
         for (int i = 0; i < listaCofres.cantidad();i++){
             cofres[i] = ConversorEntidades.cofreAGuardado(listaCofres.obtener(i));
         }
+        Map<Posicion, Integer> vencimientos = plano.getVencimientosLava();
+        LavaGuardada[] lavaActiva = new LavaGuardada[vencimientos.size()];
+        int indice = 0;
 
-        return new PlanoGuardado(terreno, visitadas, plano.getEntrada(), plano.getSalida(), monstruos, cofres, plano.getFinSuenoMonstruos(),  plano.getFinPuente(), cubiertasPorPuente);
+        for (Map.Entry<Posicion, Integer> entrada : vencimientos.entrySet()) {
+            lavaActiva[indice++] = new LavaGuardada(
+                    entrada.getKey(), entrada.getValue());
+        }
+
+        return new PlanoGuardado(terreno, visitadas, plano.getEntrada(), plano.getSalida(), monstruos, cofres, plano.getFinSuenoMonstruos(),  plano.getFinPuente(), cubiertasPorPuente, lavaActiva);
     }
 
     /** Crea un Plano a partir deun PlanoGuardado */
     public static Plano aPlano(PlanoGuardado guardado){
         Plano plano = new Plano(guardado.terreno(), guardado.entrada(), guardado.salida());
+
+        Map<Posicion, Integer> lava = new HashMap<>();
+
+        if (guardado.lavaActiva() != null) {
+            for (LavaGuardada entrada : guardado.lavaActiva()) {
+                if (entrada == null || entrada.posicion() == null
+                        || entrada.vencimiento() == null) {
+                    throw new IllegalArgumentException("Lava guardada invalida");
+                }
+                if (lava.putIfAbsent(entrada.posicion(), entrada.vencimiento()) != null) {
+                    throw new IllegalArgumentException("Posicion de lava duplicada");
+                }
+            }
+        }
         plano.restaurarPuente(guardado.finPuente(), guardado.cubiertasPorPuente());
+        plano.restaurarLava(lava);
         plano.restaurarFinSuenoMonstruos(guardado.finSuenoMonstruos());
 
         for (int fila = 0; fila < guardado.visitadas().length; fila++){

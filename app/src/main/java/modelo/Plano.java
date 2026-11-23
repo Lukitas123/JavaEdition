@@ -4,6 +4,8 @@ import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
 import estructuras.Lista;
 
+import java.util.Map;
+
 /**
  * Una grilla de terreno con una entrada, una salida opcional, las celdas visitadas
  * y los monstruos y cofres que viven en ella.
@@ -21,6 +23,7 @@ public class Plano {
     private final Lista<Cofre> cofres = new Lista<>();
     private Integer finSuenoMonstruos;
     private final EfectoPuente efectoPuente;
+    private final EfectoDeLava efectoLava;
 
     /**
      * @param terreno grilla rectangular de terreno (se copia).
@@ -49,6 +52,8 @@ public class Plano {
         this.visitadas = new boolean[filas][columnas];
 
         this.efectoPuente = new EfectoPuente(filas, columnas);
+        this.efectoLava = new EfectoDeLava(filas, columnas);
+
         if (entrada == null || !esTransitable(entrada)) {
             throw new IllegalArgumentException("La entrada debe ser una celda transitable del plano.");
         }
@@ -92,6 +97,10 @@ public class Plano {
     /** @throws IllegalArgumentException si la posición está fuera del plano. */
     public Terreno terrenoEn(Posicion posicion) {
         Terreno base = terrenoBaseEn(posicion);
+
+        if (efectoLava.estaActiva(posicion)) {
+            return Terreno.LAVA;
+        }
         return efectoPuente.terrenoVisible(posicion, base);
     }
 
@@ -108,6 +117,7 @@ public class Plano {
         }
         celdas[posicion.fila() - 1][posicion.columna() - 1] = nuevo;
         efectoPuente.retirarCobertura(posicion);
+        efectoLava.cancelar(posicion);
     }
 
     /** Transitable es todo lo que no es pared. Fuera del plano no es transitable. */
@@ -275,7 +285,9 @@ public class Plano {
     }
 
     public int activarPuente(int pasoActual, int duracion) {
-        return efectoPuente.activar(this, pasoActual, duracion);
+        int vencimiento = efectoPuente.activar(this, pasoActual, duracion);
+        efectoLava.cancelarTodo();
+        return vencimiento;
     }
 
     public void finalizarPuenteSiVencio(int pasoActual) {
@@ -283,5 +295,26 @@ public class Plano {
     }
     public void restaurarPuente(Integer fin, boolean[][] cubiertas) {
         efectoPuente.restaurar(this, fin, cubiertas);
+    }
+
+    public int activarLava(Posicion posicion, int pasoActual, int duracion) {
+        if (!esTransitable(posicion)) {
+            throw new IllegalArgumentException("La celda debe ser transitable");
+        }
+
+        int vencimiento = efectoLava.activar(posicion, pasoActual, duracion);
+        efectoPuente.retirarCobertura(posicion);
+        return vencimiento;
+    }
+
+    public void finalizarLavaSiVencio(int pasoActual) {
+        efectoLava.finalizarSiVencio(pasoActual);
+    }
+    public Map<Posicion, Integer> getVencimientosLava() {
+        return efectoLava.getVencimientos();
+    }
+
+    public void restaurarLava(Map<Posicion, Integer> guardados) {
+        efectoLava.restaurar(this, guardados);
     }
 }

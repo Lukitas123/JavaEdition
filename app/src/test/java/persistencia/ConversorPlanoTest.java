@@ -164,4 +164,59 @@ public class ConversorPlanoTest {
     }
 
 
+    @Test
+    void conservaLavaActivaYVencimientos() {
+        Posicion inicio = new Posicion(1, 1);
+        Posicion aguaConLava = new Posicion(1, 2);
+        Posicion pisoConLava = new Posicion(1, 3);
+        Posicion aguaConPuente = new Posicion(1, 4);
+
+        Plano original = new Plano(new Terreno[][] {
+                {Terreno.PISO, Terreno.AGUA, Terreno.PISO, Terreno.AGUA}
+        }, inicio, null);
+
+        original.agregarCofre(new TrampaDeLava(inicio));
+        original.activarPuente(0, 15);
+        original.activarLava(aguaConLava, 1, 10);
+        original.activarLava(pisoConLava, 3, 10);
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(TrampaDeLava.class, restaurado.cofreEn(inicio));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(aguaConLava));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(pisoConLava));
+        assertEquals(Terreno.PISO, restaurado.terrenoEn(aguaConPuente));
+
+        restaurado.finalizarLavaSiVencio(12);
+        assertEquals(Terreno.AGUA, restaurado.terrenoEn(aguaConLava));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(pisoConLava));
+
+        restaurado.finalizarLavaSiVencio(14);
+        assertEquals(Terreno.PISO, restaurado.terrenoEn(pisoConLava));
+
+        restaurado.finalizarPuenteSiVencio(16);
+        assertEquals(Terreno.AGUA, restaurado.terrenoEn(aguaConPuente));
+    }
+
+    @Test
+    void rechazaLavaYpuenteEnLaMismaCelda() {
+        Posicion inicio = new Posicion(1, 1);
+        Posicion agua = new Posicion(1, 2);
+        Plano plano = new Plano(
+                new Terreno[][] {{Terreno.PISO, Terreno.AGUA}}, inicio, null);
+        plano.activarPuente(0, 15);
+
+        PlanoGuardado guardado = ConversorPlano.aGuardado(plano);
+        PlanoGuardado invalido = new PlanoGuardado(
+                guardado.terreno(), guardado.visitadas(),
+                guardado.entrada(), guardado.salida(),
+                guardado.monstruos(), guardado.cofres(),
+                guardado.finSuenoMonstruos(), guardado.finPuente(),
+                guardado.cubiertasPorPuente(),
+                new LavaGuardada[] {new LavaGuardada(agua, 11)});
+
+        assertThrows(IllegalArgumentException.class,
+                () -> ConversorPlano.aPlano(invalido));
+    }
+
 }

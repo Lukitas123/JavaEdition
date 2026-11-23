@@ -1,7 +1,11 @@
 package modelo;
 
 import entidades.cofres.Cofre;
+import entidades.monstruos.Congelador;
+import entidades.monstruos.Dormilon;
 import entidades.monstruos.Monstruo;
+import entidades.objetos.Escudo;
+import entidades.objetos.ZapatosDeAgua;
 import estructuras.Lista;
 
 /**
@@ -13,9 +17,8 @@ import estructuras.Lista;
  */
 public class Mazmorra {
     /** Tipo de evento de la agenda que apaga un efecto del héroe; el dato es el id del efecto. */
-    public static final String EVENTO_VENCE_EFECTO = "VENCE_EFECTO";
     /** Id del efecto de los zapatos de agua: mientras está activo, el agua cuesta como piso. */
-    public static final String EFECTO_ZAPATOS_AGUA = "zapatos_agua";
+    public static final String EFECTO_ZAPATOS_AGUA = ZapatosDeAgua.ID_EFECTO;
 
     private final Dificultad dificultad;
     private final Mundo mundo;
@@ -87,6 +90,11 @@ public class Mazmorra {
         return new Puntaje(heroe.getCofresAbiertos(), heroe.getEnergia(), agenda.getPasoActual());
     }
 
+    public boolean debeEsperarPorInmovilizacion() {
+        Integer fin = heroe.vencimientoDe(Congelador.INMOVILIZADO);
+        return fin != null && (long) fin > (long) agenda.getPasoActual() + 1;
+    }
+
     /**
      * Cuánta energía cuesta entrar a un terreno. Con el efecto de los zapatos de agua
      * activo, el agua cuesta como piso.
@@ -117,6 +125,9 @@ public class Mazmorra {
         validarEnCurso();
         if (direccion == null) {
             throw new IllegalArgumentException("La direccion no puede ser null.");
+        }
+        if (debeEsperarPorInmovilizacion()) {
+            return false;
         }
         Plano plano = planoActual();
         Posicion destino = heroe.getUbicacion().posicion().mover(direccion);
@@ -171,13 +182,48 @@ public class Mazmorra {
         }
     }
 
-    /**
-     * Ejecuta un evento vencido. Hoy solo hay un tipo: apagar un efecto del héroe.
-     * Los eventos de otro tipo se ignoran (los resuelven quienes los programan).
-     */
+
     private void ejecutarEvento(EventoProgramado evento) {
-        if (EVENTO_VENCE_EFECTO.equals(evento.tipo())) {
-            heroe.desactivarEfecto(evento.dato());
+        int pasoActual = agenda.getPasoActual();
+        switch (evento.tipo()) {
+            case FIN_INMOVILIZACION ->
+                    heroe.finalizarEfectoSiVencio(Congelador.INMOVILIZADO, pasoActual);
+            case FIN_ZAPATOS_DE_AGUA ->
+                    heroe.finalizarEfectoSiVencio(ZapatosDeAgua.ID_EFECTO, pasoActual);
+            case FIN_ESCUDO ->
+                    heroe.finalizarEfectoSiVencio(Escudo.ID_EFECTO, pasoActual);
+            case FIN_SUENO -> planoDeEvento(evento).despertarMonstruosSiVencio(pasoActual);
+            case FIN_PUENTE -> planoDeEvento(evento).finalizarPuenteSiVencio(pasoActual);
+            case FIN_LAVA -> planoDeEvento(evento).finalizarLavaSiVencio(pasoActual);
+            case DESPERTAR_DORMILON -> despertarDormilones(evento, pasoActual);
+        }
+    }
+
+    private Plano planoDeEvento(EventoProgramado evento) {
+        String dato = evento.dato();
+        if (dato == null) {
+            throw new IllegalArgumentException("El evento debe identificar su plano.");
+        }
+        String[] identificadores = dato.split(",", -1);
+        if (identificadores.length != 2) {
+            throw new IllegalArgumentException("La ubicacion del evento no es valida.");
+        }
+        try {
+            return mundo.planoEn(
+                    Integer.parseInt(identificadores[0]),
+                    Integer.parseInt(identificadores[1]));
+        } catch (NumberFormatException excepcion) {
+            throw new IllegalArgumentException("La ubicacion del evento no es valida.", excepcion);
+        }
+    }
+
+    private void despertarDormilones(EventoProgramado evento, int pasoActual) {
+        Plano plano = planoDeEvento(evento);
+        for (int i = 0; i < plano.getMonstruos().cantidad(); i++) {
+            Monstruo monstruo = plano.getMonstruos().obtener(i);
+            if (monstruo instanceof Dormilon dormilon) {
+                dormilon.despertarSiCorresponde(pasoActual);
+            }
         }
     }
 
@@ -186,7 +232,6 @@ public class Mazmorra {
         Cofre cofre = plano.cofreEn(posicion);
         if (cofre != null) {
             cofre.abrir(heroe, plano, agenda);
-            plano.quitarCofre(cofre);
         }
     }
 

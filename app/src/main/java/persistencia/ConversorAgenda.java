@@ -21,10 +21,8 @@ public class ConversorAgenda {
         for (int i = 0; i < guardada.pasoActual(); i++) {
             agenda.avanzarPaso();
         }
-        for (int i = 0; i < guardada.eventos().length; i++) {
-            EventoProgramado evento = guardada.eventos()[i];
-            int pasosDesdeAhora = Math.max(1, evento.pasoDeVencimiento() - agenda.getPasoActual());
-            agenda.programar(pasosDesdeAhora, evento.tipo(), evento.dato());
+        for (EventoProgramado evento : guardada.eventos()) {
+            agenda.restaurarEvento(evento);
         }
         return agenda;
     }

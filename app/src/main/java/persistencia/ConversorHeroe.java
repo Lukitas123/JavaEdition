@@ -16,12 +16,12 @@ public class ConversorHeroe {
         Map<String,Integer> inventario = new HashMap<>(heroe.getInventario());
 
         Lista<String> listaEfectos = heroe.getListaEfectos();
-        String[] efectos = new String[listaEfectos.cantidad()];
-        
-        for (int j = 0; j<efectos.length;j++){
-            efectos[j] = listaEfectos.obtener(j);
-        }
+        Map<String, Integer> efectos = new HashMap<>();
 
+        for (int i = 0; i < listaEfectos.cantidad(); i++) {
+            String id = listaEfectos.obtener(i);
+            efectos.put(id, heroe.vencimientoDe(id));
+        }
         return new HeroeGuardado(heroe.getEnergia(), heroe.getUbicacion(), heroe.getCofresAbiertos(), inventario, efectos);
 
     }
@@ -35,8 +35,8 @@ public class ConversorHeroe {
             }
         }
 
-        for (int i = 0; i < guardado.efectos().length; i++) {
-            heroe.activarEfecto(guardado.efectos()[i]);
+        for (Map.Entry<String, Integer> efecto : guardado.efectos().entrySet()) {
+            heroe.activarEfecto(efecto.getKey(), efecto.getValue());
         }
 
         for (int i=0; i < guardado.cofresAbiertos(); i++) {

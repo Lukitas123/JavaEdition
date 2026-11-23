@@ -2,6 +2,7 @@ package persistencia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import modelo.*;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
@@ -10,12 +11,6 @@ import entidades.Catalogo;
 import entidades.cofres.Cofre;
 import entidades.monstruos.Errante;
 import entidades.monstruos.Monstruo;
-import modelo.Conexion;
-import modelo.Mundo;
-import modelo.Plano;
-import modelo.Posicion;
-import modelo.Terreno;
-import modelo.Ubicacion;
 
 import java.util.Random;
 

@@ -16,7 +16,8 @@ public class Heroe {
     private Ubicacion ubicacion;
     private int cofresAbiertos;
     private final Map<String, Integer> inventario = new HashMap<>();
-    private final TablaHash<String, Boolean> efectosActivos = new TablaHash<>();
+    private final TablaHash<String, Integer> efectosActivos = new TablaHash<>();
+
 
     /**
      * @param energiaInicial debe ser mayor a 0
@@ -150,9 +151,9 @@ public class Heroe {
 
     // EFECTOS ACTIVOS -----------------------------------------------
 
-    public void activarEfecto(String idEfecto) {
+    public void activarEfecto(String idEfecto, int vencimiento) {
         validarId(idEfecto);
-        efectosActivos.insertar(idEfecto, true);
+        efectosActivos.insertar(idEfecto, vencimiento);
     }
 
     public void desactivarEfecto(String idEfecto) {
@@ -174,6 +175,24 @@ public class Heroe {
             throw new IllegalArgumentException("El identificador no puede ser nulo ni vacio");
         }
     }
+
+    public Integer vencimientoDe(String idEfecto){
+        validarId(idEfecto);
+        return efectosActivos.obtener(idEfecto);
+    }
+
+    public void finalizarEfectoSiVencio(String idEfecto, int pasoActual) {
+        validarId(idEfecto);
+        if (pasoActual < 0) {
+            throw new IllegalArgumentException("El paso no puede ser negativo");
+        }
+
+        Integer vencimiento = efectosActivos.obtener(idEfecto);
+        if (vencimiento != null && pasoActual >= vencimiento) {
+            efectosActivos.eliminar(idEfecto);
+        }
+    }
+
     //Devuelve un listado de los efectos activos
     public Lista<String> getListaEfectos(){
         return efectosActivos.claves();

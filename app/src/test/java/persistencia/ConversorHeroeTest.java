@@ -17,7 +17,7 @@ public class ConversorHeroeTest {
     @Test
     void heroeSobreviveAConversion() {
         HeroeGuardado original = new HeroeGuardado(80, new Ubicacion(1, 2, new Posicion(3, 4)),
-        2, Map.of("pocion", 1, "daga", 2), new String[] {"zapatos"});
+        2, Map.of("pocion", 1, "daga", 2), Map.of("zapatos", 20));
 
         Gson gson = new Gson();
         String json = gson.toJson(original);
@@ -26,6 +26,5 @@ public class ConversorHeroeTest {
         assertEquals(80, leido.energia());
         assertEquals(original.ubicacion(), leido.ubicacion());
         assertEquals(original.inventario(), leido.inventario());
-        assertArrayEquals(original.efectos(), leido.efectos());
-    }
+        assertEquals(original.efectos(), leido.efectos());    }
 }

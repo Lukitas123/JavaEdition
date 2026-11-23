@@ -4,13 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
 
+import entidades.cofres.*;
+import modelo.Costo;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
 
 import entidades.Catalogo;
 import entidades.cofres.Cofre;
-import entidades.cofres.TrampaDeEnergia;
 import entidades.monstruos.Fantasma;
 import entidades.monstruos.Monstruo;
 import modelo.Plano;
@@ -93,4 +94,140 @@ public class ConversorPlanoTest {
         assertEquals(new Posicion(3, 2), cofre.getPosicion());
         assertEquals(25, cofre.getDanio());
     }
+
+    @Test
+    void cofresZapatosYDagaConservanTipoYPosicion() {
+        Plano original = new Plano(
+                terrenoDePrueba(), new Posicion(2, 2), null);
+        original.agregarCofre(new CofreDeDaga(new Posicion(3, 2)));
+        original.agregarCofre(new CofreZapatosDeAgua(new Posicion(3, 3)));
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(CofreDeDaga.class, restaurado.cofreEn(new Posicion(3, 2)));
+        assertInstanceOf(CofreZapatosDeAgua.class,
+                restaurado.cofreEn(new Posicion(3, 3)));
+    }
+    @Test
+    void cofreDeEscudoConservaTipoYPosicion() {
+        Plano original = new Plano(
+                terrenoDePrueba(), new Posicion(2, 2), null);
+        original.agregarCofre(new CofreDeEscudo(new Posicion(3, 2)));
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(
+                CofreDeEscudo.class, restaurado.cofreEn(new Posicion(3, 2)));
+    }
+    @Test
+    void cofreDeBrujulaConservaTipoYPosicion() {
+        Plano original = new Plano(
+                terrenoDePrueba(), new Posicion(2, 2), null);
+        original.agregarCofre(new CofreDeBrujula(new Posicion(3, 2)));
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(
+                CofreDeBrujula.class, restaurado.cofreEn(new Posicion(3, 2)));
+    }
+
+    @Test
+    void conservaCofreYFinDeSueno() {
+        Plano original = new Plano(
+                terrenoDePrueba(), new Posicion(2, 2), null);
+        original.agregarCofre(new CofreDeSueno(new Posicion(3, 2)));
+        original.dormirMonstruos(10, 7);
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(CofreDeSueno.class,
+                restaurado.cofreEn(new Posicion(3, 2)));
+        assertTrue(restaurado.monstruosDormidos());
+        assertEquals(Integer.valueOf(18), restaurado.getFinSuenoMonstruos());
+    }
+    @Test
+    void conservaPuenteYTerrenosAlGuardarYCargar() {
+        Posicion inicio = new Posicion(1, 1);
+        Posicion agua = new Posicion(1, 2);
+        Posicion lavaCubierta = new Posicion(1, 3);
+        Posicion lavaNueva = new Posicion(1, 4);
+
+        Plano original = new Plano(new Terreno[][] {
+                {Terreno.PISO, Terreno.AGUA, Terreno.LAVA, Terreno.PISO}
+        }, inicio, null);
+
+        original.agregarCofre(new CofreDePuente(inicio));
+        original.activarPuente(10, 15);
+        original.cambiarTerreno(lavaNueva, Terreno.LAVA);
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(CofreDePuente.class, restaurado.cofreEn(inicio));
+        assertEquals(Integer.valueOf(26), restaurado.getFinPuente());
+        assertEquals(Terreno.PISO, restaurado.terrenoEn(agua));
+        assertEquals(Terreno.PISO, restaurado.terrenoEn(lavaCubierta));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(lavaNueva));
+
+        restaurado.finalizarPuenteSiVencio(26);
+        assertEquals(Terreno.AGUA, restaurado.terrenoEn(agua));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(lavaCubierta));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(lavaNueva));
+    }
+
+
+    @Test
+    void conservaLavaActivaYVencimientos() {
+        Posicion inicio = new Posicion(1, 1);
+        Posicion aguaConLava = new Posicion(1, 2);
+        Posicion pisoConLava = new Posicion(1, 3);
+        Posicion aguaConPuente = new Posicion(1, 4);
+
+        Plano original = new Plano(new Terreno[][] {
+                {Terreno.PISO, Terreno.AGUA, Terreno.PISO, Terreno.AGUA}
+        }, inicio, null);
+
+        original.agregarCofre(new TrampaDeLava(inicio));
+        original.activarPuente(0, 15);
+        original.activarLava(aguaConLava, 1, 10);
+        original.activarLava(pisoConLava, 3, 10);
+
+        Plano restaurado = idaYVuelta(original);
+
+        assertInstanceOf(TrampaDeLava.class, restaurado.cofreEn(inicio));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(aguaConLava));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(pisoConLava));
+        assertEquals(Terreno.PISO, restaurado.terrenoEn(aguaConPuente));
+
+        restaurado.finalizarLavaSiVencio(12);
+        assertEquals(Terreno.AGUA, restaurado.terrenoEn(aguaConLava));
+        assertEquals(Terreno.LAVA, restaurado.terrenoEn(pisoConLava));
+
+        restaurado.finalizarLavaSiVencio(14);
+        assertEquals(Terreno.PISO, restaurado.terrenoEn(pisoConLava));
+
+        restaurado.finalizarPuenteSiVencio(16);
+        assertEquals(Terreno.AGUA, restaurado.terrenoEn(aguaConPuente));
+    }
+
+    @Test
+    void rechazaLavaYpuenteEnLaMismaCelda() {
+        Posicion inicio = new Posicion(1, 1);
+        Posicion agua = new Posicion(1, 2);
+        Plano plano = new Plano(
+                new Terreno[][] {{Terreno.PISO, Terreno.AGUA}}, inicio, null);
+        plano.activarPuente(0, 15);
+
+        PlanoGuardado guardado = ConversorPlano.aGuardado(plano);
+        PlanoGuardado invalido = new PlanoGuardado(
+                guardado.terreno(), guardado.visitadas(),
+                guardado.entrada(), guardado.salida(),
+                guardado.monstruos(), guardado.cofres(),
+                guardado.finSuenoMonstruos(), guardado.finPuente(),
+                guardado.cubiertasPorPuente(),
+                new LavaGuardada[] {new LavaGuardada(agua, 11)});
+
+        assertThrows(IllegalArgumentException.class,
+                () -> ConversorPlano.aPlano(invalido));
+    }
+
 }

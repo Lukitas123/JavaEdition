@@ -13,9 +13,13 @@ public class ConversorEntidades {
         monstruo.getPosicionInicial(), monstruo.estaActivo(), monstruo.exportarEstado());
     }
 
-    /** Recrea el monstruo en su posicion inicial, con su estado activo y su estado propio */
     public static Monstruo aMonstruo(MonstruoGuardado guardado, Catalogo<Monstruo> catalogo) {
         Monstruo monstruo = catalogo.crear(guardado.tipo(), guardado.posicionInicial());
+        restaurarEstado(guardado, monstruo);
+        return monstruo;
+    }
+
+    private static void restaurarEstado(MonstruoGuardado guardado, Monstruo monstruo) {
         if (guardado.activo()){
             monstruo.activar();
         } 
@@ -23,7 +27,6 @@ public class ConversorEntidades {
             monstruo.desactivar();
         }
         monstruo.importarEstado(guardado.estado());
-        return monstruo;
     }
 
     /** Copia el tipo y la posición de un cofre. */
@@ -33,6 +36,14 @@ public class ConversorEntidades {
 
     /** Recrea un cofre cerrado. */
     public static Cofre aCofre(CofreGuardado guardado, Catalogo<Cofre> catalogo){
-        return catalogo.crear(guardado.tipo(), guardado.posicion());
+        Cofre cofre = catalogo.crear(guardado.tipo(), guardado.posicion());
+
+        if (cofre.getDanio() != guardado.danio()) {
+            throw new IllegalArgumentException(
+                    "El daño del catálogo no coincide con la partida guardada");
+        }
+
+        return cofre;
     }
+
 }

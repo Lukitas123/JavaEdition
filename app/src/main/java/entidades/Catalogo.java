@@ -8,60 +8,42 @@ import java.util.Random;
 import java.util.function.Function;
 
 /**
- * Catalogo de fabricas de entidades identificadas por nombre.
+ * Catalogo de fabricas identificadas por nombre.
  *
- * @param <T> tipo de entidad que crean las fabricas (ej. monstruos, cofres)
+ * @param <T> tipo de entidad que crea cada fabrica
  */
-public class Catalogo <T>{
+public class Catalogo<T> {
     private final Map<String, Function<Posicion, T>> fabricas = new LinkedHashMap<>();
 
-    /**
-     * Registra una fabrica con un nombre unico.
-     *
-     * Pre: nombre y fabrica no son null; nombre no esta vacio.
-     * Post: la fabrica queda disponible para crear entidades.
-     */
-    public void registrar(String nombre, Function<Posicion, T> fabrica){
-        if(nombre==null || nombre.isBlank() ||fabrica==null){
+    /** Registra una fabrica con un nombre unico. */
+    public void registrar(String nombre, Function<Posicion, T> fabrica) {
+        if (nombre == null || nombre.isBlank() || fabrica == null) {
             throw new IllegalArgumentException("El nombre y la fabrica son obligatorios");
         }
-        if(fabricas.containsKey(nombre)){
-            throw new IllegalArgumentException("El tipo ya esta registrado " + nombre);
+        if (fabricas.containsKey(nombre)) {
+            throw new IllegalArgumentException("El tipo ya esta registrado: " + nombre);
         }
         fabricas.put(nombre, fabrica);
     }
 
-    /**
-     * Crea una entidad del tipo indicado en la posicion recibida.
-     *
-     * Pre: el nombre esta registrado y la posicion no es null.
-     * Post: devuelve la entidad creada por la fabrica.
-     */
+    /** Crea la entidad del tipo indicado usando la posicion recibida. */
     public T crear(String nombre, Posicion posicion) {
         if (posicion == null) {
-            throw new IllegalArgumentException(
-                    "La posicion no puede ser null");
+            throw new IllegalArgumentException("La posicion soesn obligatoria");
         }
 
         Function<Posicion, T> fabrica = fabricas.get(nombre);
         if (fabrica == null) {
-            throw new IllegalArgumentException(
-                    "Tipo no registrado: " + nombre);
+            throw new IllegalArgumentException("Tipo no registrado: " + nombre);
         }
 
         return fabrica.apply(posicion);
     }
 
-    /**
-     * Sortea un tipo registrado y crea una entidad en la posicion indicada.
-     *
-     * Pre: posicion y random no son null; el catalogo no esta vacio.
-     * Post: devuelve una entidad creada por la fabrica sorteada.
-     */
+    /** Sortea una fabrica y crea una entidad usando la posicion recibida. */
     public T sortear(Posicion posicion, Random random) {
         if (posicion == null || random == null) {
-            throw new IllegalArgumentException(
-                    "La posicion y el generador aleatorio son obligatorios");
+            throw new IllegalArgumentException("La posicion y el azar son obligatorios");
         }
         if (fabricas.isEmpty()) {
             throw new IllegalStateException("El catalogo esta vacio");

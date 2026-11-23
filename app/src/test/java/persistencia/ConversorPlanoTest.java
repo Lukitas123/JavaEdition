@@ -9,6 +9,9 @@ import modelo.Costo;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
+
+import entidades.Catalogo;
+import entidades.cofres.Cofre;
 import entidades.monstruos.Fantasma;
 import entidades.monstruos.Monstruo;
 import modelo.Plano;
@@ -16,6 +19,14 @@ import modelo.Posicion;
 import modelo.Terreno;
 
 public class ConversorPlanoTest {
+
+    private static Catalogo<Cofre> pruebaCofre(){
+        return CatalogosDePrueba.cofres();
+    }
+
+    private static Catalogo<Monstruo> pruebaMonstruos(){
+        return CatalogosDePrueba.monstruos();
+    }
 
     private static Terreno[][] terrenoDePrueba() {
         Terreno p = Terreno.PARED;
@@ -35,7 +46,7 @@ public class ConversorPlanoTest {
         String json = gson.toJson(ConversorPlano.aGuardado(original));
         PlanoGuardado leido = gson.fromJson(json, PlanoGuardado.class);
         Plano restaurado = ConversorPlano.aPlano(leido);
-        ConversorPlano.agregarEntidades(restaurado, leido, new Costo(1,3,8));
+        ConversorPlano.agregarEntidades(restaurado, leido, pruebaMonstruos(), pruebaCofre() );
         return restaurado;
     }
 

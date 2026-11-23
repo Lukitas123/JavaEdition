@@ -1,6 +1,14 @@
 package persistencia;
 
-import modelo.*;
+import entidades.Catalogo;
+import entidades.cofres.Cofre;
+import entidades.monstruos.Monstruo;
+import modelo.Agenda;
+import modelo.Costo;
+import modelo.Dificultad;
+import modelo.EstadoPartida;
+import modelo.Heroe;
+import modelo.Mundo;
 
 /**
  *Convierte una Mazmorra a una MazmorraGuardada y viceversa
@@ -23,13 +31,22 @@ public class ConversorMazmorra {
         if (costos == null) {
             throw new IllegalArgumentException("La partida guardada no tiene costos");
         }
+        return reconstruir(guardado, ConversorMundo.aMundo(guardado.mundo(), costos));
+    }
 
-        Mundo mundo = ConversorMundo.aMundo(guardado.mundo(), costos);
+    public static Mazmorra aMazmorra(MazmorraGuardada guardado, Catalogo<Monstruo> monstruos,
+        Catalogo<Cofre> cofres){
+        return reconstruir(
+                guardado, ConversorMundo.aMundo(guardado.mundo(), monstruos, cofres));
+    }
+
+    private static Mazmorra reconstruir(MazmorraGuardada guardado, Mundo mundo) {
         Heroe heroe = ConversorHeroe.aHeroe(guardado.heroe());
         Agenda agenda = ConversorAgenda.aAgenda(guardado.agenda());
         Dificultad dificultad = guardado.dificultad();
         EstadoPartida estado = guardado.estado();
 
-        return new Mazmorra(dificultad, estado, mundo, heroe, agenda, costos);
+        return new Mazmorra(
+                dificultad, estado, mundo, heroe, agenda, guardado.costos());
     }
 }

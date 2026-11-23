@@ -10,8 +10,14 @@ import org.junit.jupiter.api.Test;
 import entidades.monstruos.Errante;
 import entidades.monstruos.Fantasma;
 import entidades.monstruos.Monstruo;
+import entidades.Catalogo;
 
 public class ConversorEntidadesTest {
+
+    private static Catalogo<Monstruo> pruebaMonstruos(){
+        return CatalogosDePrueba.monstruos();
+    }
+
 
     private static Terreno[][] terrenoDePrueba() {
         Terreno p = Terreno.PARED;
@@ -30,7 +36,7 @@ public class ConversorEntidadesTest {
         Errante original = new Errante(new Posicion(2, 2), new Random(1));
         original.desactivar();
 
-        Monstruo restaurado = ConversorEntidades.aMonstruo(ConversorEntidades.monstruoAGuardado(original), new Costo(1, 3, 8));
+        Monstruo restaurado = ConversorEntidades.aMonstruo(ConversorEntidades.monstruoAGuardado(original), pruebaMonstruos());
 
         assertEquals("Errante", restaurado.getTipo());
         assertFalse(restaurado.estaActivo());
@@ -47,7 +53,7 @@ public class ConversorEntidadesTest {
 
         original.actuar(plano, heroe, new Agenda());
 
-        Monstruo restaurado = ConversorEntidades.aMonstruo(ConversorEntidades.monstruoAGuardado(original), new Costo(1,3,8));
+        Monstruo restaurado = ConversorEntidades.aMonstruo(ConversorEntidades.monstruoAGuardado(original), pruebaMonstruos());
 
         assertEquals("true", restaurado.exportarEstado());
     }

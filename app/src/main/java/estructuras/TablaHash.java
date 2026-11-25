@@ -42,6 +42,7 @@ public class TablaHash<K, V> {
      *
      * @param capacidadInicial Tamaño base de la tabla Hash.
      */
+    @SuppressWarnings("unchecked")
     public TablaHash(int capacidadInicial) {
         if (capacidadInicial <= 0) {
             throw new IllegalArgumentException("La capacidad inicial debe ser mayor a 0.");
@@ -164,6 +165,20 @@ public class TablaHash<K, V> {
      */
     private int calcularIndice(K clave) {
         int hash = clave.hashCode();
-        return Math.abs(hash) % this.tabla.length;
+        return (hash & 0x7FFFFFFF) % this.tabla.length;
+    }
+
+    /** Devuelve todas las claves de la tabla */
+    public Lista<K> claves(){
+        Lista<K> resultado = new Lista<>();
+
+        for (int i = 0; i < tabla.length; i++){
+            Lista<Entrada<K, V>> balde = tabla[i];
+            
+            for (int j = 0; j < balde.cantidad(); j++){
+                resultado.agregar(balde.obtener(j).getClave());
+            }
+        }
+        return resultado;
     }
 }

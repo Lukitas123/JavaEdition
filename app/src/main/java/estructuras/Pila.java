@@ -61,7 +61,7 @@ public class Pila<T> {
      */
     public T obtenerCima() {
         if (estaVacia()) {
-            throw new IllegalStateException("La pila esta vacía");
+            throw new NoSuchElementException("La pila esta vacia.");
         }
         return this.cima.dato;
     }
@@ -83,6 +83,17 @@ public class Pila<T> {
      * @return Cantidad de elementos.
      */
     public int size() {
+        return this.cantidad;
+    }
+
+    /**
+     * Retorna la cantidad total de elementos en la pila.
+     * Alias de size() para mantener consistencia con Cola.
+     * Complejidad: O(1)
+     *
+     * @return Cantidad de elementos.
+     */
+    public int getCantidad() {
         return this.cantidad;
     }
 }

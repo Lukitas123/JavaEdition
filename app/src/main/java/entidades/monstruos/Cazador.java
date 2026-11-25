@@ -1,7 +1,6 @@
 package entidades.monstruos;
 
 import estructuras.Lista;
-import generador.GrafoDelPlano;
 import modelo.*;
 
 public class Cazador extends Monstruo{

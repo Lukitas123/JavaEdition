@@ -1,12 +1,8 @@
-package generador;
+package modelo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import estructuras.Lista;
-import modelo.Costo;
-import modelo.Plano;
-import modelo.Posicion;
-import modelo.Terreno;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

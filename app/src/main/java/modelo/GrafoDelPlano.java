@@ -1,4 +1,4 @@
-package generador;
+package modelo;
 
 import estructuras.Cola;
 import estructuras.ColaDePrioridad;
@@ -6,10 +6,6 @@ import estructuras.GrafoConPesos;
 import estructuras.Lista;
 import estructuras.Pila;
 import estructuras.TablaHash;
-import modelo.Costo;
-import modelo.Plano;
-import modelo.Posicion;
-import modelo.Terreno;
 
 public class GrafoDelPlano {
     private final Plano plano;

@@ -74,6 +74,10 @@ public class Mazmorra {
         return estado;
     }
 
+    public Costo getCosto(){
+        return costos;
+    }
+
     /** @return true si la partida ya se ganó o se perdió. */
     public boolean estaTerminada() {
         return estado != EstadoPartida.EN_CURSO;

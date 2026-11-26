@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Random;
 
 import entidades.cofres.*;
-import modelo.Costo;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;

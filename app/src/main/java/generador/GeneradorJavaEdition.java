@@ -2,16 +2,39 @@ package generador;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import estructuras.Cola;
-import estructuras.Pila;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Random;
-import modelo.Direccion;
-import modelo.Posicion;
 
 public class GeneradorJavaEdition implements GeneradorDeLaberinto {
     private static final String NOMBRE_GENERADOR = "JavaEdition";
+
+    private record Posicion(int fila, int columna) {
+        Posicion mover(Direccion direccion) {
+            return new Posicion(fila + direccion.deltaFila, columna + direccion.deltaColumna);
+        }
+
+        int distanciaManhattan(Posicion otra) {
+            return Math.abs(this.fila - otra.fila) + Math.abs(this.columna - otra.columna);
+        }
+    }
+
+    private enum Direccion {
+        ARRIBA(-1, 0),
+        ABAJO(1, 0),
+        IZQUIERDA(0, -1),
+        DERECHA(0, 1);
+
+        private final int deltaFila;
+        private final int deltaColumna;
+
+        Direccion(int deltaFila, int deltaColumna) {
+            this.deltaFila = deltaFila;
+            this.deltaColumna = deltaColumna;
+        }
+    }
 
     private record ParametrosDto(Integer version, String dificultad, Integer filas, Integer columnas,
                                  Long semilla, Integer cofres, Integer monstruos, Boolean conSalida) {}
@@ -126,21 +149,21 @@ public class GeneradorJavaEdition implements GeneradorDeLaberinto {
         //dejamos margen debajo del 60% para poder abrir bifurcaciones sin pasarnos de R7
         int topeBacktracking = Math.max(objetivoMinimo, (int) Math.floor(totalCeldas * 0.48));
 
-        //2) algoritmo de backtracking con nuestra Pila propia a distancia 2
-        Pila<Posicion> pila = new Pila<>();
+        //2) algoritmo de backtracking con pila (ArrayDeque) a distancia 2
+        Deque<Posicion> pila = new ArrayDeque<>();
         Posicion inicio = new Posicion(1, 1);
         grilla[inicio.fila()][inicio.columna()] = '.';
         int transitables = 1;
-        pila.apilar(inicio);
+        pila.push(inicio);
 
-        while (!pila.estaVacia()) {
-            Posicion actual = pila.obtenerCima();
+        while (!pila.isEmpty()) {
+            Posicion actual = pila.peek();
             List<Direccion> direccionesPosibles = new ArrayList<>();
 
             if (transitables + 2 <= topeBacktracking) {
                 for (Direccion dir : Direccion.values()) {
-                    int nf = actual.fila() + dir.getDeltaFila() * 2;
-                    int nc = actual.columna() + dir.getDeltaColumna() * 2;
+                    int nf = actual.fila() + dir.deltaFila * 2;
+                    int nc = actual.columna() + dir.deltaColumna * 2;
                     if (nf >= 1 && nf <= filas - 2 && nc >= 1 && nc <= columnas - 2) {
                         if (grilla[nf][nc] == '#') {
                             direccionesPosibles.add(dir);
@@ -151,17 +174,17 @@ public class GeneradorJavaEdition implements GeneradorDeLaberinto {
 
             if (!direccionesPosibles.isEmpty()) {
                 Direccion elegida = direccionesPosibles.get(random.nextInt(direccionesPosibles.size()));
-                int fMedio = actual.fila() + elegida.getDeltaFila();
-                int cMedio = actual.columna() + elegida.getDeltaColumna();
-                int fDestino = actual.fila() + elegida.getDeltaFila() * 2;
-                int cDestino = actual.columna() + elegida.getDeltaColumna() * 2;
+                int fMedio = actual.fila() + elegida.deltaFila;
+                int cMedio = actual.columna() + elegida.deltaColumna;
+                int fDestino = actual.fila() + elegida.deltaFila * 2;
+                int cDestino = actual.columna() + elegida.deltaColumna * 2;
 
                 grilla[fMedio][cMedio] = '.';
                 grilla[fDestino][cDestino] = '.';
                 transitables += 2;
-                pila.apilar(new Posicion(fDestino, cDestino));
+                pila.push(new Posicion(fDestino, cDestino));
             } else {
-                pila.desapilar();
+                pila.pop();
             }
         }
 
@@ -242,13 +265,13 @@ public class GeneradorJavaEdition implements GeneradorDeLaberinto {
             }
         }
 
-        Cola<Posicion> cola = new Cola<>();
+        Deque<Posicion> cola = new ArrayDeque<>();
         distancias[entrada.fila() - 1][entrada.columna() - 1] = 0;
-        cola.encolar(entrada);
+        cola.addLast(entrada);
         int distanciaMaxima = 0;
 
-        while (!cola.estaVacia()) {
-            Posicion actual = cola.desencolar();
+        while (!cola.isEmpty()) {
+            Posicion actual = cola.removeFirst();
             int distActual = distancias[actual.fila() - 1][actual.columna() - 1];
 
             for (Direccion dir : Direccion.values()) {
@@ -262,7 +285,7 @@ public class GeneradorJavaEdition implements GeneradorDeLaberinto {
                         if (distancias[fVecino][cVecino] > distanciaMaxima) {
                             distanciaMaxima = distancias[fVecino][cVecino];
                         }
-                        cola.encolar(vecino);
+                        cola.addLast(vecino);
                     }
                 }
             }
@@ -377,8 +400,8 @@ public class GeneradorJavaEdition implements GeneradorDeLaberinto {
     private int contarVecinosTransitables(char[][] grilla, int f, int c) {
         int vecinos = 0;
         for (Direccion dir : Direccion.values()) {
-            int nf = f + dir.getDeltaFila();
-            int nc = c + dir.getDeltaColumna();
+            int nf = f + dir.deltaFila;
+            int nc = c + dir.deltaColumna;
             if (grilla[nf][nc] != '#') {
                 vecinos++;
             }

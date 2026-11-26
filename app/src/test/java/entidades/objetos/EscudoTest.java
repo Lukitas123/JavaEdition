@@ -4,19 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
 
+import modelo.*;
+import modelo.eventos.FinEfectoHeroe;
 import org.junit.jupiter.api.Test;
 
 import entidades.cofres.CofreDeEscudo;
 import entidades.cofres.TrampaDeEnergia;
 import entidades.monstruos.Errante;
 import entidades.monstruos.Fantasma;
-import modelo.Agenda;
-import modelo.Heroe;
-import modelo.Plano;
-import modelo.Posicion;
-import modelo.Terreno;
-import modelo.TipoEvento;
-import modelo.Ubicacion;
 
 class EscudoTest {
 
@@ -35,7 +30,7 @@ class EscudoTest {
         cofre.abrir(heroe, plano, agenda);
 
         assertEquals(1, heroe.cantidadDe(Escudo.ID_OBJETO));
-        assertFalse(heroe.tieneEfecto(Escudo.ID_EFECTO));
+        assertFalse(heroe.tieneEfecto(EfectoHeroe.ESCUDO));
         assertEquals(1, heroe.getCofresAbiertos());
         assertNull(plano.cofreEn(posicion));
         assertEquals(0, agenda.cantidadDeEventos());
@@ -47,21 +42,21 @@ class EscudoTest {
 
         avanzar(10);
         assertTrue(escudo.usar(heroe, plano, agenda).seConsume());
-        assertEquals(Integer.valueOf(21), heroe.vencimientoDe(Escudo.ID_EFECTO));
+        assertEquals(Integer.valueOf(21), heroe.vencimientoDe(EfectoHeroe.ESCUDO));
 
         avanzar(2);
         escudo.usar(heroe, plano, agenda);
-        assertEquals(Integer.valueOf(31), heroe.vencimientoDe(Escudo.ID_EFECTO));
+        assertEquals(Integer.valueOf(31), heroe.vencimientoDe(EfectoHeroe.ESCUDO));
 
         avanzar(9); // paso 21: vence el primer evento
-        assertEquals(TipoEvento.FIN_ESCUDO, agenda.sacarProximo().tipo());
-        heroe.finalizarEfectoSiVencio(Escudo.ID_EFECTO, agenda.getPasoActual());
-        assertTrue(heroe.tieneEfecto(Escudo.ID_EFECTO));
+        assertEquals(new FinEfectoHeroe(EfectoHeroe.ESCUDO),agenda.sacarProximo().evento());
+        heroe.finalizarEfectoSiVencio(EfectoHeroe.ESCUDO, agenda.getPasoActual());
+        assertTrue(heroe.tieneEfecto(EfectoHeroe.ESCUDO));
 
         avanzar(10); // paso 31: vence el segundo
-        assertEquals(TipoEvento.FIN_ESCUDO, agenda.sacarProximo().tipo());
-        heroe.finalizarEfectoSiVencio(Escudo.ID_EFECTO, agenda.getPasoActual());
-        assertFalse(heroe.tieneEfecto(Escudo.ID_EFECTO));
+        assertEquals(new FinEfectoHeroe(EfectoHeroe.ESCUDO),agenda.sacarProximo().evento());
+        heroe.finalizarEfectoSiVencio(EfectoHeroe.ESCUDO, agenda.getPasoActual());
+        assertFalse(heroe.tieneEfecto(EfectoHeroe.ESCUDO));
     }
 
     @Test
@@ -76,8 +71,8 @@ class EscudoTest {
         assertEquals(100, heroe.getEnergia());
 
         avanzar(11);
-        assertEquals(TipoEvento.FIN_ESCUDO, agenda.sacarProximo().tipo());
-        heroe.finalizarEfectoSiVencio(Escudo.ID_EFECTO, agenda.getPasoActual());
+        assertEquals(new FinEfectoHeroe(EfectoHeroe.ESCUDO),agenda.sacarProximo().evento());
+        heroe.finalizarEfectoSiVencio(EfectoHeroe.ESCUDO, agenda.getPasoActual());
 
         errante.alcanzarAlHeroe(heroe, agenda);
         assertEquals(70, heroe.getEnergia());
@@ -94,7 +89,7 @@ class EscudoTest {
         trampa.abrir(heroe, plano, agenda);
 
         assertEquals(75, heroe.getEnergia());
-        assertTrue(heroe.tieneEfecto(Escudo.ID_EFECTO));
+        assertTrue(heroe.tieneEfecto(EfectoHeroe.ESCUDO));
     }
 
     private void avanzar(int pasos) {

@@ -8,6 +8,8 @@ import entidades.monstruos.Cazador;
 import entidades.monstruos.Dormilon;
 import entidades.monstruos.Monstruo;
 import modelo.*;
+import modelo.eventos.DespertarDormilones;
+import modelo.eventos.FinEfectoHeroe;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -50,11 +52,11 @@ public class PersistenciaPartidaTest {
         Heroe heroe = new Heroe(100, mundo.getInicio());
         heroe.perderEnergia(15);
         heroe.agregarObjeto("pocion");
-        heroe.activarEfecto("zapatos", 6);
+        heroe.activarEfecto(EfectoHeroe.ZAPATOS_DE_AGUA, 6);
 
         Agenda agenda = new Agenda();
         agenda.avanzarPaso();
-        agenda.programar(5, TipoEvento.FIN_ZAPATOS_DE_AGUA, null);
+        agenda.programar(5, new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA));
         MazmorraGuardada original = ConversorMazmorra.aGuardada(
                 Dificultad.FACIL, EstadoPartida.EN_CURSO, mundo, heroe, agenda, new Costo(1,3,8));
         PersistenciaMazmorra.guardar(original, ruta);
@@ -67,12 +69,12 @@ public class PersistenciaPartidaTest {
         assertEquals(85, restaurada.heroe().getEnergia());
         assertEquals(heroe.getUbicacion(), restaurada.heroe().getUbicacion());
         assertEquals(1, restaurada.heroe().cantidadDe("pocion"));
-        assertTrue(restaurada.heroe().tieneEfecto("zapatos"));
+        assertTrue(restaurada.heroe().tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA));
         assertEquals(1, restaurada.agenda().getPasoActual());
         assertEquals(1, restaurada.agenda().cantidadDeEventos());
         Plano planoActual = restaurada.mundo().planoEn(restaurada.heroe().getUbicacion());
         assertEquals(1, planoActual.getCofres().cantidad());
-        assertEquals(Integer.valueOf(6), restaurada.heroe().vencimientoDe("zapatos"));
+        assertEquals(Integer.valueOf(6), restaurada.heroe().vencimientoDe(EfectoHeroe.ZAPATOS_DE_AGUA));
     }
 
     /** Cargar sin archivo tira error */
@@ -148,14 +150,20 @@ public class PersistenciaPartidaTest {
         assertFalse(restaurado.estaDespierto());
         assertEquals(1, restaurada.agenda().cantidadDeEventos());
 
-        restaurada.agenda().avanzarPaso();
-        EventoProgramado evento = restaurada.agenda().sacarProximo();
-        assertEquals(TipoEvento.DESPERTAR_DORMILON, evento.tipo());
-        assertEquals("1,1", evento.dato());
+        assertEquals(new DespertarDormilones(1, 1),
+                restaurada.agenda().eventoEn(0).evento());
 
-        restaurado.despertarSiCorresponde(restaurada.agenda().getPasoActual());
-        restaurado.actuar(planoRestaurado, restaurada.heroe(), restaurada.agenda());
+        modelo.Mazmorra partida = new modelo.Mazmorra(
+                restaurada.dificultad(),
+                restaurada.mundo(),
+                restaurada.heroe(),
+                restaurada.agenda(),
+                restaurada.costos(),
+                restaurada.estado());
+
+        partida.esperar();
         assertTrue(restaurado.estaDespierto());
         assertEquals(new Posicion(1, 2), restaurado.getPosicion());
+
     }
 }

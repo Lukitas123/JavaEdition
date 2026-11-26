@@ -1,13 +1,10 @@
 package entidades.objetos;
 
-import modelo.Agenda;
-import modelo.Heroe;
-import modelo.Plano;
-import modelo.TipoEvento;
+import modelo.*;
+import modelo.eventos.FinEfectoHeroe;
 
 public class Escudo implements Objeto{
     public static final String ID_OBJETO = "escudo";
-    public static final String ID_EFECTO = "proteccion_monstruos";
 
     private static final int DURACION = 10;
 
@@ -17,7 +14,7 @@ public class Escudo implements Objeto{
             throw new IllegalArgumentException("Heroe, plano y agenda son obligatorios");
         }
         int pasoActual = agenda.getPasoActual();
-        Integer vencimientoAnterior = heroe.vencimientoDe(ID_EFECTO);
+        Integer vencimientoAnterior = heroe.vencimientoDe(EfectoHeroe.ESCUDO);
 
         int primerPasoLibre = pasoActual + 1;
         if (vencimientoAnterior != null) {
@@ -25,11 +22,10 @@ public class Escudo implements Objeto{
         }
 
         int nuevoVencimiento = primerPasoLibre + DURACION;
-        heroe.activarEfecto(ID_EFECTO, nuevoVencimiento);
+        heroe.activarEfecto(EfectoHeroe.ESCUDO, nuevoVencimiento);
         agenda.programar(
                 nuevoVencimiento - pasoActual,
-                TipoEvento.FIN_ESCUDO,
-                null);
+                new FinEfectoHeroe(EfectoHeroe.ESCUDO));
 
         return new ResultadoUso(true, null);
     }

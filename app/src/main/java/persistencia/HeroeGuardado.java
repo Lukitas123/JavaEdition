@@ -1,5 +1,6 @@
 package persistencia;
 
+import modelo.EfectoHeroe;
 import modelo.Ubicacion;
 import java.util.Map;
 
@@ -9,6 +10,6 @@ public record HeroeGuardado(
         Ubicacion ubicacion,
         int cofresAbiertos,
         Map<String, Integer> inventario,
-        Map<String, Integer> efectos){
+        Map<EfectoHeroe, Integer> efectos){
     
 }

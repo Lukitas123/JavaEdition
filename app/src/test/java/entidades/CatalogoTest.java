@@ -105,7 +105,7 @@ class CatalogoTest {
         Heroe heroe = new Heroe(100, new Ubicacion(1, 1, inicio));
         Monstruo congelador = catalogo.crear("Congelador", inicio);
         congelador.alcanzarAlHeroe(heroe, new Agenda());
-        assertEquals(Integer.valueOf(8), heroe.vencimientoDe(Congelador.INMOVILIZADO));
+        assertEquals(Integer.valueOf(8), heroe.vencimientoDe(EfectoHeroe.INMOVILIZADO));
     }
 
     private record DatosTrampa(Posicion posicion, int danio) {}

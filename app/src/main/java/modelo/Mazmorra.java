@@ -18,7 +18,6 @@ import estructuras.Lista;
 public class Mazmorra {
     /** Tipo de evento de la agenda que apaga un efecto del héroe; el dato es el id del efecto. */
     /** Id del efecto de los zapatos de agua: mientras está activo, el agua cuesta como piso. */
-    public static final String EFECTO_ZAPATOS_AGUA = ZapatosDeAgua.ID_EFECTO;
 
     private final Dificultad dificultad;
     private final Mundo mundo;
@@ -91,7 +90,7 @@ public class Mazmorra {
     }
 
     public boolean debeEsperarPorInmovilizacion() {
-        Integer fin = heroe.vencimientoDe(Congelador.INMOVILIZADO);
+        Integer fin = heroe.vencimientoDe(EfectoHeroe.INMOVILIZADO);
         return fin != null && (long) fin > (long) agenda.getPasoActual() + 1;
     }
 
@@ -104,7 +103,7 @@ public class Mazmorra {
     public int costoDe(Terreno terreno) {
         return switch (terreno) {
             case PISO -> costos.piso();
-            case AGUA -> heroe.tieneEfecto(EFECTO_ZAPATOS_AGUA) ? costos.piso() : costos.agua();
+            case AGUA -> heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA) ? costos.piso() : costos.agua();
             case LAVA -> costos.lava();
             case PARED -> throw new IllegalArgumentException("La pared no se puede pisar.");
         };
@@ -178,54 +177,11 @@ public class Mazmorra {
     private void comenzarPaso() {
         agenda.avanzarPaso();
         while (agenda.hayEventoVencido()) {
-            ejecutarEvento(agenda.sacarProximo());
+            EventoProgramado programado = agenda.sacarProximo();
+            programado.evento().ejecutar(this);
         }
     }
 
-
-    private void ejecutarEvento(EventoProgramado evento) {
-        int pasoActual = agenda.getPasoActual();
-        switch (evento.tipo()) {
-            case FIN_INMOVILIZACION ->
-                    heroe.finalizarEfectoSiVencio(Congelador.INMOVILIZADO, pasoActual);
-            case FIN_ZAPATOS_DE_AGUA ->
-                    heroe.finalizarEfectoSiVencio(ZapatosDeAgua.ID_EFECTO, pasoActual);
-            case FIN_ESCUDO ->
-                    heroe.finalizarEfectoSiVencio(Escudo.ID_EFECTO, pasoActual);
-            case FIN_SUENO -> planoDeEvento(evento).despertarMonstruosSiVencio(pasoActual);
-            case FIN_PUENTE -> planoDeEvento(evento).finalizarPuenteSiVencio(pasoActual);
-            case FIN_LAVA -> planoDeEvento(evento).finalizarLavaSiVencio(pasoActual);
-            case DESPERTAR_DORMILON -> despertarDormilones(evento, pasoActual);
-        }
-    }
-
-    private Plano planoDeEvento(EventoProgramado evento) {
-        String dato = evento.dato();
-        if (dato == null) {
-            throw new IllegalArgumentException("El evento debe identificar su plano.");
-        }
-        String[] identificadores = dato.split(",", -1);
-        if (identificadores.length != 2) {
-            throw new IllegalArgumentException("La ubicacion del evento no es valida.");
-        }
-        try {
-            return mundo.planoEn(
-                    Integer.parseInt(identificadores[0]),
-                    Integer.parseInt(identificadores[1]));
-        } catch (NumberFormatException excepcion) {
-            throw new IllegalArgumentException("La ubicacion del evento no es valida.", excepcion);
-        }
-    }
-
-    private void despertarDormilones(EventoProgramado evento, int pasoActual) {
-        Plano plano = planoDeEvento(evento);
-        for (int i = 0; i < plano.getMonstruos().cantidad(); i++) {
-            Monstruo monstruo = plano.getMonstruos().obtener(i);
-            if (monstruo instanceof Dormilon dormilon) {
-                dormilon.despertarSiCorresponde(pasoActual);
-            }
-        }
-    }
 
     /** Si hay un cofre en la celda, lo abre y lo saca del plano (regla 4). */
     private void abrirCofreSiHay(Plano plano, Posicion posicion) {

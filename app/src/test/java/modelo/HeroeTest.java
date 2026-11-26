@@ -95,17 +95,17 @@ class HeroeTest {
 
     @Test
     void efectosSeActivanYSeDesactivan() {
-        assertFalse(heroe.tieneEfecto("zapatos"));
-        heroe.activarEfecto("zapatos", 20);
-        assertTrue(heroe.tieneEfecto("zapatos"));
-        heroe.desactivarEfecto("zapatos");
-        assertFalse(heroe.tieneEfecto("zapatos"));
+        assertFalse(heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA));
+        heroe.activarEfecto(EfectoHeroe.ZAPATOS_DE_AGUA, 20);
+        assertTrue(heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA));
+        heroe.desactivarEfecto(EfectoHeroe.ZAPATOS_DE_AGUA);
+        assertFalse(heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA));
     }
 
     @Test
     void idsInvalidosLanzanExcepcion() {
         assertThrows(IllegalArgumentException.class, () -> heroe.agregarObjeto(null));
-        assertThrows(IllegalArgumentException.class, () -> heroe.activarEfecto(" ", 20));
+        assertThrows(IllegalArgumentException.class, () -> heroe.activarEfecto(null, 20));
     }
     @Test
     void cuentaUnidadesPorTipoYEliminaLaUltima() {

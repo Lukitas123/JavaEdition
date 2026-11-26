@@ -4,15 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
 
+import modelo.*;
+import modelo.eventos.FinEfectoHeroe;
 import org.junit.jupiter.api.Test;
-
-import modelo.Agenda;
-import modelo.Heroe;
-import modelo.Plano;
-import modelo.Posicion;
-import modelo.Terreno;
-import modelo.TipoEvento;
-import modelo.Ubicacion;
 
 class CongeladorTest {
 
@@ -37,26 +31,26 @@ class CongeladorTest {
 
         assertEquals(100, heroe.getEnergia());
         assertEquals(new Posicion(2, 2), congelador.getPosicion());
-        assertEquals(Integer.valueOf(14), heroe.vencimientoDe(Congelador.INMOVILIZADO));
+        assertEquals(Integer.valueOf(14), heroe.vencimientoDe(EfectoHeroe.INMOVILIZADO));
         assertEquals(1, agenda.cantidadDeEventos());
 
         avanzar(agenda, 2); // paso 12
         congelador.actuar(plano, heroe, agenda);
 
-        assertEquals(Integer.valueOf(17), heroe.vencimientoDe(Congelador.INMOVILIZADO));
+        assertEquals(Integer.valueOf(17), heroe.vencimientoDe(EfectoHeroe.INMOVILIZADO));
         assertEquals(2, agenda.cantidadDeEventos());
 
         avanzar(agenda, 2); // paso 14
-        assertEquals(TipoEvento.FIN_INMOVILIZACION, agenda.sacarProximo().tipo());
+        assertEquals(new FinEfectoHeroe(EfectoHeroe.INMOVILIZADO), agenda.sacarProximo().evento());
         heroe.finalizarEfectoSiVencio(
-                Congelador.INMOVILIZADO, agenda.getPasoActual());
-        assertTrue(heroe.tieneEfecto(Congelador.INMOVILIZADO));
+                EfectoHeroe.INMOVILIZADO, agenda.getPasoActual());
+        assertTrue(heroe.tieneEfecto(EfectoHeroe.INMOVILIZADO));
 
         avanzar(agenda, 3); // paso 17
-        assertEquals(TipoEvento.FIN_INMOVILIZACION, agenda.sacarProximo().tipo());
+        assertEquals(new FinEfectoHeroe(EfectoHeroe.INMOVILIZADO), agenda.sacarProximo().evento());
         heroe.finalizarEfectoSiVencio(
-                Congelador.INMOVILIZADO, agenda.getPasoActual());
-        assertFalse(heroe.tieneEfecto(Congelador.INMOVILIZADO));
+                EfectoHeroe.INMOVILIZADO, agenda.getPasoActual());
+        assertFalse(heroe.tieneEfecto(EfectoHeroe.INMOVILIZADO));
     }
 
     private void avanzar(Agenda agenda, int pasos) {

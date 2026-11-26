@@ -1,6 +1,7 @@
 package entidades.objetos;
 
 import modelo.*;
+import modelo.eventos.FinSueno;
 
 public class Sueno implements Objeto{
     public static final String ID_OBJETO = "sueno";
@@ -15,9 +16,9 @@ public class Sueno implements Objeto{
         int pasoActual = agenda.getPasoActual();
         int vencimiento = plano.dormirMonstruos(pasoActual, DURACION);
         Ubicacion ubicacion = heroe.getUbicacion();
-        String dato = ubicacion.tablero() + "," + ubicacion.piso();
 
-        agenda.programar(vencimiento - pasoActual, TipoEvento.FIN_SUENO, dato);
+        agenda.programar(vencimiento - pasoActual,
+                new FinSueno(ubicacion.tablero(), ubicacion.piso()));
         return new ResultadoUso(true, null);
     }
 }

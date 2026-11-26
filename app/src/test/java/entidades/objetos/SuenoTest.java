@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
 
+import modelo.eventos.FinSueno;
 import org.junit.jupiter.api.Test;
 
 import entidades.cofres.CofreDeSueno;
@@ -14,7 +15,6 @@ import modelo.Heroe;
 import modelo.Plano;
 import modelo.Posicion;
 import modelo.Terreno;
-import modelo.TipoEvento;
 import modelo.Ubicacion;
 
 class SuenoTest {
@@ -58,16 +58,14 @@ class SuenoTest {
 
         avanzar(6); // paso 18
         EventoProgramado primero = agenda.sacarProximo();
-        assertEquals(TipoEvento.FIN_SUENO, primero.tipo());
-        assertEquals("2,3", primero.dato());
+        assertEquals(new FinSueno(2, 3), primero.evento());
         assertEquals(18, primero.pasoDeVencimiento());
         plano.despertarMonstruosSiVencio(agenda.getPasoActual());
         assertTrue(plano.monstruosDormidos());
 
         avanzar(7); // paso 25
         EventoProgramado segundo = agenda.sacarProximo();
-        assertEquals(TipoEvento.FIN_SUENO, segundo.tipo());
-        assertEquals("2,3", segundo.dato());
+        assertEquals(new FinSueno(2, 3), segundo.evento());
         plano.despertarMonstruosSiVencio(agenda.getPasoActual());
         assertFalse(plano.monstruosDormidos());
 

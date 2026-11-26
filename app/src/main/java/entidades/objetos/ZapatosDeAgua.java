@@ -1,13 +1,10 @@
 package entidades.objetos;
 
-import modelo.Agenda;
-import modelo.Heroe;
-import modelo.Plano;
-import modelo.TipoEvento;
+import modelo.*;
+import modelo.eventos.FinEfectoHeroe;
 
 public class ZapatosDeAgua implements Objeto{
     public static final String ID_OBJETO = "zapatos_agua";
-    public static final String ID_EFECTO = "agua_como_piso";
 
     private static final int DURACION = 20;
 
@@ -17,7 +14,7 @@ public class ZapatosDeAgua implements Objeto{
             throw new IllegalArgumentException("Heroe, plano y agenda son obligatorios");
         }
         int pasoActual = agenda.getPasoActual();
-        Integer vencimientoAnterior = heroe.vencimientoDe(ID_EFECTO);
+        Integer vencimientoAnterior = heroe.vencimientoDe(EfectoHeroe.ZAPATOS_DE_AGUA);
 
         int primerPasoLibre = pasoActual + 1;
         if (vencimientoAnterior != null) {
@@ -25,11 +22,11 @@ public class ZapatosDeAgua implements Objeto{
         }
 
         int nuevoVencimiento = primerPasoLibre + DURACION;
-        heroe.activarEfecto(ID_EFECTO, nuevoVencimiento);
+        heroe.activarEfecto(EfectoHeroe.ZAPATOS_DE_AGUA, nuevoVencimiento);
         agenda.programar(
                 nuevoVencimiento - pasoActual,
-                TipoEvento.FIN_ZAPATOS_DE_AGUA,
-                null);
+                new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA));
+
         return new ResultadoUso(true, null);
     }
 }

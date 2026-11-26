@@ -16,7 +16,7 @@ public class Heroe {
     private Ubicacion ubicacion;
     private int cofresAbiertos;
     private final Map<String, Integer> inventario = new HashMap<>();
-    private final TablaHash<String, Integer> efectosActivos = new TablaHash<>();
+    private final TablaHash<EfectoHeroe, Integer> efectosActivos = new TablaHash<>();
 
 
     /**
@@ -151,17 +151,19 @@ public class Heroe {
 
     // EFECTOS ACTIVOS -----------------------------------------------
 
-    public void activarEfecto(String idEfecto, int vencimiento) {
-        validarId(idEfecto);
-        efectosActivos.insertar(idEfecto, vencimiento);
+    public void activarEfecto(EfectoHeroe efectoHeroe, int vencimiento) {
+        validarEfecto(efectoHeroe);
+        efectosActivos.insertar(efectoHeroe, vencimiento);
     }
 
-    public void desactivarEfecto(String idEfecto) {
-        efectosActivos.eliminar(idEfecto);
+    public void desactivarEfecto(EfectoHeroe efectoHeroe) {
+        validarEfecto(efectoHeroe);
+        efectosActivos.eliminar(efectoHeroe);
     }
 
-    public boolean tieneEfecto(String idEfecto) {
-        return efectosActivos.contiene(idEfecto);
+    public boolean tieneEfecto(EfectoHeroe efectoHeroe) {
+        validarEfecto(efectoHeroe);
+        return efectosActivos.contiene(efectoHeroe);
     }
 
     private void validarNoNegativa(int cantidad) {
@@ -170,31 +172,36 @@ public class Heroe {
         }
     }
 
+    private void validarEfecto(EfectoHeroe efectoHeroe) {
+        if (efectoHeroe == null) {
+            throw new IllegalArgumentException("El identificador no puede ser nulo");
+        }
+    }
     private void validarId(String id) {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("El identificador no puede ser nulo ni vacio");
         }
     }
 
-    public Integer vencimientoDe(String idEfecto){
-        validarId(idEfecto);
-        return efectosActivos.obtener(idEfecto);
+    public Integer vencimientoDe(EfectoHeroe efectoHeroe){
+        validarEfecto(efectoHeroe);
+        return efectosActivos.obtener(efectoHeroe);
     }
 
-    public void finalizarEfectoSiVencio(String idEfecto, int pasoActual) {
-        validarId(idEfecto);
+    public void finalizarEfectoSiVencio(EfectoHeroe efectoHeroe, int pasoActual) {
+        validarEfecto(efectoHeroe);
         if (pasoActual < 0) {
             throw new IllegalArgumentException("El paso no puede ser negativo");
         }
 
-        Integer vencimiento = efectosActivos.obtener(idEfecto);
+        Integer vencimiento = efectosActivos.obtener(efectoHeroe);
         if (vencimiento != null && pasoActual >= vencimiento) {
-            efectosActivos.eliminar(idEfecto);
+            efectosActivos.eliminar(efectoHeroe);
         }
     }
 
     //Devuelve un listado de los efectos activos
-    public Lista<String> getListaEfectos(){
+    public Lista<EfectoHeroe> getListaEfectos(){
         return efectosActivos.claves();
     }
 }

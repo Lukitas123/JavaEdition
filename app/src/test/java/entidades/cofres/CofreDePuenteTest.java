@@ -1,6 +1,7 @@
 package entidades.cofres;
 
 import modelo.*;
+import modelo.eventos.FinPuente;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,8 +49,7 @@ class CofreDePuenteTest {
             agenda.avanzarPaso();
         }
         EventoProgramado primerEvento = agenda.sacarProximo();
-        assertEquals(TipoEvento.FIN_PUENTE, primerEvento.tipo());
-        assertEquals("1,1", primerEvento.dato());
+        assertEquals(new FinPuente(1, 1), primerEvento.evento());
         assertEquals(16, primerEvento.pasoDeVencimiento());
 
         plano.finalizarPuenteSiVencio(agenda.getPasoActual());
@@ -60,8 +60,7 @@ class CofreDePuenteTest {
             agenda.avanzarPaso();
         }
         EventoProgramado segundoEvento = agenda.sacarProximo();
-        assertEquals(TipoEvento.FIN_PUENTE, segundoEvento.tipo());
-        assertEquals("1,1", segundoEvento.dato());
+        assertEquals(new FinPuente(1, 1), segundoEvento.evento());
 
         plano.finalizarPuenteSiVencio(agenda.getPasoActual());
         assertNull(plano.getFinPuente());

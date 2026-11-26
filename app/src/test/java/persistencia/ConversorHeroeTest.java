@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Map;
 
+import modelo.EfectoHeroe;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
@@ -17,7 +18,7 @@ public class ConversorHeroeTest {
     @Test
     void heroeSobreviveAConversion() {
         HeroeGuardado original = new HeroeGuardado(80, new Ubicacion(1, 2, new Posicion(3, 4)),
-        2, Map.of("pocion", 1, "daga", 2), Map.of("zapatos", 20));
+        2, Map.of("pocion", 1, "daga", 2), Map.of(EfectoHeroe.ZAPATOS_DE_AGUA, 20));
 
         Gson gson = new Gson();
         String json = gson.toJson(original);

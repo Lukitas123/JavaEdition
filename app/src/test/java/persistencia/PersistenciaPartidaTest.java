@@ -8,6 +8,8 @@ import entidades.monstruos.Cazador;
 import entidades.monstruos.Dormilon;
 import entidades.monstruos.Monstruo;
 import modelo.*;
+import modelo.eventos.DespertarDormilones;
+import modelo.eventos.FinEfectoHeroe;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -145,5 +147,6 @@ public class PersistenciaPartidaTest {
         restaurado.actuar(planoRestaurado, restaurada.getHeroe(), restaurada.getAgenda());
         assertTrue(restaurado.estaDespierto());
         assertEquals(new Posicion(1, 2), restaurado.getPosicion());
+
     }
 }

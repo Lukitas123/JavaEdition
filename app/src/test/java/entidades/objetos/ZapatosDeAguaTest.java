@@ -3,16 +3,11 @@ package entidades.objetos;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import modelo.*;
+import modelo.eventos.FinEfectoHeroe;
 import org.junit.jupiter.api.Test;
 
 import entidades.cofres.CofreZapatosDeAgua;
-import modelo.Agenda;
-import modelo.Heroe;
-import modelo.Plano;
-import modelo.Posicion;
-import modelo.Terreno;
-import modelo.TipoEvento;
-import modelo.Ubicacion;
 
 class ZapatosDeAguaTest {
 
@@ -28,7 +23,7 @@ class ZapatosDeAguaTest {
         cofre.abrir(heroe, plano, agenda);
 
         assertEquals(1, heroe.cantidadDe(ZapatosDeAgua.ID_OBJETO));
-        assertFalse(heroe.tieneEfecto(ZapatosDeAgua.ID_EFECTO));
+        assertFalse(heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA));
         assertEquals(1, heroe.getCofresAbiertos());
         assertNull(plano.cofreEn(posicion));
         assertEquals(0, agenda.cantidadDeEventos());
@@ -44,21 +39,21 @@ class ZapatosDeAguaTest {
 
         avanzar(agenda, 10);
         zapatos.usar(heroe, plano, agenda);
-        assertEquals(Integer.valueOf(31), heroe.vencimientoDe(ZapatosDeAgua.ID_EFECTO));
+        assertEquals(Integer.valueOf(31), heroe.vencimientoDe(EfectoHeroe.ZAPATOS_DE_AGUA));
 
         avanzar(agenda, 2); // paso 12
         zapatos.usar(heroe, plano, agenda);
-        assertEquals(Integer.valueOf(51), heroe.vencimientoDe(ZapatosDeAgua.ID_EFECTO));
+        assertEquals(Integer.valueOf(51), heroe.vencimientoDe(EfectoHeroe.ZAPATOS_DE_AGUA));
 
         avanzar(agenda, 19); // paso 31
-        assertEquals(TipoEvento.FIN_ZAPATOS_DE_AGUA, agenda.sacarProximo().tipo());
-        heroe.finalizarEfectoSiVencio(ZapatosDeAgua.ID_EFECTO, agenda.getPasoActual());
-        assertTrue(heroe.tieneEfecto(ZapatosDeAgua.ID_EFECTO));
+        assertEquals(new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA), agenda.sacarProximo().evento());
+        heroe.finalizarEfectoSiVencio(EfectoHeroe.ZAPATOS_DE_AGUA, agenda.getPasoActual());
+        assertTrue(heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA));
 
         avanzar(agenda, 20); // paso 51
-        assertEquals(TipoEvento.FIN_ZAPATOS_DE_AGUA, agenda.sacarProximo().tipo());
-        heroe.finalizarEfectoSiVencio(ZapatosDeAgua.ID_EFECTO, agenda.getPasoActual());
-        assertFalse(heroe.tieneEfecto(ZapatosDeAgua.ID_EFECTO));
+        assertEquals(new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA), agenda.sacarProximo().evento());
+        heroe.finalizarEfectoSiVencio(EfectoHeroe.ZAPATOS_DE_AGUA, agenda.getPasoActual());
+        assertFalse(heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA));
     }
 
     private void avanzar(Agenda agenda, int pasos) {

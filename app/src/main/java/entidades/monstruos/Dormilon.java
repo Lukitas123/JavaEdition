@@ -1,6 +1,7 @@
 package entidades.monstruos;
 
 import modelo.*;
+import modelo.eventos.DespertarDormilones;
 
 public class Dormilon extends Cazador{
     private EstadoDormilon estado;
@@ -21,8 +22,8 @@ public class Dormilon extends Cazador{
             estado = EstadoDormilon.PENDIENTE_DESPERTAR;
 
             Ubicacion ubicacion = heroe.getUbicacion();
-            String dato = ubicacion.tablero() + "," + ubicacion.piso();
-            agenda.programar(1, TipoEvento.DESPERTAR_DORMILON, dato);
+            agenda.programar(1,
+                    new DespertarDormilones(ubicacion.tablero(), ubicacion.piso()));
         }
     }
 
@@ -35,6 +36,7 @@ public class Dormilon extends Cazador{
         return estado == EstadoDormilon.DESPIERTO;
     }
 
+    @Override
     public void despertarSiCorresponde(int pasoActual){
         if (estado == EstadoDormilon.PENDIENTE_DESPERTAR
                 && pasoActual >= pasoDespertar) {

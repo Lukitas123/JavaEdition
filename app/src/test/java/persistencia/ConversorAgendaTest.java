@@ -2,13 +2,21 @@ package persistencia;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import modelo.TipoEvento;
+import modelo.EfectoHeroe;
+import modelo.eventos.*;
 import org.junit.jupiter.api.Test;
 import com.google.gson.Gson;
 
 import modelo.Agenda;
 
 public class ConversorAgendaTest {
+
+    private Agenda convertirPorJson(Agenda original) {
+        Gson gson = new Gson();
+        String json = gson.toJson(ConversorAgenda.aGuardada(original));
+        AgendaGuardada leida = gson.fromJson(json, AgendaGuardada.class);
+        return ConversorAgenda.aAgenda(leida);
+    }
 
     /**Guarda una Agenda pasada por JSON y esta conserva paso, eventos y orden */
     @Test
@@ -17,38 +25,95 @@ public class ConversorAgendaTest {
         original.avanzarPaso();
         original.avanzarPaso();
         original.avanzarPaso();
-        original.programar(5, TipoEvento.FIN_INMOVILIZACION, "x");
-        original.programar(2, TipoEvento.FIN_ZAPATOS_DE_AGUA, null);
+        Evento finInmovilizacion = new FinEfectoHeroe(EfectoHeroe.INMOVILIZADO);
+        Evento finZapatos = new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA);
+        original.programar(5, finInmovilizacion);
+        original.programar(2, finZapatos);
 
-        Gson gson = new Gson();
-        String json = gson.toJson(ConversorAgenda.aGuardada(original));
-        Agenda restaurada = ConversorAgenda.aAgenda(gson.fromJson(json, AgendaGuardada.class));
+        Agenda restaurada = convertirPorJson(original);
 
         assertEquals(3, restaurada.getPasoActual());
         assertEquals(2, restaurada.cantidadDeEventos());
-        assertEquals(TipoEvento.FIN_INMOVILIZACION, restaurada.eventoEn(0).tipo());
+        assertEquals(finInmovilizacion, restaurada.eventoEn(0).evento());
         assertEquals(8, restaurada.eventoEn(0).pasoDeVencimiento());
 
         restaurada.avanzarPaso();
         restaurada.avanzarPaso();
         assertTrue(restaurada.hayEventoVencido());
-        assertEquals(TipoEvento.FIN_ZAPATOS_DE_AGUA, restaurada.sacarProximo().tipo());
+        assertEquals(finZapatos, restaurada.sacarProximo().evento());
     }
 
     @Test
     void conservaUnEventoYaVencidoAlCargar() {
         Agenda original = new Agenda();
-        original.programar(1, TipoEvento.FIN_INMOVILIZACION, null);
+        Evento evento = new FinEfectoHeroe(EfectoHeroe.INMOVILIZADO);
+        original.programar(1, evento);
         original.avanzarPaso();
-        original.avanzarPaso(); // paso 2; el evento vencía en el 1
+        original.avanzarPaso();
 
-        Gson gson = new Gson();
-        String json = gson.toJson(ConversorAgenda.aGuardada(original));
-        Agenda restaurada = ConversorAgenda.aAgenda(
-                gson.fromJson(json, AgendaGuardada.class));
+        Agenda restaurada = convertirPorJson(original);
 
         assertEquals(2, restaurada.getPasoActual());
         assertTrue(restaurada.hayEventoVencido());
-        assertEquals(1, restaurada.sacarProximo().pasoDeVencimiento());
+        assertEquals(evento, restaurada.sacarProximo().evento());
     }
+    @Test
+    void conservaTodosLosTiposYElOrdenConIgualVencimiento() {
+        Agenda original = new Agenda();
+        Evento[] eventos = {
+                new FinEfectoHeroe(EfectoHeroe.ESCUDO),
+                new FinSueno(1, 2),
+                new FinPuente(2, 1),
+                new FinLava(2, 3),
+                new DespertarDormilones(3, 1)
+        };
+
+        for (Evento evento : eventos) {
+            original.programar(1, evento);
+        }
+
+        Agenda restaurada = convertirPorJson(original);
+        restaurada.avanzarPaso();
+
+        for (Evento esperado : eventos) {
+            assertEquals(esperado, restaurada.sacarProximo().evento());
+        }
+        assertFalse(restaurada.hayEventoVencido());
+    }
+
+    @Test
+    void rechazaAgendaSinPasoActual() {
+        AgendaGuardada guardada = new Gson().fromJson(
+                "{\"eventos\":[]}", AgendaGuardada.class);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> ConversorAgenda.aAgenda(guardada));
+    }
+
+    @Test
+    void rechazaEventoSinVencimiento() {
+        String json = """
+            {"pasoActual": 0, "eventos": [
+                {"tipo": "fin_puente", "datos": {"tablero": 1, "piso": 1}}
+            ]}
+            """;
+        AgendaGuardada guardada = new Gson().fromJson(json, AgendaGuardada.class);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> ConversorAgenda.aAgenda(guardada));
+    }
+
+    @Test
+    void rechazaTipoDeEventoDesconocido() {
+        String json = """
+            {"pasoActual": 0, "eventos": [
+                {"pasoDeVencimiento": 1, "tipo": "desconocido", "datos": {}}
+            ]}
+            """;
+        AgendaGuardada guardada = new Gson().fromJson(json, AgendaGuardada.class);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> ConversorAgenda.aAgenda(guardada));
+    }
+
 }

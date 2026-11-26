@@ -2,6 +2,7 @@ package entidades.cofres;
 
 import estructuras.Lista;
 import modelo.*;
+import modelo.eventos.FinLava;
 
 public class TrampaDeLava extends Cofre {
     private static final int DURACION = 10;
@@ -27,7 +28,7 @@ public class TrampaDeLava extends Cofre {
         }
 
         Ubicacion ubicacion = heroe.getUbicacion();
-        String dato = ubicacion.tablero() + "," + ubicacion.piso();
-        agenda.programar(vencimiento - pasoActual, TipoEvento.FIN_LAVA, dato);
+        agenda.programar(vencimiento - pasoActual,
+                new FinLava(ubicacion.tablero(), ubicacion.piso()));
     }
 }

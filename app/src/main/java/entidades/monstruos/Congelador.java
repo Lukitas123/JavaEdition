@@ -1,14 +1,11 @@
 package entidades.monstruos;
 
-import modelo.Agenda;
-import modelo.Heroe;
-import modelo.Posicion;
-import modelo.TipoEvento;
+import modelo.*;
+import modelo.eventos.FinEfectoHeroe;
 
 import java.util.Random;
 
 public class Congelador extends Errante{
-    public static final String INMOVILIZADO = "inmovilizado";
     private final int duracion;
 
     public Congelador(Posicion posicionInicial, Random random, int duracion){
@@ -26,7 +23,7 @@ public class Congelador extends Errante{
         }
 
         int pasoActual = agenda.getPasoActual();
-        Integer vencimientoAnterior = heroe.vencimientoDe(INMOVILIZADO);
+        Integer vencimientoAnterior = heroe.vencimientoDe(EfectoHeroe.INMOVILIZADO);
 
         int primerPasoLibre = pasoActual + 1;
         if (vencimientoAnterior != null) {
@@ -34,11 +31,10 @@ public class Congelador extends Errante{
         }
 
         int nuevoVencimiento = primerPasoLibre + duracion;
-        heroe.activarEfecto(INMOVILIZADO, nuevoVencimiento);
+        heroe.activarEfecto(EfectoHeroe.INMOVILIZADO, nuevoVencimiento);
         agenda.programar(
                 nuevoVencimiento - pasoActual,
-                TipoEvento.FIN_INMOVILIZACION,
-                null);
+                new FinEfectoHeroe(EfectoHeroe.INMOVILIZADO));
 
         volverAlInicio();
     }

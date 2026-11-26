@@ -2,6 +2,7 @@ package entidades.monstruos;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import modelo.eventos.DespertarDormilones;
 import org.junit.jupiter.api.Test;
 
 import modelo.Agenda;
@@ -11,7 +12,6 @@ import modelo.Heroe;
 import modelo.Plano;
 import modelo.Posicion;
 import modelo.Terreno;
-import modelo.TipoEvento;
 import modelo.Ubicacion;
 
 class DormilonTest {
@@ -40,8 +40,7 @@ class DormilonTest {
 
         agenda.avanzarPaso();
         EventoProgramado evento = agenda.sacarProximo();
-        assertEquals(TipoEvento.DESPERTAR_DORMILON, evento.tipo());
-        assertEquals("1,1", evento.dato());
+        assertEquals(new DespertarDormilones(1, 1), evento.evento());
 
         dormilon.despertarSiCorresponde(agenda.getPasoActual());
         assertTrue(dormilon.estaDespierto());

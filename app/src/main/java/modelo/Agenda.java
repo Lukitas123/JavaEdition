@@ -1,6 +1,7 @@
 package modelo;
 
 import estructuras.Lista;
+import modelo.eventos.Evento;
 
 
 /**
@@ -32,18 +33,17 @@ public class Agenda {
      * Programa un evento para dentro de N pasos.
      *
      * @param pasosDesdeAhora debe ser al menos 1.
-     * @param tipo            qué clase de evento es (no vacío).
-     * @param dato            información extra del evento, puede ser null.
+
      */
-    public void programar(int pasosDesdeAhora, TipoEvento tipo, String dato) {
+    public void programar(int pasosDesdeAhora, Evento evento) {
         if (pasosDesdeAhora < 1) {
             throw new IllegalArgumentException("Los pasos desde ahora deben ser al menos 1.");
         }
-        if (tipo == null ) {
-            throw new IllegalArgumentException("El tipo de evento no puede ser nulo ni vacio.");
+        if (evento == null ) {
+            throw new IllegalArgumentException("El evento no puede ser nulo.");
         }
 
-        eventos.agregar(new EventoProgramado(pasoActual + pasosDesdeAhora, tipo, dato));
+        eventos.agregar(new EventoProgramado(pasoActual + pasosDesdeAhora, evento));
     }
 
 
@@ -89,7 +89,7 @@ public class Agenda {
      * Puede estar vencido al momento de cargar la partida.
      */
     public void restaurarEvento(EventoProgramado evento) {
-        if (evento == null || evento.tipo() == null
+        if (evento == null || evento.evento() == null
                 || evento.pasoDeVencimiento() < 0) {
             throw new IllegalArgumentException("Evento guardado invalido");
         }

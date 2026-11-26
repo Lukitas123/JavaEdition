@@ -1,10 +1,7 @@
 package entidades.monstruos;
 
 import entidades.objetos.Escudo;
-import modelo.Heroe;
-import modelo.Posicion;
-import modelo.Agenda;
-import modelo.Plano;
+import modelo.*;
 
 /**
  * Representa un monstruo que puede actuar en el plano y afectar al heroe.
@@ -13,7 +10,7 @@ import modelo.Plano;
 public abstract class Monstruo {
     private Posicion posicion;
     private Posicion posicionInicial;
-    protected boolean activo;
+    private boolean activo;
 
     protected Monstruo(Posicion posicionInicial){
         if (posicionInicial == null){
@@ -168,7 +165,7 @@ public abstract class Monstruo {
     }
 
     protected void daniarAlHeroe(Heroe heroe, int danio){
-        if(!heroe.tieneEfecto(Escudo.ID_EFECTO)){
+        if(!heroe.tieneEfecto(EfectoHeroe.ESCUDO)){
             heroe.perderEnergia(danio);
         }
     }
@@ -180,6 +177,10 @@ public abstract class Monstruo {
 
     /** Restaura el estado propio del tipo desde el texto de exportarEstado. */
     public void importarEstado(String estado) {
+    }
+
+    public void despertarSiCorresponde(int pasoActual){
+        // override dormilon
     }
 
 }

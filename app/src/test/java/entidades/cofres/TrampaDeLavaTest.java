@@ -1,6 +1,7 @@
 package entidades.cofres;
 
 import modelo.*;
+import modelo.eventos.FinLava;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,8 +47,7 @@ class TrampaDeLavaTest {
         }
 
         EventoProgramado evento = agenda.sacarProximo();
-        assertEquals(TipoEvento.FIN_LAVA, evento.tipo());
-        assertEquals("2,3", evento.dato());
+        assertEquals(new FinLava(2, 3), evento.evento());
         assertEquals(11, evento.pasoDeVencimiento());
 
         plano.finalizarLavaSiVencio(agenda.getPasoActual());

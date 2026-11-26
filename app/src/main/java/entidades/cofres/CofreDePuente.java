@@ -1,6 +1,7 @@
 package entidades.cofres;
 
 import modelo.*;
+import modelo.eventos.FinPuente;
 
 public class CofreDePuente extends Cofre{
     private static final int DURACION = 15;
@@ -15,7 +16,7 @@ public class CofreDePuente extends Cofre{
         int vencimiento = plano.activarPuente(pasoActual, DURACION);
         Ubicacion ubicacion = heroe.getUbicacion();
 
-        String dato = ubicacion.tablero() + "," + ubicacion.piso();
-        agenda.programar(vencimiento - pasoActual, TipoEvento.FIN_PUENTE, dato);
+        agenda.programar(vencimiento - pasoActual,
+                new FinPuente(ubicacion.tablero(), ubicacion.piso()));
     }
 }

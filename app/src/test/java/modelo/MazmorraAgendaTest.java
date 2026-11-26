@@ -10,6 +10,7 @@ import entidades.monstruos.Cazador;
 import entidades.monstruos.Congelador;
 import entidades.monstruos.Dormilon;
 import entidades.objetos.Sueno;
+import modelo.eventos.FinEfectoHeroe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +38,7 @@ class MazmorraAgendaTest {
 
     @Test
     void conZapatosElAguaCuestaComoPiso() {
-        mazmorra.getHeroe().activarEfecto(Mazmorra.EFECTO_ZAPATOS_AGUA, 100);
+        mazmorra.getHeroe().activarEfecto(EfectoHeroe.ZAPATOS_DE_AGUA, 100);
 
         mazmorra.moverHeroe(Direccion.DERECHA);
         mazmorra.moverHeroe(Direccion.DERECHA);
@@ -48,16 +49,16 @@ class MazmorraAgendaTest {
     @Test
     void elEventoVencidoApagaElEfectoAlEmpezarElPaso() {
         Heroe heroe = mazmorra.getHeroe();
-        heroe.activarEfecto(Mazmorra.EFECTO_ZAPATOS_AGUA, 2);
+        heroe.activarEfecto(EfectoHeroe.ZAPATOS_DE_AGUA, 2);
         mazmorra.getAgenda().programar(
-                2, TipoEvento.FIN_ZAPATOS_DE_AGUA, null);
+                2, new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA));
 
         mazmorra.moverHeroe(Direccion.DERECHA);
-        assertTrue(heroe.tieneEfecto(Mazmorra.EFECTO_ZAPATOS_AGUA));
+        assertTrue(heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA));
 
         // En el paso 2 el efecto vence antes de moverse: el agua vuelve a costar 3
         mazmorra.moverHeroe(Direccion.DERECHA);
-        assertFalse(heroe.tieneEfecto(Mazmorra.EFECTO_ZAPATOS_AGUA));
+        assertFalse(heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA));
         assertEquals(96, heroe.getEnergia());
         assertEquals(0, mazmorra.getAgenda().cantidadDeEventos());
     }
@@ -65,13 +66,13 @@ class MazmorraAgendaTest {
     @Test
     void esperarTambienCorreLaAgenda() {
         Heroe heroe = mazmorra.getHeroe();
-        heroe.activarEfecto(Mazmorra.EFECTO_ZAPATOS_AGUA, 1);
+        heroe.activarEfecto(EfectoHeroe.ZAPATOS_DE_AGUA, 1);
         mazmorra.getAgenda().programar(
-                1, TipoEvento.FIN_ZAPATOS_DE_AGUA, null);
+                1, new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA));
 
         mazmorra.esperar();
 
-        assertFalse(heroe.tieneEfecto(Mazmorra.EFECTO_ZAPATOS_AGUA));
+        assertFalse(heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA));
         assertEquals(100, heroe.getEnergia());
         assertEquals(1, mazmorra.getAgenda().getPasoActual());
     }
@@ -79,7 +80,7 @@ class MazmorraAgendaTest {
     @Test
     void unEventoSinEfectoActivoSeConsumeSinRomperNada() {
         mazmorra.getAgenda().programar(
-                1, TipoEvento.FIN_INMOVILIZACION, null);
+                1, new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA));
 
         mazmorra.moverHeroe(Direccion.DERECHA);
 
@@ -183,7 +184,7 @@ class MazmorraAgendaTest {
 
         assertFalse(mazmorra.debeEsperarPorInmovilizacion());
         assertTrue(mazmorra.moverHeroe(Direccion.DERECHA));
-        assertFalse(heroe.tieneEfecto(Congelador.INMOVILIZADO));
+        assertFalse(heroe.tieneEfecto(EfectoHeroe.INMOVILIZADO));
         assertEquals(new Posicion(2, 3), heroe.getUbicacion().posicion());
     }
 }

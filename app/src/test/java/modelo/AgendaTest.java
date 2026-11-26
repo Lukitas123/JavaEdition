@@ -2,6 +2,7 @@ package modelo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import modelo.eventos.FinEfectoHeroe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,46 +23,63 @@ class AgendaTest {
 
     @Test
     void elEventoVenceCuandoPasaLaCantidadDePasos() {
-        agenda.programar(3, TipoEvento.FIN_ZAPATOS_DE_AGUA, "zapatos");
+        FinEfectoHeroe finZapatos =
+                new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA);
+        agenda.programar(3, finZapatos);
+
         agenda.avanzarPaso();
         agenda.avanzarPaso();
         assertFalse(agenda.hayEventoVencido());
+
         agenda.avanzarPaso();
         assertTrue(agenda.hayEventoVencido());
 
         EventoProgramado evento = agenda.sacarProximo();
-        assertEquals(TipoEvento.FIN_ZAPATOS_DE_AGUA, evento.tipo());
-        assertEquals("zapatos", evento.dato());
+        assertEquals(finZapatos, evento.evento());
         assertEquals(3, evento.pasoDeVencimiento());
         assertFalse(agenda.hayEventoVencido());
     }
 
     @Test
     void losEventosSalenEnOrdenDeVencimiento() {
-        agenda.programar(5, TipoEvento.FIN_ZAPATOS_DE_AGUA, null);
-        agenda.programar(2, TipoEvento.FIN_INMOVILIZACION, null);
+        FinEfectoHeroe finZapatos =
+                new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA);
+        FinEfectoHeroe finInmovilizacion =
+                new FinEfectoHeroe(EfectoHeroe.INMOVILIZADO);
+
+        agenda.programar(5, finZapatos);
+        agenda.programar(2, finInmovilizacion);
+
         for (int i = 0; i < 5; i++) {
             agenda.avanzarPaso();
         }
-        assertEquals(TipoEvento.FIN_INMOVILIZACION, agenda.sacarProximo().tipo());
-        assertEquals(TipoEvento.FIN_ZAPATOS_DE_AGUA, agenda.sacarProximo().tipo());
+
+        assertEquals(finInmovilizacion, agenda.sacarProximo().evento());
+        assertEquals(finZapatos, agenda.sacarProximo().evento());
     }
 
     @Test
     void conIgualVencimientoSaleElProgramadoPrimero() {
-        agenda.programar(2, TipoEvento.FIN_INMOVILIZACION, null);
-        agenda.programar(2, TipoEvento.FIN_ZAPATOS_DE_AGUA, null);
+        FinEfectoHeroe primero =
+                new FinEfectoHeroe(EfectoHeroe.INMOVILIZADO);
+        FinEfectoHeroe segundo =
+                new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA);
+
+        agenda.programar(2, primero);
+        agenda.programar(2, segundo);
         agenda.avanzarPaso();
         agenda.avanzarPaso();
-        assertEquals(TipoEvento.FIN_INMOVILIZACION, agenda.sacarProximo().tipo());
-        assertEquals(TipoEvento.FIN_ZAPATOS_DE_AGUA, agenda.sacarProximo().tipo());
+
+        assertEquals(primero, agenda.sacarProximo().evento());
+        assertEquals(segundo, agenda.sacarProximo().evento());
     }
 
     @Test
     void laProgramacionEsRelativaAlPasoActual() {
         agenda.avanzarPaso();
         agenda.avanzarPaso();
-        agenda.programar(2, TipoEvento.FIN_INMOVILIZACION, null); // vence en el paso 4
+        agenda.programar(2, new FinEfectoHeroe(EfectoHeroe.INMOVILIZADO));
+
         agenda.avanzarPaso();
         assertFalse(agenda.hayEventoVencido());
         agenda.avanzarPaso();
@@ -70,12 +88,14 @@ class AgendaTest {
 
     @Test
     void sacarSinEventosVencidosLanzaExcepcion() {
-        agenda.programar(5, TipoEvento.FIN_ZAPATOS_DE_AGUA, null);
+        agenda.programar(5, new FinEfectoHeroe(EfectoHeroe.ZAPATOS_DE_AGUA));
         assertThrows(IllegalStateException.class, () -> agenda.sacarProximo());
     }
 
     @Test
     void parametrosInvalidosLanzanExcepcion() {
-        assertThrows(IllegalArgumentException.class, () -> agenda.programar(3, null, null));
+        assertThrows(IllegalArgumentException.class, () -> agenda.programar(3, null));
+        assertThrows(IllegalArgumentException.class,
+                () -> agenda.programar(0, new FinEfectoHeroe(EfectoHeroe.ESCUDO)));
     }
 }

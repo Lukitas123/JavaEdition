@@ -3,6 +3,7 @@ package persistencia;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Path;
+import java.util.Random;
 
 import entidades.monstruos.Cazador;
 import entidades.monstruos.Dormilon;
@@ -52,11 +53,10 @@ public class PersistenciaPartidaTest {
         agenda.avanzarPaso();
 
         Mazmorra original = new Mazmorra(Dificultad.FACIL, mundo, heroe, agenda,
-                new Costo(1, 3, 8), EstadoPartida.GANADA);
+                new Costo(1, 3, 8),ParametrosDePrueba.ENTIDADES,  EstadoPartida.GANADA);
 
         PersistenciaMazmorra.guardar(ConversorMazmorra.aGuardada(original), ruta);
-        Mazmorra restaurada = ConversorMazmorra.aMazmorra(PersistenciaMazmorra.cargar(ruta),
-                CatalogosDePrueba.monstruos(), CatalogosDePrueba.cofres());
+        Mazmorra restaurada = ConversorMazmorra.aMazmorra(PersistenciaMazmorra.cargar(ruta), new Random(1));
 
         assertEquals(Dificultad.FACIL, restaurada.getDificultad());
         assertEquals(EstadoPartida.GANADA, restaurada.getEstado());
@@ -90,11 +90,11 @@ public class PersistenciaPartidaTest {
         Heroe heroe = new Heroe(100, new Ubicacion(1, 1, destino));
 
         MazmorraGuardada guardada = ConversorMazmorra.aGuardada(new Mazmorra(Dificultad.FACIL, mundo,
-                heroe, new Agenda(), costos, EstadoPartida.EN_CURSO));
+                heroe, new Agenda(), costos, ParametrosDePrueba.ENTIDADES, EstadoPartida.EN_CURSO));
         PersistenciaMazmorra.guardar(guardada, ruta);
         MazmorraGuardada leida = PersistenciaMazmorra.cargar(ruta);
         Mazmorra restaurada = ConversorMazmorra.aMazmorra(
-                leida, CatalogosDePrueba.monstruos(leida.costos()), pruebaCofre());
+                leida, new Random(1));
 
         Plano planoRestaurado = restaurada.getMundo().planoEn(1, 1);
         Monstruo monstruo = planoRestaurado.getMonstruos().get(0);
@@ -126,11 +126,11 @@ public class PersistenciaPartidaTest {
 
 
         MazmorraGuardada guardada = ConversorMazmorra.aGuardada( new Mazmorra
-                (Dificultad.FACIL, mundo, heroe, agenda, costos, EstadoPartida.EN_CURSO));
+                (Dificultad.FACIL, mundo, heroe, agenda, costos, ParametrosDePrueba.ENTIDADES, EstadoPartida.EN_CURSO));
         PersistenciaMazmorra.guardar(guardada, ruta);
         MazmorraGuardada leida = PersistenciaMazmorra.cargar(ruta);
         Mazmorra restaurada = ConversorMazmorra.aMazmorra(
-                leida, CatalogosDePrueba.monstruos(leida.costos()), pruebaCofre());
+                leida, new Random(1));
         Plano planoRestaurado = restaurada.getMundo().planoEn(1, 1);
         Dormilon restaurado = assertInstanceOf(
                 Dormilon.class, planoRestaurado.getMonstruos().get(0));

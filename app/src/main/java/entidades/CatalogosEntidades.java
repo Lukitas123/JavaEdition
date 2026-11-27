@@ -2,6 +2,7 @@ package entidades;
 
 import entidades.cofres.*;
 import entidades.monstruos.*;
+import entidades.objetos.*;
 import modelo.Costo;
 import modelo.ParametrosEntidades;
 
@@ -77,6 +78,37 @@ public class CatalogosEntidades {
                         posicion,
                         costos,
                         parametros.danioBasico()));
+
+        return catalogo;
+    }
+
+    public static CatalogoObjetos objetos(
+            ParametrosEntidades parametros,
+            Random azar) {
+
+        if (parametros == null || azar == null) {
+            throw new IllegalArgumentException(
+                    "Parametros del catalogo invalidos");
+        }
+
+        CatalogoObjetos catalogo = new CatalogoObjetos();
+
+        catalogo.registrar(ZapatosDeAgua.ID_OBJETO,
+                new ZapatosDeAgua(parametros.duracionZapatosAgua()));
+
+        catalogo.registrar(Escudo.ID_OBJETO,
+                new Escudo(parametros.duracionEscudo()));
+
+        catalogo.registrar(Sueno.ID_OBJETO,
+                new Sueno(parametros.duracionSueno()));
+
+        catalogo.registrar(PocionDeEnergia.id,
+                new PocionDeEnergia(parametros.energiaPocion()));
+
+        catalogo.registrar(Brujula.ID_OBJETO, new Brujula());
+
+        catalogo.registrar(Daga.ID_OBJETO,
+                new Daga(new Random(azar.nextLong())));
 
         return catalogo;
     }

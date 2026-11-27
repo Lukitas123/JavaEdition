@@ -42,7 +42,7 @@ class MazmorraTest {
         mundo.agregarPlano(1, 1, abierto(true));
         Mazmorra mazmorra = new Mazmorra(Dificultad.DIFICIL, mundo,
                 new Heroe(50, mundo.getInicio()), new Agenda(), new Costo(1, 3, 8),
-                EstadoPartida.GANADA);
+                ParametrosDePrueba.ENTIDADES, EstadoPartida.GANADA);
 
         assertTrue(mazmorra.estaTerminada());
         assertEquals(EstadoPartida.GANADA, mazmorra.getEstado());
@@ -57,14 +57,14 @@ class MazmorraTest {
         Costo costos = new Costo(1, 3, 8);
 
         assertThrows(IllegalArgumentException.class,
-                () -> new Mazmorra(null, mundo, heroe, agenda, costos));
+                () -> new Mazmorra(null, mundo, heroe, agenda, costos, ParametrosDePrueba.ENTIDADES));
         assertThrows(IllegalArgumentException.class,
-                () -> new Mazmorra(Dificultad.FACIL, null, heroe, agenda, costos));
+                () -> new Mazmorra(Dificultad.FACIL, null, heroe, agenda, costos, ParametrosDePrueba.ENTIDADES));
         assertThrows(IllegalArgumentException.class,
-                () -> new Mazmorra(Dificultad.FACIL, mundo, null, agenda, costos));
+                () -> new Mazmorra(Dificultad.FACIL, mundo, null, agenda, costos, ParametrosDePrueba.ENTIDADES));
         assertThrows(IllegalArgumentException.class,
-                () -> new Mazmorra(Dificultad.FACIL, mundo, heroe, null, costos));
+                () -> new Mazmorra(Dificultad.FACIL, mundo, heroe, null, costos, ParametrosDePrueba.ENTIDADES));
         assertThrows(IllegalArgumentException.class,
-                () -> new Mazmorra(Dificultad.FACIL, mundo, heroe, agenda, null));
+                () -> new Mazmorra(Dificultad.FACIL, mundo, heroe, agenda, null, ParametrosDePrueba.ENTIDADES));
     }
 }

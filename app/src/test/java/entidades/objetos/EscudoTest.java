@@ -38,7 +38,7 @@ class EscudoTest {
 
     @Test
     void otroEscudoSumaDiezPasosYElEventoAnteriorNoLoCancela() {
-        Escudo escudo = new Escudo();
+        Escudo escudo = new Escudo(10);
 
         avanzar(10);
         assertTrue(escudo.usar(heroe, plano, agenda).seConsume());
@@ -64,7 +64,7 @@ class EscudoTest {
         Errante errante = new Errante(posicion, new Random(1),30);
         Fantasma fantasma = new Fantasma(posicion, new Random(1),30);
 
-        new Escudo().usar(heroe, plano, agenda);
+        new Escudo(10).usar(heroe, plano, agenda);
 
         errante.alcanzarAlHeroe(heroe, agenda);
         fantasma.alcanzarAlHeroe(heroe, agenda);
@@ -82,7 +82,7 @@ class EscudoTest {
 
     @Test
     void noProtegeDeUnaTrampa() {
-        new Escudo().usar(heroe, plano, agenda);
+        new Escudo(10).usar(heroe, plano, agenda);
         TrampaDeEnergia trampa = new TrampaDeEnergia(posicion, 25);
         plano.agregarCofre(trampa);
 

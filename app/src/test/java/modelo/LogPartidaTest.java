@@ -60,7 +60,7 @@ class LogPartidaTest {
         mundo.agregarPlano(1, 1, plano);
         Heroe heroe = new Heroe(50, mundo.getInicio());
         Mazmorra mazmorra = new Mazmorra(
-                Dificultad.FACIL, mundo, heroe, new Agenda(), new Costo(1, 3, 5));
+                Dificultad.FACIL, mundo, heroe, new Agenda(), new Costo(1, 3, 5), ParametrosDePrueba.ENTIDADES);
 
         mazmorra.esperar();
         assertTrue(mazmorra.moverHeroe(Direccion.DERECHA));

@@ -136,7 +136,7 @@ class MazmorraAgendaTest {
         Cazador cazador = new Cazador(new Posicion(2, 5), new Costo(1, 3, 8),30);
         plano.agregarMonstruo(cazador);
 
-        new Sueno().usar(mazmorra.getHeroe(), plano, mazmorra.getAgenda());
+        new Sueno(7).usar(mazmorra.getHeroe(), plano, mazmorra.getAgenda());
 
         for (int i = 0; i < 7; i++) {
             mazmorra.esperar();

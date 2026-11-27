@@ -69,11 +69,11 @@ class MazmorraUsarObjetoTest {
     private static CatalogoObjetos catalogo() {
         CatalogoObjetos catalogo = new CatalogoObjetos();
         catalogo.registrar(PocionDeEnergia.id, new PocionDeEnergia(30));
-        catalogo.registrar(ZapatosDeAgua.ID_OBJETO, new ZapatosDeAgua());
-        catalogo.registrar(Escudo.ID_OBJETO, new Escudo());
+        catalogo.registrar(ZapatosDeAgua.ID_OBJETO, new ZapatosDeAgua(20));
+        catalogo.registrar(Escudo.ID_OBJETO, new Escudo(10));
         catalogo.registrar(Daga.ID_OBJETO, new Daga(new Random(1)));
         catalogo.registrar(Brujula.ID_OBJETO, new Brujula());
-        catalogo.registrar(Sueno.ID_OBJETO, new Sueno());
+        catalogo.registrar(Sueno.ID_OBJETO, new Sueno(7));
         return catalogo;
     }
 
@@ -81,7 +81,7 @@ class MazmorraUsarObjetoTest {
         Mundo mundo = new Mundo(1, 1);
         mundo.agregarPlano(1, 1, plano);
         return new Mazmorra(Dificultad.FACIL, mundo, new Heroe(energia, mundo.getInicio()),
-                new Agenda(), new Costo(1, 3, 8), catalogo());
+                new Agenda(), new Costo(1, 3, 8),ParametrosDePrueba.ENTIDADES, catalogo());
     }
 
     private static boolean logContiene(Mazmorra mazmorra, String texto) {
@@ -303,7 +303,7 @@ class MazmorraUsarObjetoTest {
         Mundo mundo = new Mundo(1, 1);
         mundo.agregarPlano(1, 1, abierto());
         Mazmorra sinCatalogo = new Mazmorra(Dificultad.FACIL, mundo,
-                new Heroe(100, mundo.getInicio()), new Agenda(), new Costo(1, 3, 8));
+                new Heroe(100, mundo.getInicio()), new Agenda(), new Costo(1, 3, 8), ParametrosDePrueba.ENTIDADES);
         sinCatalogo.getHeroe().agregarObjeto(PocionDeEnergia.id);
 
         assertThrows(IllegalArgumentException.class, () -> sinCatalogo.usarObjeto(PocionDeEnergia.id));
@@ -322,7 +322,7 @@ class MazmorraUsarObjetoTest {
         Mundo mundo = new Mundo(1, 1);
         mundo.agregarPlano(1, 1, abierto());
         Mazmorra terminada = new Mazmorra(Dificultad.FACIL, mundo, new Heroe(100, mundo.getInicio()),
-                new Agenda(), new Costo(1, 3, 8), EstadoPartida.GANADA, catalogo());
+                new Agenda(), new Costo(1, 3, 8),ParametrosDePrueba.ENTIDADES, EstadoPartida.GANADA, catalogo());
 
         assertThrows(IllegalStateException.class, () -> terminada.usarObjeto(PocionDeEnergia.id));
     }

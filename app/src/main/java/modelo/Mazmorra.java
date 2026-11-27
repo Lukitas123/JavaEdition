@@ -2,6 +2,7 @@ package modelo;
 
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
+import entidades.objetos.CatalogoObjetos;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,8 @@ import java.util.List;
  * La partida: junta el mundo, el héroe y la agenda, y aplica las reglas del juego.
  * Cada acción válida del héroe (moverse o esperar) es un paso: al empezar se ejecutan
  * los eventos vencidos de la agenda, el héroe actúa y después actúan los monstruos
- * del plano donde está.
- * Esta clase nunca imprime ni dibuja: quien la usa (la vista) solo lee su estado.
+ * del plano donde está
+ * Esta clase nunca imprime ni dibuja: quien la usa (la vista) solo lee su estado
  */
 public class Mazmorra {
     private final Dificultad dificultad;
@@ -18,28 +19,50 @@ public class Mazmorra {
     private final Heroe heroe;
     private final Agenda agenda;
     private final Costo costos;
+    private final CatalogoObjetos objetos;
     private final LogPartida log = new LogPartida();
     private EstadoPartida estado;
 
     /**
-     * Crea una partida nueva, en curso.
+     * Crea una partida nueva, en curso y sin objetos usables (catálogo vacío)
      *
-     * @throws IllegalArgumentException si alguno de los argumentos es null.
+     * @throws IllegalArgumentException si alguno de los argumentos es null
      */
     public Mazmorra(Dificultad dificultad, Mundo mundo, Heroe heroe, Agenda agenda, Costo costos) {
-        this(dificultad, mundo, heroe, agenda, costos, EstadoPartida.EN_CURSO);
+        this(dificultad, mundo, heroe, agenda, costos, EstadoPartida.EN_CURSO, new CatalogoObjetos());
     }
 
     /**
-     * Crea una partida con un estado dado (lo usa la carga de una partida guardada).
+     * Crea una partida nueva, en curso, con el catálogo de objetos que el héroe puede usar
      *
-     * @throws IllegalArgumentException si alguno de los argumentos es null.
+     * @throws IllegalArgumentException si alguno de los argumentos es null
+     */
+    public Mazmorra(Dificultad dificultad, Mundo mundo, Heroe heroe, Agenda agenda,
+                    Costo costos, CatalogoObjetos objetos) {
+        this(dificultad, mundo, heroe, agenda, costos, EstadoPartida.EN_CURSO, objetos);
+    }
+
+    /**
+     * Crea una partida con un estado dado y sin objetos usables (catálogo vacío)
+     *
+     * @throws IllegalArgumentException si alguno de los argumentos es null
      */
     public Mazmorra(Dificultad dificultad, Mundo mundo, Heroe heroe, Agenda agenda,
                     Costo costos, EstadoPartida estado) {
+        this(dificultad, mundo, heroe, agenda, costos, estado, new CatalogoObjetos());
+    }
+
+    /**
+     * Crea una partida con un estado dado y el catálogo de objetos que el héroe puede usar
+     * (lo usa la carga de una partida guardada)
+     *
+     * @throws IllegalArgumentException si alguno de los argumentos es null
+     */
+    public Mazmorra(Dificultad dificultad, Mundo mundo, Heroe heroe, Agenda agenda,
+                    Costo costos, EstadoPartida estado, CatalogoObjetos objetos) {
         if (dificultad == null || mundo == null || heroe == null || agenda == null
-                || costos == null || estado == null) {
-            throw new IllegalArgumentException("Ningun dato de la partida puede ser null.");
+                || costos == null || estado == null || objetos == null) {
+            throw new IllegalArgumentException("Ningun dato de la partida puede ser null");
         }
         this.dificultad = dificultad;
         this.mundo = mundo;
@@ -47,6 +70,7 @@ public class Mazmorra {
         this.agenda = agenda;
         this.costos = costos;
         this.estado = estado;
+        this.objetos = objetos;
     }
 
     public Dificultad getDificultad() {
@@ -77,17 +101,17 @@ public class Mazmorra {
         return log;
     }
 
-    /** @return true si la partida ya se ganó o se perdió. */
+    /** @return true si la partida ya se ganó o se perdió */
     public boolean estaTerminada() {
         return estado != EstadoPartida.EN_CURSO;
     }
 
-    /** El plano donde está el héroe ahora. */
+    /** El plano donde está el héroe ahora */
     public Plano planoActual() {
         return mundo.planoEn(heroe.getUbicacion());
     }
 
-    /** Puntaje según la regla 9: cofres × 100 + energía × 2 - pasos. */
+    /** Puntaje según regla 9: cofres × 100 + energía × 2 - pasos */
     public Puntaje calcularPuntaje() {
         return new Puntaje(heroe.getCofresAbiertos(), heroe.getEnergia(), agenda.getPasoActual());
     }
@@ -99,34 +123,34 @@ public class Mazmorra {
 
     /**
      * Cuánta energía cuesta entrar a un terreno. Con el efecto de los zapatos de agua
-     * activo, el agua cuesta como piso.
+     * activo, el agua cuesta como piso
      *
-     * @throws IllegalArgumentException si el terreno es pared (no se puede pisar).
+     * @throws IllegalArgumentException si el terreno es pared (no se puede pisar)
      */
     public int costoDe(Terreno terreno) {
         return switch (terreno) {
             case PISO -> costos.piso();
             case AGUA -> heroe.tieneEfecto(EfectoHeroe.ZAPATOS_DE_AGUA) ? costos.piso() : costos.agua();
             case LAVA -> costos.lava();
-            case PARED -> throw new IllegalArgumentException("La pared no se puede pisar.");
+            case PARED -> throw new IllegalArgumentException("La pared no se puede pisar");
         };
     }
 
     /**
      * El héroe intenta moverse una celda. Si el destino es pared o está fuera del plano
-     * no es una acción válida: no pasa nada y no cuenta como paso.
+     * no es una acción válida: no pasa nada y no cuenta como paso
      * Si es válida: se ejecutan los eventos vencidos, el héroe paga el costo del terreno,
      * y se resuelve la celda (salida, cofre, conexión) y el turno de los monstruos.
-     * Si pisa la salida gana, aunque el movimiento le deje la energía en 0.
+     * Si pisa la salida gana, aunque el movimiento le deje la energía en 0
      *
-     * @return true si la acción fue válida y se hizo un paso.
-     * @throws IllegalArgumentException si la dirección es null.
-     * @throws IllegalStateException    si la partida ya terminó.
+     * @return true si la acción fue válida y se hizo un paso
+     * @throws IllegalArgumentException si la dirección es null
+     * @throws IllegalStateException    si la partida ya terminó
      */
     public boolean moverHeroe(Direccion direccion) {
         validarEnCurso();
         if (direccion == null) {
-            throw new IllegalArgumentException("La direccion no puede ser null.");
+            throw new IllegalArgumentException("La direccion no puede ser null");
         }
         if (debeEsperarPorInmovilizacion()) {
             return false;
@@ -146,7 +170,7 @@ public class Mazmorra {
 
         if (heroe.getUbicacion().equals(mundo.ubicacionDeSalida())) {
             estado = EstadoPartida.GANADA;
-            log.registrar(agenda.getPasoActual(), "Heroe llego a la salida. Partida ganada.");
+            log.registrar(agenda.getPasoActual(), "Heroe llego a la salida, partida ganada");
             return true;
         }
         if (verificarDerrota()) {
@@ -166,9 +190,9 @@ public class Mazmorra {
 
     /**
      * El héroe espera: no gasta energía, pero pasa un paso (corren los eventos y actúan
-     * los monstruos).
+     * los monstruos)
      *
-     * @throws IllegalStateException si la partida ya terminó.
+     * @throws IllegalStateException si la partida ya terminó
      */
     public void esperar() {
         validarEnCurso();
@@ -178,9 +202,9 @@ public class Mazmorra {
         verificarDerrota();
     }
 
-    // ---------- Piezas de un paso ----------
+    // PIEZAS DE UN PASO
 
-    /** Empieza un paso: avanza la agenda y ejecuta los eventos que ya vencieron, en orden. */
+    /** Empieza un paso: avanza la agenda y ejecuta los eventos que ya vencieron, en orden */
     private void comenzarPaso() {
         agenda.avanzarPaso();
         while (agenda.hayEventoVencido()) {
@@ -192,7 +216,7 @@ public class Mazmorra {
     }
 
 
-    /** Si hay un cofre en la celda, lo abre y lo saca del plano (regla 4). */
+    /** Si hay un cofre en la celda, lo abre y lo saca del plano (regla 4) */
     private void abrirCofreSiHay(Plano plano, Posicion posicion) {
         Cofre cofre = plano.cofreEn(posicion);
         if (cofre != null) {
@@ -203,8 +227,8 @@ public class Mazmorra {
     }
 
     /**
-     * Si la celda es el extremo de una conexión, lleva al héroe al otro extremo (regla 5).
-     * Al llegar no se vuelve a usar la conexión: solo se usa al pisarla caminando.
+     * Si la celda es el extremo de una conexión, lleva al héroe al otro extremo (regla 5)
+     * Al llegar no se vuelve a usar la conexión: solo se usa al pisarla caminando
      */
     private void usarConexionSiHay() {
         Conexion conexion = mundo.conexionEn(heroe.getUbicacion());
@@ -221,7 +245,7 @@ public class Mazmorra {
     /**
      * Hacen su turno los monstruos del plano donde está el héroe (nunca cambian de plano
      * y los de otros planos no actúan). Se recorre una copia de la lista por si un
-     * monstruo se saca del plano mientras actúa.
+     * monstruo se saca del plano mientras actúa
      */
     private void moverMonstruos() {
         Plano plano = planoActual();
@@ -231,11 +255,11 @@ public class Mazmorra {
         }
     }
 
-    /** @return true (y deja la partida perdida) si al héroe se le acabó la energía. */
+    /** @return true (y deja la partida perdida) si al héroe se le acabó la energía */
     private boolean verificarDerrota() {
         if (heroe.estaSinEnergia()) {
             estado = EstadoPartida.PERDIDA;
-            log.registrar(agenda.getPasoActual(), "Heroe sin energia. Partida perdida.");
+            log.registrar(agenda.getPasoActual(), "Heroe sin energia, partida perdida");
             return true;
         }
         return false;
@@ -243,7 +267,7 @@ public class Mazmorra {
 
     private void validarEnCurso() {
         if (estaTerminada()) {
-            throw new IllegalStateException("La partida ya termino.");
+            throw new IllegalStateException("La partida ya termino");
         }
     }
 }

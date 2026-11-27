@@ -141,11 +141,11 @@ class MazmorraAgendaTest {
         for (int i = 0; i < 7; i++) {
             mazmorra.esperar();
         }
-        assertTrue(plano.monstruosDormidos());
+        assertTrue(plano.getEfectos().monstruosDormidos());
         assertEquals(new Posicion(2, 5), cazador.getPosicion());
 
         mazmorra.esperar(); // Paso 8: vence el sueño y actúa el cazador.
-        assertFalse(plano.monstruosDormidos());
+        assertFalse(plano.getEfectos().monstruosDormidos());
         assertEquals(new Posicion(2, 4), cazador.getPosicion());
     }
 

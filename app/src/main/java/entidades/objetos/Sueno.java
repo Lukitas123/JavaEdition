@@ -14,7 +14,7 @@ public class Sueno implements Objeto{
         }
 
         int pasoActual = agenda.getPasoActual();
-        int vencimiento = plano.dormirMonstruos(pasoActual, DURACION);
+        int vencimiento = plano.getEfectos().dormirMonstruos(pasoActual, DURACION);
         Ubicacion ubicacion = heroe.getUbicacion();
 
         agenda.programar(vencimiento - pasoActual,

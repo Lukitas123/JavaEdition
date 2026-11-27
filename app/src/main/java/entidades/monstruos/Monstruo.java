@@ -52,7 +52,7 @@ public abstract class Monstruo {
             throw new IllegalArgumentException("Plano, heroe y agenda son obligatorios");
         }
 
-        if (!activo || plano.monstruosDormidos()) {
+        if (!activo || plano.getEfectos().monstruosDormidos()) {
             return;
         }
 

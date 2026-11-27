@@ -13,7 +13,7 @@ public class CofreDePuente extends Cofre{
     @Override
     protected void aplicarEfecto(Heroe heroe, Plano plano, Agenda agenda) {
         int pasoActual = agenda.getPasoActual();
-        int vencimiento = plano.activarPuente(pasoActual, DURACION);
+        int vencimiento = plano.getEfectos().activarPuente(pasoActual, DURACION);
         Ubicacion ubicacion = heroe.getUbicacion();
 
         agenda.programar(vencimiento - pasoActual,

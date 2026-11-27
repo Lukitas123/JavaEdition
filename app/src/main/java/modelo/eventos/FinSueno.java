@@ -13,6 +13,6 @@ public record FinSueno(int tablero, int piso) implements Evento {
     @Override
     public void ejecutar(Mazmorra partida) {
         Plano plano = partida.getMundo().planoEn(tablero, piso);
-        plano.despertarMonstruosSiVencio(partida.getAgenda().getPasoActual());
+        plano.getEfectos().despertarMonstruosSiVencio(partida.getAgenda().getPasoActual());
     }
 }

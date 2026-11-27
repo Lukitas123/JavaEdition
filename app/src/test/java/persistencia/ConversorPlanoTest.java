@@ -135,14 +135,14 @@ public class ConversorPlanoTest {
         Plano original = new Plano(
                 terrenoDePrueba(), new Posicion(2, 2), null);
         original.agregarCofre(new CofreDeSueno(new Posicion(3, 2)));
-        original.dormirMonstruos(10, 7);
+        original.getEfectos().dormirMonstruos(10, 7);
 
         Plano restaurado = idaYVuelta(original);
 
         assertInstanceOf(CofreDeSueno.class,
                 restaurado.cofreEn(new Posicion(3, 2)));
-        assertTrue(restaurado.monstruosDormidos());
-        assertEquals(Integer.valueOf(18), restaurado.getFinSuenoMonstruos());
+        assertTrue(restaurado.getEfectos().monstruosDormidos());
+        assertEquals(Integer.valueOf(18), restaurado.getEfectos().getFinSuenoMonstruos());
     }
     @Test
     void conservaPuenteYTerrenosAlGuardarYCargar() {
@@ -156,18 +156,18 @@ public class ConversorPlanoTest {
         }, inicio, null);
 
         original.agregarCofre(new CofreDePuente(inicio));
-        original.activarPuente(10, 15);
+        original.getEfectos().activarPuente(10, 15);
         original.cambiarTerreno(lavaNueva, Terreno.LAVA);
 
         Plano restaurado = idaYVuelta(original);
 
         assertInstanceOf(CofreDePuente.class, restaurado.cofreEn(inicio));
-        assertEquals(Integer.valueOf(26), restaurado.getFinPuente());
+        assertEquals(Integer.valueOf(26), restaurado.getEfectos().getFinPuente());
         assertEquals(Terreno.PISO, restaurado.terrenoEn(agua));
         assertEquals(Terreno.PISO, restaurado.terrenoEn(lavaCubierta));
         assertEquals(Terreno.LAVA, restaurado.terrenoEn(lavaNueva));
 
-        restaurado.finalizarPuenteSiVencio(26);
+        restaurado.getEfectos().finalizarPuenteSiVencio(26);
         assertEquals(Terreno.AGUA, restaurado.terrenoEn(agua));
         assertEquals(Terreno.LAVA, restaurado.terrenoEn(lavaCubierta));
         assertEquals(Terreno.LAVA, restaurado.terrenoEn(lavaNueva));
@@ -186,9 +186,9 @@ public class ConversorPlanoTest {
         }, inicio, null);
 
         original.agregarCofre(new TrampaDeLava(inicio));
-        original.activarPuente(0, 15);
-        original.activarLava(aguaConLava, 1, 10);
-        original.activarLava(pisoConLava, 3, 10);
+        original.getEfectos().activarPuente(0, 15);
+        original.getEfectos().activarLava(aguaConLava, 1, 10);
+        original.getEfectos().activarLava(pisoConLava, 3, 10);
 
         Plano restaurado = idaYVuelta(original);
 
@@ -197,14 +197,14 @@ public class ConversorPlanoTest {
         assertEquals(Terreno.LAVA, restaurado.terrenoEn(pisoConLava));
         assertEquals(Terreno.PISO, restaurado.terrenoEn(aguaConPuente));
 
-        restaurado.finalizarLavaSiVencio(12);
+        restaurado.getEfectos().finalizarLavaSiVencio(12);
         assertEquals(Terreno.AGUA, restaurado.terrenoEn(aguaConLava));
         assertEquals(Terreno.LAVA, restaurado.terrenoEn(pisoConLava));
 
-        restaurado.finalizarLavaSiVencio(14);
+        restaurado.getEfectos().finalizarLavaSiVencio(14);
         assertEquals(Terreno.PISO, restaurado.terrenoEn(pisoConLava));
 
-        restaurado.finalizarPuenteSiVencio(16);
+        restaurado.getEfectos().finalizarPuenteSiVencio(16);
         assertEquals(Terreno.AGUA, restaurado.terrenoEn(aguaConPuente));
     }
 
@@ -214,7 +214,7 @@ public class ConversorPlanoTest {
         Posicion agua = new Posicion(1, 2);
         Plano plano = new Plano(
                 new Terreno[][] {{Terreno.PISO, Terreno.AGUA}}, inicio, null);
-        plano.activarPuente(0, 15);
+        plano.getEfectos().activarPuente(0, 15);
 
         PlanoGuardado guardado = ConversorPlano.aGuardado(plano);
         PlanoGuardado invalido = new PlanoGuardado(

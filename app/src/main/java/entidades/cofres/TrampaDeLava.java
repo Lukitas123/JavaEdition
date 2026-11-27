@@ -23,7 +23,7 @@ public class TrampaDeLava extends Cofre {
         int vencimiento = 0;
 
         for (int i = 0; i < vecinos.cantidad(); i++) {
-            vencimiento = plano.activarLava(
+            vencimiento = plano.getEfectos().activarLava(
                     vecinos.obtener(i), pasoActual, DURACION);
         }
 

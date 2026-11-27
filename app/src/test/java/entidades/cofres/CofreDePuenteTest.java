@@ -30,7 +30,7 @@ class CofreDePuenteTest {
         assertEquals(1, heroe.getCofresAbiertos());
         assertEquals(Terreno.PISO, plano.terrenoEn(agua));
         assertEquals(Terreno.PISO, plano.terrenoEn(lava));
-        assertEquals(Integer.valueOf(16), plano.getFinPuente());
+        assertEquals(Integer.valueOf(16), plano.getEfectos().getFinPuente());
 
         // La lava creada después queda visible.
         plano.cambiarTerreno(lavaNueva, Terreno.LAVA);
@@ -42,7 +42,7 @@ class CofreDePuenteTest {
         segundo.abrir(heroe, plano, agenda);
 
         assertEquals(Terreno.PISO, plano.terrenoEn(lavaNueva));
-        assertEquals(Integer.valueOf(31), plano.getFinPuente());
+        assertEquals(Integer.valueOf(31), plano.getEfectos().getFinPuente());
         assertEquals(2, agenda.cantidadDeEventos());
 
         while (agenda.getPasoActual() < 16) {
@@ -52,7 +52,7 @@ class CofreDePuenteTest {
         assertEquals(new FinPuente(1, 1), primerEvento.evento());
         assertEquals(16, primerEvento.pasoDeVencimiento());
 
-        plano.finalizarPuenteSiVencio(agenda.getPasoActual());
+        plano.getEfectos().finalizarPuenteSiVencio(agenda.getPasoActual());
         assertEquals(Terreno.PISO, plano.terrenoEn(agua));
         assertEquals(Terreno.PISO, plano.terrenoEn(lavaNueva));
 
@@ -62,8 +62,8 @@ class CofreDePuenteTest {
         EventoProgramado segundoEvento = agenda.sacarProximo();
         assertEquals(new FinPuente(1, 1), segundoEvento.evento());
 
-        plano.finalizarPuenteSiVencio(agenda.getPasoActual());
-        assertNull(plano.getFinPuente());
+        plano.getEfectos().finalizarPuenteSiVencio(agenda.getPasoActual());
+        assertNull(plano.getEfectos().getFinPuente());
         assertEquals(Terreno.AGUA, plano.terrenoEn(agua));
         assertEquals(Terreno.LAVA, plano.terrenoEn(lava));
         assertEquals(Terreno.LAVA, plano.terrenoEn(lavaNueva));

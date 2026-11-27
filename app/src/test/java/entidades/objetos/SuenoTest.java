@@ -35,7 +35,7 @@ class SuenoTest {
         assertEquals(1, heroe.cantidadDe(Sueno.ID_OBJETO));
         assertEquals(1, heroe.getCofresAbiertos());
         assertNull(plano.cofreEn(posicion));
-        assertFalse(plano.monstruosDormidos());
+        assertFalse(plano.getEfectos().monstruosDormidos());
         assertEquals(0, agenda.cantidadDeEventos());
     }
 
@@ -47,27 +47,27 @@ class SuenoTest {
 
         avanzar(10);
         assertTrue(sueno.usar(heroe, plano, agenda).seConsume());
-        assertEquals(Integer.valueOf(18), plano.getFinSuenoMonstruos());
+        assertEquals(Integer.valueOf(18), plano.getEfectos().getFinSuenoMonstruos());
 
         monstruo.actuar(plano, heroe, agenda);
         assertEquals(100, heroe.getEnergia());
 
         avanzar(2);
         sueno.usar(heroe, plano, agenda);
-        assertEquals(Integer.valueOf(25), plano.getFinSuenoMonstruos());
+        assertEquals(Integer.valueOf(25), plano.getEfectos().getFinSuenoMonstruos());
 
         avanzar(6); // paso 18
         EventoProgramado primero = agenda.sacarProximo();
         assertEquals(new FinSueno(2, 3), primero.evento());
         assertEquals(18, primero.pasoDeVencimiento());
-        plano.despertarMonstruosSiVencio(agenda.getPasoActual());
-        assertTrue(plano.monstruosDormidos());
+        plano.getEfectos().despertarMonstruosSiVencio(agenda.getPasoActual());
+        assertTrue(plano.getEfectos().monstruosDormidos());
 
         avanzar(7); // paso 25
         EventoProgramado segundo = agenda.sacarProximo();
         assertEquals(new FinSueno(2, 3), segundo.evento());
-        plano.despertarMonstruosSiVencio(agenda.getPasoActual());
-        assertFalse(plano.monstruosDormidos());
+        plano.getEfectos().despertarMonstruosSiVencio(agenda.getPasoActual());
+        assertFalse(plano.getEfectos().monstruosDormidos());
 
         monstruo.actuar(plano, heroe, agenda);
         assertEquals(70, heroe.getEnergia());

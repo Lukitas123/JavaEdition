@@ -4,7 +4,6 @@ import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
 import estructuras.Lista;
 
-import java.util.Map;
 
 /**
  * Una grilla de terreno con una entrada, una salida opcional, las celdas visitadas
@@ -12,65 +11,31 @@ import java.util.Map;
  * El plano solo conoce las abstracciones Monstruo y Cofre, no sus tipos concretos.
  * Las posiciones van de 1 a n. Esta clase nunca imprime ni dibuja.
  */
-public class Plano {
-    private final int filas;
-    private final int columnas;
-    private final Terreno[][] celdas;
+public class Plano extends Tablero<Terreno> {
     private final boolean[][] visitadas;
     private final Posicion entrada;
-    private final Posicion salida; // null si este plano no tiene la salida
+    private final Posicion salida;
     private final Lista<Monstruo> monstruos = new Lista<>();
     private final Lista<Cofre> cofres = new Lista<>();
-    private Integer finSuenoMonstruos;
-    private final EfectoPuente efectoPuente;
-    private final EfectoDeLava efectoLava;
+    private final EfectosPlano efectos;
 
-    /**
-     * @param terreno grilla rectangular de terreno (se copia).
-     * @param entrada donde aparece el héroe; debe ser una celda transitable.
-     * @param salida  posición de la salida, o null si el plano no la tiene.
-     * @throws IllegalArgumentException si la grilla es inválida o la entrada/salida no son válidas.
-     */
     public Plano(Terreno[][] terreno, Posicion entrada, Posicion salida) {
-        if (terreno == null || terreno.length == 0 || terreno[0].length == 0) {
-            throw new IllegalArgumentException("El terreno no puede estar vacio.");
-        }
-        this.filas = terreno.length;
-        this.columnas = terreno[0].length;
-        this.celdas = new Terreno[filas][columnas];
-        for (int f = 0; f < filas; f++) {
-            if (terreno[f].length != columnas) {
-                throw new IllegalArgumentException("Todas las filas deben tener el mismo largo.");
-            }
-            for (int c = 0; c < columnas; c++) {
-                if (terreno[f][c] == null) {
-                    throw new IllegalArgumentException("Celda nula en " + (f + 1) + "," + (c + 1));
-                }
-                this.celdas[f][c] = terreno[f][c];
-            }
-        }
-        this.visitadas = new boolean[filas][columnas];
+        super(terreno);
 
-        this.efectoPuente = new EfectoPuente(filas, columnas);
-        this.efectoLava = new EfectoDeLava(filas, columnas);
+        visitadas = new boolean[getFilas()][getColumnas()];
+        efectos = new EfectosPlano(this);
 
         if (entrada == null || !esTransitable(entrada)) {
-            throw new IllegalArgumentException("La entrada debe ser una celda transitable del plano.");
+            throw new IllegalArgumentException(
+                    "La entrada debe ser una celda transitable del plano");
         }
         if (salida != null && !esTransitable(salida)) {
-            throw new IllegalArgumentException("La salida debe ser una celda transitable del plano.");
+            throw new IllegalArgumentException(
+                    "La salida debe ser una celda transitable del plano");
         }
+
         this.entrada = entrada;
         this.salida = salida;
-        this.finSuenoMonstruos = null;
-    }
-
-    public int getFilas() {
-        return filas;
-    }
-
-    public int getColumnas() {
-        return columnas;
     }
 
     public Posicion getEntrada() {
@@ -88,36 +53,27 @@ public class Plano {
 
     // ---------- Terreno ----------
 
-    /** @return true si la posición está dentro de la grilla (1..filas, 1..columnas). */
-    public boolean estaDentro(Posicion posicion) {
-        return posicion.fila() >= 1 && posicion.fila() <= filas
-                && posicion.columna() >= 1 && posicion.columna() <= columnas;
+    @Override
+    public Terreno celdaEn(Posicion posicion) {
+        return efectos.terrenoVisible(posicion);
     }
 
-    /** @throws IllegalArgumentException si la posición está fuera del plano. */
     public Terreno terrenoEn(Posicion posicion) {
-        Terreno base = terrenoBaseEn(posicion);
-
-        if (efectoLava.estaActiva(posicion)) {
-            return Terreno.LAVA;
-        }
-        return efectoPuente.terrenoVisible(posicion, base);
+        return celdaEn(posicion);
     }
 
-    public Terreno terrenoBaseEn(Posicion posicion){
-        validarDentro(posicion);
-        return celdas[posicion.fila() - 1][posicion.columna() - 1];
+    public Terreno terrenoBaseEn(Posicion posicion) {
+        return super.celdaEn(posicion);
     }
 
-    /** Cambia el terreno de una celda (lo usan Puente, EfectoDeLava, escaleras). */
+    @Override
+    public void cambiarCelda(Posicion posicion, Terreno nuevo) {
+        super.cambiarCelda(posicion, nuevo);
+        efectos.cancelarEn(posicion);
+    }
+
     public void cambiarTerreno(Posicion posicion, Terreno nuevo) {
-        validarDentro(posicion);
-        if (nuevo == null) {
-            throw new IllegalArgumentException("El terreno no puede ser null.");
-        }
-        celdas[posicion.fila() - 1][posicion.columna() - 1] = nuevo;
-        efectoPuente.retirarCobertura(posicion);
-        efectoLava.cancelar(posicion);
+        cambiarCelda(posicion, nuevo);
     }
 
     /** Transitable es todo lo que no es pared. Fuera del plano no es transitable. */
@@ -231,90 +187,7 @@ public class Plano {
         return null;
     }
 
-    private void validarDentro(Posicion posicion) {
-        if (!estaDentro(posicion)) {
-            throw new IllegalArgumentException("Posicion fuera del plano: " + posicion);
-        }
-    }
-
-    public boolean monstruosDormidos() {
-        return finSuenoMonstruos != null;
-    }
-
-    public Integer getFinSuenoMonstruos() {
-        return finSuenoMonstruos;
-    }
-
-    public int dormirMonstruos(int pasoActual, int duracion) {
-        if (pasoActual < 0 || duracion <= 0) {
-            throw new IllegalArgumentException("Paso o duracion invalidos");
-        }
-
-        int primerPasoLibre = pasoActual + 1;
-        if (finSuenoMonstruos != null) {
-            primerPasoLibre = Math.max(primerPasoLibre, finSuenoMonstruos);
-        }
-
-        finSuenoMonstruos = primerPasoLibre + duracion;
-        return finSuenoMonstruos;
-    }
-
-    public void despertarMonstruosSiVencio(int pasoActual) {
-        if (pasoActual < 0) {
-            throw new IllegalArgumentException("El paso no puede ser negativo");
-        }
-
-        if (finSuenoMonstruos != null && pasoActual >= finSuenoMonstruos) {
-            finSuenoMonstruos = null;
-        }
-    }
-
-    public void restaurarFinSuenoMonstruos(Integer vencimiento) {
-        if (vencimiento != null && vencimiento < 0) {
-            throw new IllegalArgumentException("El vencimiento no puede ser negativo");
-        }
-        finSuenoMonstruos = vencimiento;
-    }
-    public Integer getFinPuente() {
-        return efectoPuente.getVencimiento();
-    }
-
-    public boolean estaCubiertaPorPuente(Posicion posicion) {
-        validarDentro(posicion);
-        return efectoPuente.cubre(posicion);
-    }
-
-    public int activarPuente(int pasoActual, int duracion) {
-        int vencimiento = efectoPuente.activar(this, pasoActual, duracion);
-        efectoLava.cancelarTodo();
-        return vencimiento;
-    }
-
-    public void finalizarPuenteSiVencio(int pasoActual) {
-        efectoPuente.finalizarSiVencio(pasoActual);
-    }
-    public void restaurarPuente(Integer fin, boolean[][] cubiertas) {
-        efectoPuente.restaurar(this, fin, cubiertas);
-    }
-
-    public int activarLava(Posicion posicion, int pasoActual, int duracion) {
-        if (!esTransitable(posicion)) {
-            throw new IllegalArgumentException("La celda debe ser transitable");
-        }
-
-        int vencimiento = efectoLava.activar(posicion, pasoActual, duracion);
-        efectoPuente.retirarCobertura(posicion);
-        return vencimiento;
-    }
-
-    public void finalizarLavaSiVencio(int pasoActual) {
-        efectoLava.finalizarSiVencio(pasoActual);
-    }
-    public Map<Posicion, Integer> getVencimientosLava() {
-        return efectoLava.getVencimientos();
-    }
-
-    public void restaurarLava(Map<Posicion, Integer> guardados) {
-        efectoLava.restaurar(this, guardados);
+    public EfectosPlano getEfectos() {
+        return efectos;
     }
 }

@@ -50,7 +50,7 @@ class TrampaDeLavaTest {
         assertEquals(new FinLava(2, 3), evento.evento());
         assertEquals(11, evento.pasoDeVencimiento());
 
-        plano.finalizarLavaSiVencio(agenda.getPasoActual());
+        plano.getEfectos().finalizarLavaSiVencio(agenda.getPasoActual());
         assertEquals(Terreno.AGUA, plano.terrenoEn(agua));
         assertEquals(Terreno.LAVA, plano.terrenoEn(lava));
         assertEquals(Terreno.PISO, plano.terrenoEn(piso));

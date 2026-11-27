@@ -64,7 +64,7 @@ class DormilonTest {
         agenda.sacarProximo();
         dormilon.despertarSiCorresponde(agenda.getPasoActual());
 
-        plano.dormirMonstruos(agenda.getPasoActual(), 7);
+        plano.getEfectos().dormirMonstruos(agenda.getPasoActual(), 7);
         dormilon.actuar(plano, heroe, agenda);
 
         assertTrue(dormilon.estaDespierto());

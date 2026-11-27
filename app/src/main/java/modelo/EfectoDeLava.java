@@ -81,7 +81,7 @@ public class EfectoDeLava {
             validarPosicion(posicion);
             if (fin == null || fin < 0
                     || plano.terrenoBaseEn(posicion) == Terreno.PARED
-                    || plano.estaCubiertaPorPuente(posicion)) {
+                    || plano.getEfectos().estaCubiertaPorPuente(posicion)) {
                 throw new IllegalArgumentException("Lava guardada invalida");
             }
         }

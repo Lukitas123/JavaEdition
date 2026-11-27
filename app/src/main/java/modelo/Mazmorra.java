@@ -1,11 +1,7 @@
 package modelo;
 
 import entidades.cofres.Cofre;
-import entidades.monstruos.Congelador;
-import entidades.monstruos.Dormilon;
 import entidades.monstruos.Monstruo;
-import entidades.objetos.Escudo;
-import entidades.objetos.ZapatosDeAgua;
 import estructuras.Lista;
 
 /**

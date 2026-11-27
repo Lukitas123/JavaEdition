@@ -67,7 +67,10 @@ class CatalogoTest {
     }
     @Test
     void catalogoDeProduccionCreaLosCofres() {
-        Catalogo<Cofre> catalogo = CatalogosEntidades.cofres(40);
+        modelo.ParametrosEntidades parametros =
+                new modelo.ParametrosEntidades(
+                        30, 40, 3, 15, 10, 20, 10, 7, 25);
+        Catalogo<Cofre> catalogo = CatalogosEntidades.cofres(parametros);
         Posicion posicion = new Posicion(1, 1);
 
         String[] tipos = {
@@ -85,8 +88,11 @@ class CatalogoTest {
     @Test
     void catalogoDeProduccionCreaMonstruosConSusParametros() {
         Costo costos = new Costo(1, 3, 2);
-        Catalogo<Monstruo> catalogo =
-                CatalogosEntidades.monstruos(costos, 7, new Random(1));
+        modelo.ParametrosEntidades parametros =
+                new modelo.ParametrosEntidades(
+                        30, 25, 7, 15, 10, 20, 10, 7,  25);
+
+        Catalogo<Monstruo> catalogo =CatalogosEntidades.monstruos(costos, parametros, new Random(1));
         Posicion inicio = new Posicion(1, 1);
 
         String[] tipos = {"Errante", "Cazador", "Fantasma", "Congelador", "Dormilon"};
@@ -106,7 +112,8 @@ class CatalogoTest {
         Monstruo congelador = catalogo.crear("Congelador", inicio);
         congelador.alcanzarAlHeroe(heroe, new Agenda());
         assertEquals(Integer.valueOf(8), heroe.vencimientoDe(EfectoHeroe.INMOVILIZADO));
-    }
+
+        }
 
     private record DatosTrampa(Posicion posicion, int danio) {}
 

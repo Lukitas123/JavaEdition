@@ -95,7 +95,7 @@ class PlanoTest {
 
     @Test
     void agregarYBuscarMonstruo() {
-        Monstruo monstruo = new Errante(new Posicion(2, 3), new Random(1));
+        Monstruo monstruo = new Errante(new Posicion(2, 3), new Random(1),30);
         plano.agregarMonstruo(monstruo);
 
         assertEquals(1, plano.getMonstruos().size());
@@ -105,7 +105,7 @@ class PlanoTest {
 
     @Test
     void quitarMonstruo() {
-        Monstruo monstruo = new Errante(new Posicion(2, 3), new Random(1));
+        Monstruo monstruo = new Errante(new Posicion(2, 3), new Random(1),30);
         plano.agregarMonstruo(monstruo);
 
         assertTrue(plano.quitarMonstruo(monstruo));
@@ -115,7 +115,7 @@ class PlanoTest {
 
     @Test
     void monstruoEnParedLanzaExcepcion() {
-        Monstruo enPared = new Errante(new Posicion(1, 1), new Random(1));
+        Monstruo enPared = new Errante(new Posicion(1, 1), new Random(1),30);
         assertThrows(IllegalArgumentException.class, () -> plano.agregarMonstruo(enPared));
         assertThrows(IllegalArgumentException.class, () -> plano.agregarMonstruo(null));
     }
@@ -156,21 +156,21 @@ class PlanoTest {
         Plano plano = new Plano(
                 new Terreno[][] {{Terreno.PISO, Terreno.AGUA}}, inicio, null);
 
-        plano.activarPuente(0, 15);
+        plano.getEfectos().activarPuente(0, 15);
         assertEquals(Terreno.PISO, plano.terrenoEn(agua));
 
-        plano.activarLava(agua, 1, 10);
+        plano.getEfectos().activarLava(agua, 1, 10);
         assertEquals(Terreno.LAVA, plano.terrenoEn(agua));
         assertEquals(Terreno.AGUA, plano.terrenoBaseEn(agua));
 
         // Otra trampa reinicia el vencimiento de esta celda.
-        plano.activarLava(agua, 3, 10);
-        plano.finalizarLavaSiVencio(12);
+        plano.getEfectos().activarLava(agua, 3, 10);
+        plano.getEfectos().finalizarLavaSiVencio(12);
         assertEquals(Terreno.LAVA, plano.terrenoEn(agua));
 
-        plano.finalizarLavaSiVencio(14);
+        plano.getEfectos().finalizarLavaSiVencio(14);
         assertEquals(Terreno.AGUA, plano.terrenoEn(agua));
-        assertEquals(Integer.valueOf(16), plano.getFinPuente());
+        assertEquals(Integer.valueOf(16), plano.getEfectos().getFinPuente());
     }
 
     @Test
@@ -182,18 +182,40 @@ class PlanoTest {
                 new Terreno[][] {{Terreno.PISO, Terreno.AGUA, Terreno.PISO}},
                 inicio, null);
 
-        plano.activarLava(agua, 0, 10);
-        plano.activarLava(piso, 0, 10);
-        plano.activarPuente(1, 15);
+        plano.getEfectos().activarLava(agua, 0, 10);
+        plano.getEfectos().activarLava(piso, 0, 10);
+        plano.getEfectos().activarPuente(1, 15);
 
         assertEquals(Terreno.PISO, plano.terrenoEn(agua));
         assertEquals(Terreno.PISO, plano.terrenoEn(piso));
 
-        plano.finalizarLavaSiVencio(11);
+        plano.getEfectos().finalizarLavaSiVencio(11);
         assertEquals(Terreno.PISO, plano.terrenoEn(agua));
 
-        plano.finalizarPuenteSiVencio(17);
+        plano.getEfectos().finalizarPuenteSiVencio(17);
         assertEquals(Terreno.AGUA, plano.terrenoEn(agua));
         assertEquals(Terreno.PISO, plano.terrenoEn(piso));
+    }
+
+    @Test
+    void usarComoTableroRespetaYCancelaLosEfectos() {
+        Posicion agua = new Posicion(1, 2);
+        Plano plano = new Plano(
+                new Terreno[][] {{Terreno.PISO, Terreno.AGUA}},
+                new Posicion(1, 1), null);
+        Tablero<Terreno> tablero = plano;
+
+        plano.getEfectos().activarPuente(0, 15);
+        assertEquals(Terreno.PISO, tablero.celdaEn(agua));
+        assertEquals(Terreno.AGUA, plano.terrenoBaseEn(agua));
+
+        plano.getEfectos().activarLava(agua, 1, 10);
+        assertEquals(Terreno.LAVA, tablero.celdaEn(agua));
+
+        tablero.cambiarCelda(agua, Terreno.PISO);
+        assertEquals(Terreno.PISO, plano.terrenoEn(agua));
+        assertEquals(Terreno.PISO, plano.terrenoBaseEn(agua));
+        assertFalse(plano.getEfectos().estaCubiertaPorPuente(agua));
+        assertTrue(plano.getEfectos().getVencimientosLava().isEmpty());
     }
 }

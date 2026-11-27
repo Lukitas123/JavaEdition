@@ -32,7 +32,7 @@ class EntidadesIntegracionTest {
                 100, new Ubicacion(1, 1, inicioHeroe));
         Agenda agenda = new Agenda();
         CofreDePuntos cofre = new CofreDePuntos(posicionCofre);
-        Errante errante = new Errante(inicioErrante, new Random(1));
+        Errante errante = new Errante(inicioErrante, new Random(1),30);
 
         plano.agregarCofre(cofre);
         plano.agregarMonstruo(errante);

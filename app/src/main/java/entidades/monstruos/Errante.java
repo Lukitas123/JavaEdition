@@ -17,13 +17,19 @@ import java.util.Random;
  */
 public class Errante extends Monstruo{
     private final Random random;
+    private final int danio;
 
-    public Errante(Posicion posicionInicial, Random random){
+    public Errante(Posicion posicionInicial, Random random, int danio){
         super(posicionInicial);
         if (random == null){
             throw new IllegalArgumentException("El generador aleatorio no puede ser null");
         }
+        if (danio < 0) {
+            throw new IllegalArgumentException(
+                    "El danio no puede ser negativo");
+        }
         this.random = random;
+        this.danio = danio;
     }
 
 
@@ -41,7 +47,7 @@ public class Errante extends Monstruo{
      */
     @Override
     public void alcanzarAlHeroe(Heroe heroe, Agenda agenda) {
-        daniarAlHeroe(heroe,30);
+        daniarAlHeroe(heroe,danio);
         volverAlInicio();
     }
 

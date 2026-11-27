@@ -3,6 +3,7 @@ package persistencia;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Path;
+import java.util.Random;
 
 import entidades.monstruos.Cazador;
 import entidades.monstruos.Dormilon;
@@ -52,11 +53,10 @@ public class PersistenciaPartidaTest {
         agenda.avanzarPaso();
 
         Mazmorra original = new Mazmorra(Dificultad.FACIL, mundo, heroe, agenda,
-                new Costo(1, 3, 8), EstadoPartida.GANADA);
+                new Costo(1, 3, 8),ParametrosDePrueba.ENTIDADES,  EstadoPartida.GANADA);
 
         PersistenciaMazmorra.guardar(ConversorMazmorra.aGuardada(original), ruta);
-        Mazmorra restaurada = ConversorMazmorra.aMazmorra(PersistenciaMazmorra.cargar(ruta),
-                CatalogosDePrueba.monstruos(), CatalogosDePrueba.cofres());
+        Mazmorra restaurada = ConversorMazmorra.aMazmorra(PersistenciaMazmorra.cargar(ruta), new Random(1));
 
         assertEquals(Dificultad.FACIL, restaurada.getDificultad());
         assertEquals(EstadoPartida.GANADA, restaurada.getEstado());
@@ -83,18 +83,18 @@ public class PersistenciaPartidaTest {
                 {Terreno.PISO, Terreno.LAVA, Terreno.PISO},
                 {Terreno.PISO, Terreno.PISO, Terreno.PISO}
         }, inicio, null);
-        plano.agregarMonstruo(new Cazador(inicio, costos));
+        plano.agregarMonstruo(new Cazador(inicio, costos,30));
 
         Mundo mundo = new Mundo(1, 1);
         mundo.agregarPlano(1, 1, plano);
         Heroe heroe = new Heroe(100, new Ubicacion(1, 1, destino));
 
         MazmorraGuardada guardada = ConversorMazmorra.aGuardada(new Mazmorra(Dificultad.FACIL, mundo,
-                heroe, new Agenda(), costos, EstadoPartida.EN_CURSO));
+                heroe, new Agenda(), costos, ParametrosDePrueba.ENTIDADES, EstadoPartida.EN_CURSO));
         PersistenciaMazmorra.guardar(guardada, ruta);
         MazmorraGuardada leida = PersistenciaMazmorra.cargar(ruta);
         Mazmorra restaurada = ConversorMazmorra.aMazmorra(
-                leida, CatalogosDePrueba.monstruos(leida.costos()), pruebaCofre());
+                leida, new Random(1));
 
         Plano planoRestaurado = restaurada.getMundo().planoEn(1, 1);
         Monstruo monstruo = planoRestaurado.getMonstruos().get(0);
@@ -114,7 +114,7 @@ public class PersistenciaPartidaTest {
         Plano plano = new Plano(new Terreno[][] {
                 {Terreno.PISO, Terreno.PISO, Terreno.PISO}
         }, inicio, null);
-        Dormilon dormilon = new Dormilon(inicio, costos);
+        Dormilon dormilon = new Dormilon(inicio, costos,30);
         plano.agregarMonstruo(dormilon);
 
         Mundo mundo = new Mundo(1, 1);
@@ -126,11 +126,11 @@ public class PersistenciaPartidaTest {
 
 
         MazmorraGuardada guardada = ConversorMazmorra.aGuardada( new Mazmorra
-                (Dificultad.FACIL, mundo, heroe, agenda, costos, EstadoPartida.EN_CURSO));
+                (Dificultad.FACIL, mundo, heroe, agenda, costos, ParametrosDePrueba.ENTIDADES, EstadoPartida.EN_CURSO));
         PersistenciaMazmorra.guardar(guardada, ruta);
         MazmorraGuardada leida = PersistenciaMazmorra.cargar(ruta);
         Mazmorra restaurada = ConversorMazmorra.aMazmorra(
-                leida, CatalogosDePrueba.monstruos(leida.costos()), pruebaCofre());
+                leida, new Random(1));
         Plano planoRestaurado = restaurada.getMundo().planoEn(1, 1);
         Dormilon restaurado = assertInstanceOf(
                 Dormilon.class, planoRestaurado.getMonstruos().get(0));
@@ -140,10 +140,16 @@ public class PersistenciaPartidaTest {
 
         restaurada.getAgenda().avanzarPaso();
         EventoProgramado evento = restaurada.getAgenda().sacarProximo();
+
+        assertEquals(1, evento.pasoDeVencimiento());
         assertEquals(new DespertarDormilones(1, 1), evento.evento());
 
-        restaurado.despertarSiCorresponde(restaurada.getAgenda().getPasoActual());
-        restaurado.actuar(planoRestaurado, restaurada.getHeroe(), restaurada.getAgenda());
+        evento.evento().ejecutar(restaurada);
+        restaurado.actuar(
+                planoRestaurado,
+                restaurada.getHeroe(),
+                restaurada.getAgenda());
+
         assertTrue(restaurado.estaDespierto());
         assertEquals(new Posicion(1, 2), restaurado.getPosicion());
 

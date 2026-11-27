@@ -30,7 +30,7 @@ class ErranteTest {
     void decidirMovimientoNoCambiaLaPosicion() {
         Plano plano = crearPasillo();
         Posicion inicio = new Posicion(1, 1);
-        Errante errante = new Errante(inicio, new Random(1));
+        Errante errante = new Errante(inicio, new Random(1),30);
 
         Posicion destino = errante.decidirMovimiento(
                 plano, new Posicion(1, 3));
@@ -42,7 +42,7 @@ class ErranteTest {
     @Test
     void actuarActualizaLaPosicionSinDanarSiNoHayEncuentro() {
         Plano plano = crearPasillo();
-        Errante errante = new Errante(new Posicion(1, 1), new Random(1));
+        Errante errante = new Errante(new Posicion(1, 1), new Random(1),30);
         Heroe heroe = crearHeroe(100, new Posicion(1, 3));
 
         errante.actuar(plano, heroe, new Agenda());
@@ -55,7 +55,7 @@ class ErranteTest {
     void alAlcanzarAlHeroePierdeEnergiaYElErranteVuelveAlInicio() {
         Plano plano = crearPasillo();
         Posicion inicio = new Posicion(1, 1);
-        Errante errante = new Errante(inicio, new Random(1));
+        Errante errante = new Errante(inicio, new Random(1),30);
         Heroe heroe = crearHeroe(100, new Posicion(1, 2));
         Agenda agenda = new Agenda();
 
@@ -70,7 +70,7 @@ class ErranteTest {
     void resuelveElEncuentroAntesDeMoverseYSinEnergiaNegativa() {
         Plano plano = crearPasillo();
         Posicion inicio = new Posicion(1, 1);
-        Errante errante = new Errante(inicio, new Random(1));
+        Errante errante = new Errante(inicio, new Random(1),30);
         Heroe heroe = crearHeroe(20, inicio);
 
         errante.actuar(plano, heroe, new Agenda());
@@ -84,7 +84,7 @@ class ErranteTest {
     void inactivoNoSeMueveNiAtaca() {
         Plano plano = crearPasillo();
         Posicion inicio = new Posicion(1, 1);
-        Errante errante = new Errante(inicio, new Random(1));
+        Errante errante = new Errante(inicio, new Random(1),30);
         Heroe heroe = crearHeroe(100, inicio);
         errante.desactivar();
 
@@ -100,7 +100,7 @@ class ErranteTest {
         Posicion inicio = new Posicion(1, 1);
         Plano plano = new Plano(
                 new Terreno[][] {{Terreno.PISO}}, inicio, null);
-        Errante errante = new Errante(inicio, new Random(1));
+        Errante errante = new Errante(inicio, new Random(1),30);
 
         assertEquals(inicio, errante.decidirMovimiento(plano, inicio));
     }
@@ -108,16 +108,16 @@ class ErranteTest {
     @Test
     void rechazaDatosInicialesNulos() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Errante(null, new Random(1)));
+                () -> new Errante(null, new Random(1),30));
         assertThrows(IllegalArgumentException.class,
-                () -> new Errante(new Posicion(1, 1), null));
+                () -> new Errante(new Posicion(1, 1), null,30));
     }
 
     @Test
     void rechazaArgumentosNulosSinModificarElEstado() {
         Plano plano = crearPasillo();
         Posicion inicio = new Posicion(1, 1);
-        Errante errante = new Errante(inicio, new Random(1));
+        Errante errante = new Errante(inicio, new Random(1),30);
         Heroe heroe = crearHeroe(100, new Posicion(1, 3));
         Agenda agenda = new Agenda();
 
@@ -142,7 +142,7 @@ class ErranteTest {
     void alReactivarseVuelveAMoverse() {
         Plano plano = crearPasillo();
         Posicion inicio = new Posicion(1, 1);
-        Errante errante = new Errante(inicio, new Random(1));
+        Errante errante = new Errante(inicio, new Random(1),30);
         Heroe heroe = crearHeroe(100, new Posicion(1, 3));
         Agenda agenda = new Agenda();
 
@@ -170,7 +170,7 @@ class ErranteTest {
                 inicio,
                 null);
 
-        Errante errante = new Errante(inicio, new Random(1));
+        Errante errante = new Errante(inicio, new Random(1),30);
 
         for (int intento = 0; intento < 50; intento++) {
             Posicion destino = errante.decidirMovimiento(

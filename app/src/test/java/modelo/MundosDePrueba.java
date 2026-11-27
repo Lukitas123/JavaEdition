@@ -49,13 +49,13 @@ final class MundosDePrueba {
         Mundo mundo = new Mundo(1, 1);
         mundo.agregarPlano(1, 1, plano);
         return new Mazmorra(Dificultad.FACIL, mundo, new Heroe(energia, mundo.getInicio()),
-                new Agenda(), costos);
+                new Agenda(), costos, ParametrosDePrueba.ENTIDADES);
     }
 
     /** Partida sobre un mundo ya armado, con los costos por defecto */
     static Mazmorra mazmorraDe(Mundo mundo, int energia) {
         return new Mazmorra(Dificultad.MEDIO, mundo, new Heroe(energia, mundo.getInicio()),
-                new Agenda(), new Costo(1, 3, 8));
+                new Agenda(), new Costo(1, 3, 8), ParametrosDePrueba.ENTIDADES);
     }
 
     /** Mundo de 1 tablero y 2 pisos unidos por una escalera en la celda (3,3). La salida está en el piso 2 */

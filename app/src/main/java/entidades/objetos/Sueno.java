@@ -5,7 +5,16 @@ import modelo.eventos.FinSueno;
 
 public class Sueno implements Objeto{
     public static final String ID_OBJETO = "sueno";
-    private static final int DURACION = 7;
+    private final int duracion;
+
+    public Sueno(int duracion) {
+        if (duracion <= 0) {
+            throw new IllegalArgumentException(
+                    "La duracion debe ser positiva");
+        }
+
+        this.duracion = duracion;
+    }
 
     @Override
     public ResultadoUso usar(Heroe heroe, Plano plano, Agenda agenda) {
@@ -14,7 +23,7 @@ public class Sueno implements Objeto{
         }
 
         int pasoActual = agenda.getPasoActual();
-        int vencimiento = plano.dormirMonstruos(pasoActual, DURACION);
+        int vencimiento = plano.getEfectos().dormirMonstruos(pasoActual, duracion);
         Ubicacion ubicacion = heroe.getUbicacion();
 
         agenda.programar(vencimiento - pasoActual,

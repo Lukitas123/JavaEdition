@@ -41,7 +41,7 @@ class DagaTest {
 
     @Test
     void eliminaUnMonstruoAdyacente() {
-        Errante monstruo = new Errante(new Posicion(2, 3), new Random(1));
+        Errante monstruo = new Errante(new Posicion(2, 3), new Random(1),30);
         plano.agregarMonstruo(monstruo);
 
         boolean usada = new Daga(new Random(1)).usar(heroe, plano, agenda).seConsume();
@@ -52,7 +52,7 @@ class DagaTest {
 
     @Test
     void noAlcanzaUnMonstruoEnDiagonal() {
-        Errante diagonal = new Errante(new Posicion(3, 3), new Random(1));
+        Errante diagonal = new Errante(new Posicion(3, 3), new Random(1),30);
         plano.agregarMonstruo(diagonal);
 
         boolean usada = new Daga(new Random(1)).usar(heroe, plano, agenda).seConsume();
@@ -63,8 +63,8 @@ class DagaTest {
 
     @Test
     void eligeSoloUnoCuandoHayVariosAdyacentes() {
-        Errante arriba = new Errante(new Posicion(1, 2), new Random(1));
-        Errante derecha = new Errante(new Posicion(2, 3), new Random(2));
+        Errante arriba = new Errante(new Posicion(1, 2), new Random(1),30);
+        Errante derecha = new Errante(new Posicion(2, 3), new Random(2),30);
         plano.agregarMonstruo(arriba);
         plano.agregarMonstruo(derecha);
 

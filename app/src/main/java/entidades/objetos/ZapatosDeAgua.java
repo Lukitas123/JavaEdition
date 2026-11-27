@@ -6,7 +6,16 @@ import modelo.eventos.FinEfectoHeroe;
 public class ZapatosDeAgua implements Objeto{
     public static final String ID_OBJETO = "zapatos_agua";
 
-    private static final int DURACION = 20;
+    private final int duracion;
+
+    public ZapatosDeAgua(int duracion) {
+        if (duracion <= 0) {
+            throw new IllegalArgumentException(
+                    "La duracion debe ser positiva");
+        }
+
+        this.duracion = duracion;
+    }
 
     @Override
     public ResultadoUso usar(Heroe heroe, Plano plano, Agenda agenda) {
@@ -21,7 +30,7 @@ public class ZapatosDeAgua implements Objeto{
             primerPasoLibre = Math.max(primerPasoLibre, vencimientoAnterior);
         }
 
-        int nuevoVencimiento = primerPasoLibre + DURACION;
+        int nuevoVencimiento = primerPasoLibre + duracion;
         heroe.activarEfecto(EfectoHeroe.ZAPATOS_DE_AGUA, nuevoVencimiento);
         agenda.programar(
                 nuevoVencimiento - pasoActual,

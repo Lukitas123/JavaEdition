@@ -23,14 +23,14 @@ public class CatalogosDePrueba {
     /** Catálogo con Errante y Fantasma. */
     public static Catalogo<Monstruo> monstruos() {
         Catalogo<Monstruo> catalogo = new Catalogo<>();
-        catalogo.registrar("Errante", posicion -> new Errante(posicion, new Random(1)));
-        catalogo.registrar("Fantasma", posicion -> new Fantasma(posicion, new Random(1)));
+        catalogo.registrar("Errante", posicion -> new Errante(posicion, new Random(1), 30));
+        catalogo.registrar("Fantasma", posicion -> new Fantasma(posicion, new Random(1), 30));
         return catalogo;
     }
     public static Catalogo<Monstruo> monstruos(Costo costos) {
         Catalogo<Monstruo> catalogo = monstruos();
-        catalogo.registrar("Cazador", posicion -> new Cazador(posicion, costos));
-        catalogo.registrar("Dormilon", posicion -> new Dormilon(posicion, costos));
+        catalogo.registrar("Cazador", posicion -> new Cazador(posicion, costos, 30));
+        catalogo.registrar("Dormilon", posicion -> new Dormilon(posicion, costos, 30));
         return catalogo;
     }
 
@@ -46,10 +46,11 @@ public class CatalogosDePrueba {
         catalogo.registrar("CofreDeEscudo", CofreDeEscudo::new);
         catalogo.registrar("CofreDePocion", CofreDePocion::new);
         catalogo.registrar("CofreDePuntos", CofreDePuntos::new);
-        catalogo.registrar("CofreDePuente", CofreDePuente::new);
         catalogo.registrar("CofreDeSueno", CofreDeSueno::new);
         catalogo.registrar("CofreZapatosDeAgua", CofreZapatosDeAgua::new);
-        catalogo.registrar("TrampaDeEnergia",posicion -> new TrampaDeEnergia(posicion, danioTrampa));        catalogo.registrar("TrampaDeLava", TrampaDeLava::new);
+        catalogo.registrar("TrampaDeEnergia",posicion -> new TrampaDeEnergia(posicion, danioTrampa));
+        catalogo.registrar("CofreDePuente",posicion -> new CofreDePuente(posicion, 15));
+        catalogo.registrar("TrampaDeLava",posicion -> new TrampaDeLava(posicion, 10));
         return catalogo;
     }
 }

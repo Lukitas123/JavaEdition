@@ -29,7 +29,7 @@ class FantasmaTest {
         Plano plano = crearPlano(
                 Terreno.PISO, Terreno.PARED, Terreno.PISO);
         Posicion inicio = new Posicion(1, 1);
-        Fantasma fantasma = new Fantasma(inicio, new Random(1));
+        Fantasma fantasma = new Fantasma(inicio, new Random(1),30);
         Heroe heroe = crearHeroe(100, new Posicion(1, 3));
 
         fantasma.actuar(plano, heroe, new Agenda());
@@ -44,7 +44,7 @@ class FantasmaTest {
         Plano plano = crearPlano(
                 Terreno.PISO, Terreno.PISO, Terreno.PISO, Terreno.PISO);
         Fantasma fantasma =
-                new Fantasma(new Posicion(1, 1), new Random(1));
+                new Fantasma(new Posicion(1, 1), new Random(1),30);
         Heroe heroe = crearHeroe(100, new Posicion(1, 4));
         Agenda agenda = new Agenda();
 
@@ -74,7 +74,7 @@ class FantasmaTest {
     void alAlcanzarAlHeroeLeQuitaEnergiaYVuelveAlInicio() {
         Plano plano = crearPlano(Terreno.PISO, Terreno.PISO);
         Posicion inicio = new Posicion(1, 1);
-        Fantasma fantasma = new Fantasma(inicio, new Random(1));
+        Fantasma fantasma = new Fantasma(inicio, new Random(1),30);
         Heroe heroe = crearHeroe(100, new Posicion(1, 2));
 
         fantasma.actuar(plano, heroe, new Agenda());
@@ -88,7 +88,7 @@ class FantasmaTest {
         Plano plano = crearPlano(
                 Terreno.PISO, Terreno.PISO, Terreno.PISO, Terreno.PISO);
         Posicion inicio = new Posicion(1, 1);
-        Fantasma fantasma = new Fantasma(inicio, new Random(1));
+        Fantasma fantasma = new Fantasma(inicio, new Random(1),30);
         Heroe heroe = crearHeroe(100, new Posicion(1, 4));
         Agenda agenda = new Agenda();
 
@@ -107,13 +107,13 @@ class FantasmaTest {
     void rechazaArgumentosNulos() {
         Plano plano = crearPlano(Terreno.PISO, Terreno.PISO);
         Fantasma fantasma =
-                new Fantasma(new Posicion(1, 1), new Random(1));
+                new Fantasma(new Posicion(1, 1), new Random(1),30);
 
         assertThrows(IllegalArgumentException.class,
                 () -> fantasma.decidirMovimiento(null, new Posicion(1, 2)));
         assertThrows(IllegalArgumentException.class,
                 () -> fantasma.decidirMovimiento(plano, null));
         assertThrows(IllegalArgumentException.class,
-                () -> new Fantasma(new Posicion(1, 1), null));
+                () -> new Fantasma(new Posicion(1, 1), null,30));
     }
 }

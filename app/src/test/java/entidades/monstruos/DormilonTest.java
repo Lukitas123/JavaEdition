@@ -22,7 +22,7 @@ class DormilonTest {
                 {Terreno.PISO, Terreno.PISO, Terreno.PISO,
                         Terreno.PISO, Terreno.PISO}
         }, inicio, null);
-        Dormilon dormilon = new Dormilon(inicio, new Costo(1, 3, 8));
+        Dormilon dormilon = new Dormilon(inicio, new Costo(1, 3, 8),30);
         Heroe heroe = new Heroe(100, new Ubicacion(1, 1, new Posicion(1, 5)));
         Agenda agenda = new Agenda();
 
@@ -55,7 +55,7 @@ class DormilonTest {
         Plano plano = new Plano(
                 new Terreno[][] {{Terreno.PISO, Terreno.PISO}},
                 inicio, null);
-        Dormilon dormilon = new Dormilon(inicio, new Costo(1, 3, 8));
+        Dormilon dormilon = new Dormilon(inicio, new Costo(1, 3, 8),30);
         Heroe heroe = new Heroe(100, new Ubicacion(1, 1, new Posicion(1, 2)));
         Agenda agenda = new Agenda();
 
@@ -64,7 +64,7 @@ class DormilonTest {
         agenda.sacarProximo();
         dormilon.despertarSiCorresponde(agenda.getPasoActual());
 
-        plano.dormirMonstruos(agenda.getPasoActual(), 7);
+        plano.getEfectos().dormirMonstruos(agenda.getPasoActual(), 7);
         dormilon.actuar(plano, heroe, agenda);
 
         assertTrue(dormilon.estaDespierto());

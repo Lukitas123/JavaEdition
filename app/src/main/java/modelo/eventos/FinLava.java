@@ -12,6 +12,6 @@ public record FinLava(int tablero, int piso) implements Evento {
     @Override
     public void ejecutar(Mazmorra partida) {
         Plano plano = partida.getMundo().planoEn(tablero, piso);
-        plano.finalizarLavaSiVencio(partida.getAgenda().getPasoActual());
+        plano.getEfectos().finalizarLavaSiVencio(partida.getAgenda().getPasoActual());
     }
 }

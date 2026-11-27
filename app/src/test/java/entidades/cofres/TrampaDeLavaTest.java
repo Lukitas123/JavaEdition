@@ -23,7 +23,7 @@ class TrampaDeLavaTest {
         }, centro, null);
         Heroe heroe = new Heroe(100, new Ubicacion(2, 3, centro));
         Agenda agenda = new Agenda();
-        TrampaDeLava trampa = new TrampaDeLava(centro);
+        TrampaDeLava trampa = new TrampaDeLava(centro, 10);
         plano.agregarCofre(trampa);
 
         trampa.abrir(heroe, plano, agenda);
@@ -50,7 +50,7 @@ class TrampaDeLavaTest {
         assertEquals(new FinLava(2, 3), evento.evento());
         assertEquals(11, evento.pasoDeVencimiento());
 
-        plano.finalizarLavaSiVencio(agenda.getPasoActual());
+        plano.getEfectos().finalizarLavaSiVencio(agenda.getPasoActual());
         assertEquals(Terreno.AGUA, plano.terrenoEn(agua));
         assertEquals(Terreno.LAVA, plano.terrenoEn(lava));
         assertEquals(Terreno.PISO, plano.terrenoEn(piso));
@@ -63,7 +63,7 @@ class TrampaDeLavaTest {
                 new Terreno[][] {{Terreno.PISO}}, centro, null);
         Heroe heroe = new Heroe(100, new Ubicacion(1, 1, centro));
         Agenda agenda = new Agenda();
-        TrampaDeLava trampa = new TrampaDeLava(centro);
+        TrampaDeLava trampa = new TrampaDeLava(centro, 10);
         plano.agregarCofre(trampa);
 
         trampa.abrir(heroe, plano, agenda);

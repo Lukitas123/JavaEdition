@@ -17,6 +17,7 @@ import java.util.Random;
 public class Fantasma extends Monstruo{
     private final Random random;
     private boolean moverEsteTurno;
+    private final int danio;
 
     /**
      * Crea un fantasma en la posicion indicada. Comienza activo y luego alterna entre actuar y esperar
@@ -24,13 +25,18 @@ public class Fantasma extends Monstruo{
      * @param random generador aleatorio para elegir movimientos; no puede ser null
      * @throws IllegalArgumentException si random es null
      */
-    public Fantasma(Posicion posicionInicial, Random random){
+    public Fantasma(Posicion posicionInicial, Random random, int danio){
         super(posicionInicial);
         if(random == null){
             throw new IllegalArgumentException("El generador aleatorio es obligatorio");
         }
+        if (danio <= 0) {
+            throw new IllegalArgumentException(
+                    "El danio debe ser positivo");
+        }
         this.random = random;
         moverEsteTurno = false; //comienza en false porque antesDeActuar() lo invierte
+        this.danio = danio;
     }
 
     /**
@@ -103,7 +109,7 @@ public class Fantasma extends Monstruo{
      */
     @Override
     public void alcanzarAlHeroe(Heroe heroe, Agenda agenda) {
-        daniarAlHeroe(heroe,30);
+        daniarAlHeroe(heroe,danio);
         volverAlInicio();
     }
 

@@ -26,7 +26,7 @@ public class ConversorPlano{
                 Posicion pos = new Posicion(fila + 1,colum + 1);
                 terreno[fila][colum] = plano.terrenoBaseEn(pos);
                 visitadas[fila][colum]=plano.estaVisitada(pos);
-                cubiertasPorPuente[fila][colum] = plano.estaCubiertaPorPuente(pos);
+                cubiertasPorPuente[fila][colum] = plano.getEfectos().estaCubiertaPorPuente(pos);
             }
         }
           
@@ -42,7 +42,7 @@ public class ConversorPlano{
         for (int i = 0; i < listaCofres.size();i++){
             cofres[i] = ConversorEntidades.cofreAGuardado(listaCofres.get(i));
         }
-        Map<Posicion, Integer> vencimientos = plano.getVencimientosLava();
+        Map<Posicion, Integer> vencimientos = plano.getEfectos().getVencimientosLava();
         LavaGuardada[] lavaActiva = new LavaGuardada[vencimientos.size()];
         int indice = 0;
 
@@ -51,7 +51,8 @@ public class ConversorPlano{
                     entrada.getKey(), entrada.getValue());
         }
 
-        return new PlanoGuardado(terreno, visitadas, plano.getEntrada(), plano.getSalida(), monstruos, cofres, plano.getFinSuenoMonstruos(),  plano.getFinPuente(), cubiertasPorPuente, lavaActiva);
+        return new PlanoGuardado(terreno, visitadas, plano.getEntrada(), plano.getSalida(), monstruos, cofres,
+                plano.getEfectos().getFinSuenoMonstruos(),  plano.getEfectos().getFinPuente(), cubiertasPorPuente, lavaActiva);
     }
 
     /** Crea un Plano a partir deun PlanoGuardado */
@@ -71,9 +72,9 @@ public class ConversorPlano{
                 }
             }
         }
-        plano.restaurarPuente(guardado.finPuente(), guardado.cubiertasPorPuente());
-        plano.restaurarLava(lava);
-        plano.restaurarFinSuenoMonstruos(guardado.finSuenoMonstruos());
+        plano.getEfectos().restaurarPuente(guardado.finPuente(), guardado.cubiertasPorPuente());
+        plano.getEfectos().restaurarLava(lava);
+        plano.getEfectos().restaurarFinSuenoMonstruos(guardado.finSuenoMonstruos());
 
         for (int fila = 0; fila < guardado.visitadas().length; fila++){
             for (int colum = 0; colum < guardado.visitadas()[fila].length; colum++){

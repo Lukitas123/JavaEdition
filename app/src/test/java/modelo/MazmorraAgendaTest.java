@@ -94,7 +94,7 @@ class MazmorraAgendaTest {
         Posicion agua = new Posicion(2, 4);
 
         planoOriginal.cambiarTerreno(agua, Terreno.AGUA);
-        planoOriginal.agregarCofre(new CofreDePuente(new Posicion(2, 3)));
+        planoOriginal.agregarCofre(new CofreDePuente(new Posicion(2, 3), 15));
         Mazmorra partida = mazmorraDe(mundo, 100);
 
         partida.moverHeroe(Direccion.DERECHA); // Abre el Puente en el paso 1.
@@ -117,7 +117,7 @@ class MazmorraAgendaTest {
         Plano plano = mazmorra.planoActual();
         Posicion cofre = new Posicion(2, 3);
         Posicion agua = new Posicion(2, 4);
-        plano.agregarCofre(new TrampaDeLava(cofre));
+        plano.agregarCofre(new TrampaDeLava(cofre, 10));
 
         mazmorra.moverHeroe(Direccion.DERECHA); // Abre la trampa en el paso 1.
         assertEquals(Terreno.LAVA, plano.terrenoEn(agua));
@@ -133,19 +133,19 @@ class MazmorraAgendaTest {
     @Test
     void suenoImpideActuarHastaQueElMotorLoFinaliza() {
         Plano plano = mazmorra.planoActual();
-        Cazador cazador = new Cazador(new Posicion(2, 5), new Costo(1, 3, 8));
+        Cazador cazador = new Cazador(new Posicion(2, 5), new Costo(1, 3, 8),30);
         plano.agregarMonstruo(cazador);
 
-        new Sueno().usar(mazmorra.getHeroe(), plano, mazmorra.getAgenda());
+        new Sueno(7).usar(mazmorra.getHeroe(), plano, mazmorra.getAgenda());
 
         for (int i = 0; i < 7; i++) {
             mazmorra.esperar();
         }
-        assertTrue(plano.monstruosDormidos());
+        assertTrue(plano.getEfectos().monstruosDormidos());
         assertEquals(new Posicion(2, 5), cazador.getPosicion());
 
         mazmorra.esperar(); // Paso 8: vence el sueño y actúa el cazador.
-        assertFalse(plano.monstruosDormidos());
+        assertFalse(plano.getEfectos().monstruosDormidos());
         assertEquals(new Posicion(2, 4), cazador.getPosicion());
     }
 
@@ -153,7 +153,7 @@ class MazmorraAgendaTest {
     void dormilonDespiertaEnElPasoSiguiente() {
         Plano plano = mazmorra.planoActual();
         Dormilon dormilon = new Dormilon(
-                new Posicion(2, 5), new Costo(1, 3, 8));
+                new Posicion(2, 5), new Costo(1, 3, 8),30);
         plano.agregarMonstruo(dormilon);
 
         mazmorra.moverHeroe(Direccion.DERECHA);

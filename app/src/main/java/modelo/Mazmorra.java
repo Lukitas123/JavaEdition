@@ -24,14 +24,15 @@ public class Mazmorra {
     private final CatalogoObjetos objetos;
     private final LogPartida log = new LogPartida();
     private EstadoPartida estado;
+    private final ParametrosEntidades parametrosEntidades;
 
     /**
      * Crea una partida nueva, en curso y sin objetos usables (catálogo vacío)
      *
      * @throws IllegalArgumentException si alguno de los argumentos es null
      */
-    public Mazmorra(Dificultad dificultad, Mundo mundo, Heroe heroe, Agenda agenda, Costo costos) {
-        this(dificultad, mundo, heroe, agenda, costos, EstadoPartida.EN_CURSO, new CatalogoObjetos());
+    public Mazmorra(Dificultad dificultad, Mundo mundo, Heroe heroe, Agenda agenda, Costo costos, ParametrosEntidades parametros) {
+        this(dificultad, mundo, heroe, agenda, costos, parametros, EstadoPartida.EN_CURSO, new CatalogoObjetos());
     }
 
     /**
@@ -40,8 +41,8 @@ public class Mazmorra {
      * @throws IllegalArgumentException si alguno de los argumentos es null
      */
     public Mazmorra(Dificultad dificultad, Mundo mundo, Heroe heroe, Agenda agenda,
-                    Costo costos, CatalogoObjetos objetos) {
-        this(dificultad, mundo, heroe, agenda, costos, EstadoPartida.EN_CURSO, objetos);
+                    Costo costos, ParametrosEntidades parametros, CatalogoObjetos objetos) {
+        this(dificultad, mundo, heroe, agenda, costos, parametros, EstadoPartida.EN_CURSO, objetos);
     }
 
     /**
@@ -50,8 +51,8 @@ public class Mazmorra {
      * @throws IllegalArgumentException si alguno de los argumentos es null
      */
     public Mazmorra(Dificultad dificultad, Mundo mundo, Heroe heroe, Agenda agenda,
-                    Costo costos, EstadoPartida estado) {
-        this(dificultad, mundo, heroe, agenda, costos, estado, new CatalogoObjetos());
+                    Costo costos, ParametrosEntidades parametros, EstadoPartida estado) {
+        this(dificultad, mundo, heroe, agenda, costos,parametros, estado, new CatalogoObjetos());
     }
 
     /**
@@ -61,9 +62,9 @@ public class Mazmorra {
      * @throws IllegalArgumentException si alguno de los argumentos es null
      */
     public Mazmorra(Dificultad dificultad, Mundo mundo, Heroe heroe, Agenda agenda,
-                    Costo costos, EstadoPartida estado, CatalogoObjetos objetos) {
+                    Costo costos,ParametrosEntidades parametros, EstadoPartida estado, CatalogoObjetos objetos) {
         if (dificultad == null || mundo == null || heroe == null || agenda == null
-                || costos == null || estado == null || objetos == null) {
+                || costos == null ||parametros == null || estado == null || objetos == null) {
             throw new IllegalArgumentException("Ningun dato de la partida puede ser null");
         }
         this.dificultad = dificultad;
@@ -71,6 +72,7 @@ public class Mazmorra {
         this.heroe = heroe;
         this.agenda = agenda;
         this.costos = costos;
+        this.parametrosEntidades = parametros;
         this.estado = estado;
         this.objetos = objetos;
     }
@@ -101,6 +103,10 @@ public class Mazmorra {
 
     public LogPartida getLog() {
         return log;
+    }
+
+    public ParametrosEntidades getParametrosEntidades() {
+        return parametrosEntidades;
     }
 
     /** @return true si la partida ya se ganó o se perdió */

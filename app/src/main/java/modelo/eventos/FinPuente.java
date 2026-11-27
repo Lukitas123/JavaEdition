@@ -13,6 +13,6 @@ public record FinPuente(int tablero, int piso) implements Evento {
     @Override
     public void ejecutar(Mazmorra partida) {
         Plano plano = partida.getMundo().planoEn(tablero, piso);
-        plano.finalizarPuenteSiVencio(partida.getAgenda().getPasoActual());
+        plano.getEfectos().finalizarPuenteSiVencio(partida.getAgenda().getPasoActual());
     }
 }

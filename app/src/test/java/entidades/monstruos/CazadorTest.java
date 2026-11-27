@@ -22,7 +22,7 @@ class CazadorTest {
                 {Terreno.PISO, Terreno.LAVA, Terreno.PISO},
                 {Terreno.PISO, Terreno.PISO, Terreno.PISO}
         }, inicio, null);
-        Cazador cazador = new Cazador(inicio, new Costo(1, 3, 8));
+        Cazador cazador = new Cazador(inicio, new Costo(1, 3, 8),30);
 
         assertEquals(new Posicion(2, 1),
                 cazador.decidirMovimiento(plano, destino));
@@ -39,7 +39,7 @@ class CazadorTest {
         Plano plano = new Plano(new Terreno[][] {
                 {Terreno.PISO, Terreno.PARED, Terreno.PISO}
         }, inicio, null);
-        Cazador cazador = new Cazador(inicio, new Costo(1, 3, 8));
+        Cazador cazador = new Cazador(inicio, new Costo(1, 3, 8),30);
 
         assertEquals(inicio,
                 cazador.decidirMovimiento(plano, new Posicion(1, 3)));
@@ -53,7 +53,7 @@ class CazadorTest {
         }, inicio, null);
         Heroe heroe = new Heroe(
                 100, new Ubicacion(1, 1, new Posicion(1, 3)));
-        Cazador cazador = new Cazador(inicio, new Costo(1, 3, 8));
+        Cazador cazador = new Cazador(inicio, new Costo(1, 3, 8),30);
         Agenda agenda = new Agenda();
 
         cazador.actuar(plano, heroe, agenda);

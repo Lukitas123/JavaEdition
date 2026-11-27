@@ -35,7 +35,7 @@ class ZapatosDeAguaTest {
         Plano plano = new Plano(new Terreno[][] {{Terreno.PISO}}, posicion, null);
         Heroe heroe = new Heroe(100, new Ubicacion(1, 1, posicion));
         Agenda agenda = new Agenda();
-        ZapatosDeAgua zapatos = new ZapatosDeAgua();
+        ZapatosDeAgua zapatos = new ZapatosDeAgua(20);
 
         avanzar(agenda, 10);
         zapatos.usar(heroe, plano, agenda);

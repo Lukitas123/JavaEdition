@@ -118,7 +118,7 @@ class ColocadorDeConexionesTest {
                 "#####",
                 "#####");
         abajo.agregarCofre(new CofreDePuntos(new Posicion(2, 3)));
-        abajo.agregarMonstruo(new Errante(new Posicion(2, 4), new Random(1)));
+        abajo.agregarMonstruo(new Errante(new Posicion(2, 4), new Random(1),30));
         abajo.agregarCofre(new CofreDePuntos(new Posicion(3, 4)));
         mundo.agregarPlano(1, 1, abajo);
         mundo.agregarPlano(1, 2, abierto(true));

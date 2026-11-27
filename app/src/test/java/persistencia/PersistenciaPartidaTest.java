@@ -83,7 +83,7 @@ public class PersistenciaPartidaTest {
                 {Terreno.PISO, Terreno.LAVA, Terreno.PISO},
                 {Terreno.PISO, Terreno.PISO, Terreno.PISO}
         }, inicio, null);
-        plano.agregarMonstruo(new Cazador(inicio, costos));
+        plano.agregarMonstruo(new Cazador(inicio, costos,30));
 
         Mundo mundo = new Mundo(1, 1);
         mundo.agregarPlano(1, 1, plano);
@@ -114,7 +114,7 @@ public class PersistenciaPartidaTest {
         Plano plano = new Plano(new Terreno[][] {
                 {Terreno.PISO, Terreno.PISO, Terreno.PISO}
         }, inicio, null);
-        Dormilon dormilon = new Dormilon(inicio, costos);
+        Dormilon dormilon = new Dormilon(inicio, costos,30);
         plano.agregarMonstruo(dormilon);
 
         Mundo mundo = new Mundo(1, 1);

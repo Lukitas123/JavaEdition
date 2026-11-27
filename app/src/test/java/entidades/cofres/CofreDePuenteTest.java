@@ -21,7 +21,7 @@ class CofreDePuenteTest {
         Heroe heroe = new Heroe(100, new Ubicacion(1, 1, inicio));
         Agenda agenda = new Agenda();
 
-        CofreDePuente primero = new CofreDePuente(inicio);
+        CofreDePuente primero = new CofreDePuente(inicio,15);
         plano.agregarCofre(primero);
         primero.abrir(heroe, plano, agenda);
 
@@ -37,7 +37,7 @@ class CofreDePuenteTest {
         assertEquals(Terreno.LAVA, plano.terrenoEn(lavaNueva));
 
         agenda.avanzarPaso();
-        CofreDePuente segundo = new CofreDePuente(inicio);
+        CofreDePuente segundo = new CofreDePuente(inicio, 15);
         plano.agregarCofre(segundo);
         segundo.abrir(heroe, plano, agenda);
 

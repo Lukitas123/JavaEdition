@@ -23,7 +23,7 @@ class TrampaDeLavaTest {
         }, centro, null);
         Heroe heroe = new Heroe(100, new Ubicacion(2, 3, centro));
         Agenda agenda = new Agenda();
-        TrampaDeLava trampa = new TrampaDeLava(centro);
+        TrampaDeLava trampa = new TrampaDeLava(centro, 10);
         plano.agregarCofre(trampa);
 
         trampa.abrir(heroe, plano, agenda);
@@ -63,7 +63,7 @@ class TrampaDeLavaTest {
                 new Terreno[][] {{Terreno.PISO}}, centro, null);
         Heroe heroe = new Heroe(100, new Ubicacion(1, 1, centro));
         Agenda agenda = new Agenda();
-        TrampaDeLava trampa = new TrampaDeLava(centro);
+        TrampaDeLava trampa = new TrampaDeLava(centro, 10);
         plano.agregarCofre(trampa);
 
         trampa.abrir(heroe, plano, agenda);

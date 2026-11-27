@@ -95,7 +95,7 @@ class PlanoTest {
 
     @Test
     void agregarYBuscarMonstruo() {
-        Monstruo monstruo = new Errante(new Posicion(2, 3), new Random(1));
+        Monstruo monstruo = new Errante(new Posicion(2, 3), new Random(1),30);
         plano.agregarMonstruo(monstruo);
 
         assertEquals(1, plano.getMonstruos().cantidad());
@@ -105,7 +105,7 @@ class PlanoTest {
 
     @Test
     void quitarMonstruo() {
-        Monstruo monstruo = new Errante(new Posicion(2, 3), new Random(1));
+        Monstruo monstruo = new Errante(new Posicion(2, 3), new Random(1),30);
         plano.agregarMonstruo(monstruo);
 
         assertTrue(plano.quitarMonstruo(monstruo));
@@ -115,7 +115,7 @@ class PlanoTest {
 
     @Test
     void monstruoEnParedLanzaExcepcion() {
-        Monstruo enPared = new Errante(new Posicion(1, 1), new Random(1));
+        Monstruo enPared = new Errante(new Posicion(1, 1), new Random(1),30);
         assertThrows(IllegalArgumentException.class, () -> plano.agregarMonstruo(enPared));
         assertThrows(IllegalArgumentException.class, () -> plano.agregarMonstruo(null));
     }

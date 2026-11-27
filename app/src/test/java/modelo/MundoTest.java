@@ -129,7 +129,7 @@ class MundoTest {
     @Test
     void conexionEnMonstruoLanzaExcepcion() {
         cargarPlanos();
-        mundo.planoEn(1, 1).agregarMonstruo(new Errante(new Posicion(3, 3), new Random(1)));
+        mundo.planoEn(1, 1).agregarMonstruo(new Errante(new Posicion(3, 3), new Random(1),30));
         assertThrows(IllegalArgumentException.class, () -> mundo.agregarConexion(escalera(3, 3)));
     }
 

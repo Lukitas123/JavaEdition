@@ -2,6 +2,17 @@
   "energiaInicial": 100,
   "costos": { "piso": 1, "agua": 3, "lava": 8 },
   "semilla": null,
+  "entidades": {
+    "danioBasico": 30,
+    "danioTrampaEnergia": 25,
+    "duracionCongelador": 3,
+    "duracionPuente": 15,
+    "duracionLava": 10,
+    "duracionZapatosAgua": 20,
+    "duracionEscudo": 10,
+    "duracionSueno": 7,
+    "energiaPocion": 25
+  },
   "dificultades": {
     "FACIL":   { "tableros": 1, "pisos": 1, "filas": 25, "columnas": 40, "cofres": 12, "monstruos": 4  },
     "MEDIO":   { "tableros": 1, "pisos": 3, "filas": 15, "columnas": 20, "cofres": 6,  "monstruos": 6  },

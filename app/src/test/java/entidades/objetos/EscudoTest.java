@@ -61,8 +61,8 @@ class EscudoTest {
 
     @Test
     void protegeDelDanioDeMonstruosHastaQueVence() {
-        Errante errante = new Errante(posicion, new Random(1));
-        Fantasma fantasma = new Fantasma(posicion, new Random(1));
+        Errante errante = new Errante(posicion, new Random(1),30);
+        Fantasma fantasma = new Fantasma(posicion, new Random(1),30);
 
         new Escudo().usar(heroe, plano, agenda);
 

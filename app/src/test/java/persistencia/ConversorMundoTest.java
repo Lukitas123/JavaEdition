@@ -44,7 +44,7 @@ public class ConversorMundoTest {
                                                             new Posicion(3, 3)));
         original.agregarConexion(new Conexion(
                 new Ubicacion(1, 1, new Posicion(3, 2)), new Ubicacion(1, 2, new Posicion(3, 2))));
-        original.planoEn(1, 1).agregarMonstruo(new Errante(new Posicion(3, 2), new Random(1)));
+        original.planoEn(1, 1).agregarMonstruo(new Errante(new Posicion(3, 2), new Random(1),30));
 
         Gson gson = new Gson();
         String json = gson.toJson(ConversorMundo.aGuardado(original));

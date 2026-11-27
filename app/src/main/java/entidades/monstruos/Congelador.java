@@ -9,7 +9,7 @@ public class Congelador extends Errante{
     private final int duracion;
 
     public Congelador(Posicion posicionInicial, Random random, int duracion){
-        super(posicionInicial, random);
+        super(posicionInicial, random, 0);
         if (duracion <= 0) {
             throw new IllegalArgumentException("La duracion debe ser positiva");
         }

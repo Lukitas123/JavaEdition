@@ -68,7 +68,7 @@ public class ConversorPlanoTest {
     @Test
     void fantasmaEnUnaParedSobrevive() {
         Plano original = new Plano(terrenoDePrueba(), new Posicion(2, 2), new Posicion(3, 3));
-        Fantasma fantasma = new Fantasma(new Posicion(2, 3), new Random(1));
+        Fantasma fantasma = new Fantasma(new Posicion(2, 3), new Random(1),30);
         original.agregarMonstruo(fantasma);
         fantasma.restaurarPosicion(new Posicion(1, 3));   // la celda (1,3) es pared
 
@@ -155,7 +155,7 @@ public class ConversorPlanoTest {
                 {Terreno.PISO, Terreno.AGUA, Terreno.LAVA, Terreno.PISO}
         }, inicio, null);
 
-        original.agregarCofre(new CofreDePuente(inicio));
+        original.agregarCofre(new CofreDePuente(inicio, 15));
         original.getEfectos().activarPuente(10, 15);
         original.cambiarTerreno(lavaNueva, Terreno.LAVA);
 
@@ -185,7 +185,7 @@ public class ConversorPlanoTest {
                 {Terreno.PISO, Terreno.AGUA, Terreno.PISO, Terreno.AGUA}
         }, inicio, null);
 
-        original.agregarCofre(new TrampaDeLava(inicio));
+        original.agregarCofre(new TrampaDeLava(inicio, 10));
         original.getEfectos().activarPuente(0, 15);
         original.getEfectos().activarLava(aguaConLava, 1, 10);
         original.getEfectos().activarLava(pisoConLava, 3, 10);

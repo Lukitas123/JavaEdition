@@ -41,7 +41,7 @@ class SuenoTest {
 
     @Test
     void duermeMonstruosYAcumulaSinQueElEventoAnteriorLosDespierte() {
-        Errante monstruo = new Errante(posicion, new Random(1));
+        Errante monstruo = new Errante(posicion, new Random(1),30);
         plano.agregarMonstruo(monstruo);
         Sueno sueno = new Sueno();
 

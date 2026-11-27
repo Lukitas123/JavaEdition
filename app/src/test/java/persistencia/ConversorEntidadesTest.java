@@ -35,7 +35,7 @@ public class ConversorEntidadesTest {
     /** Un monstruo inactivo conserva su tipo y su estado inactivo */
     @Test
     void monstruoInactivoSigueInactivo() {
-        Errante original = new Errante(new Posicion(2, 2), new Random(1));
+        Errante original = new Errante(new Posicion(2, 2), new Random(1),30);
         original.desactivar();
 
         Monstruo restaurado = ConversorEntidades.aMonstruo(ConversorEntidades.monstruoAGuardado(original), pruebaMonstruos());
@@ -50,7 +50,7 @@ public class ConversorEntidadesTest {
     void fantasmaConservaSuEstado() {
         Plano plano = new Plano(terrenoDePrueba(), new Posicion(2, 2), null);
         Heroe heroe = new Heroe(100, new Ubicacion(1, 1, new Posicion(3, 3)));
-        Fantasma original = new Fantasma(new Posicion(2, 2), new Random(1));
+        Fantasma original = new Fantasma(new Posicion(2, 2), new Random(1),30);
         assertEquals("false", original.exportarEstado());
 
         original.actuar(plano, heroe, new Agenda());

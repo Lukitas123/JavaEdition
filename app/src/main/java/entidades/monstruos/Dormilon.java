@@ -7,8 +7,8 @@ public class Dormilon extends Cazador{
     private EstadoDormilon estado;
     private Integer pasoDespertar;
 
-    public Dormilon(Posicion posicionInicial, Costo costos){
-        super(posicionInicial, costos);
+    public Dormilon(Posicion posicionInicial, Costo costos,int danio){
+        super(posicionInicial, costos, danio);
         estado = EstadoDormilon.DORMIDO;
     }
 
@@ -23,7 +23,8 @@ public class Dormilon extends Cazador{
 
             Ubicacion ubicacion = heroe.getUbicacion();
             agenda.programar(1,
-                    new DespertarDormilones(ubicacion.tablero(), ubicacion.piso()));
+                    new DespertarDormilones(
+                            ubicacion.tablero(), ubicacion.piso()));
         }
     }
 

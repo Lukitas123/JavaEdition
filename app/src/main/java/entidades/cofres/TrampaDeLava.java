@@ -5,10 +5,16 @@ import modelo.*;
 import modelo.eventos.FinLava;
 
 public class TrampaDeLava extends Cofre {
-    private static final int DURACION = 10;
+    private final int duracion;
 
-    public TrampaDeLava(Posicion posicion){
+    public TrampaDeLava(Posicion posicion, int duracion){
         super(posicion);
+        if (duracion <= 0) {
+            throw new IllegalArgumentException(
+                    "La duracion debe ser positiva");
+        }
+
+        this.duracion = duracion;
     }
 
     @Override
@@ -24,7 +30,7 @@ public class TrampaDeLava extends Cofre {
 
         for (int i = 0; i < vecinos.cantidad(); i++) {
             vencimiento = plano.getEfectos().activarLava(
-                    vecinos.obtener(i), pasoActual, DURACION);
+                    vecinos.obtener(i), pasoActual, duracion);
         }
 
         Ubicacion ubicacion = heroe.getUbicacion();

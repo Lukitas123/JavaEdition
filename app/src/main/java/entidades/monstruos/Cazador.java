@@ -5,8 +5,9 @@ import modelo.*;
 
 public class Cazador extends Monstruo{
     private final Costo costo;
+    private final int danio;
 
-    public Cazador(Posicion posicion, Costo costo){
+    public Cazador(Posicion posicion, Costo costo, int danio){
         super(posicion);
         if (costo == null
                 || costo.piso() < 0
@@ -14,7 +15,12 @@ public class Cazador extends Monstruo{
                 || costo.lava() < 0) {
             throw new IllegalArgumentException("Los costos no pueden ser nulos ni negativos");
         }
+        if (danio <= 0) {
+            throw new IllegalArgumentException(
+                    "El danio debe ser positivo");
+        }
         this.costo = costo;
+        this.danio = danio;
     }
 
     /**
@@ -42,7 +48,7 @@ public class Cazador extends Monstruo{
 
     @Override
     public void alcanzarAlHeroe(Heroe heroe, Agenda agenda) {
-        daniarAlHeroe(heroe, 30);
+        daniarAlHeroe(heroe, danio);
         volverAlInicio();
     }
 }

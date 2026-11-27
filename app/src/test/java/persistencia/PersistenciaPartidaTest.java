@@ -64,7 +64,7 @@ public class PersistenciaPartidaTest {
         assertEquals(85, restaurada.getHeroe().getEnergia());
         assertEquals(1, restaurada.getHeroe().cantidadDe("pocion"));
         assertEquals(1, restaurada.getAgenda().getPasoActual());
-        assertEquals(1, restaurada.planoActual().getCofres().cantidad());
+        assertEquals(1, restaurada.planoActual().getCofres().size());
 }
 
     /** Cargar sin archivo tira error */
@@ -97,7 +97,7 @@ public class PersistenciaPartidaTest {
                 leida, CatalogosDePrueba.monstruos(leida.costos()), pruebaCofre());
 
         Plano planoRestaurado = restaurada.getMundo().planoEn(1, 1);
-        Monstruo monstruo = planoRestaurado.getMonstruos().obtener(0);
+        Monstruo monstruo = planoRestaurado.getMonstruos().get(0);
 
         assertEquals(costos, restaurada.getCosto());
         assertInstanceOf(Cazador.class, monstruo);
@@ -133,7 +133,7 @@ public class PersistenciaPartidaTest {
                 leida, CatalogosDePrueba.monstruos(leida.costos()), pruebaCofre());
         Plano planoRestaurado = restaurada.getMundo().planoEn(1, 1);
         Dormilon restaurado = assertInstanceOf(
-                Dormilon.class, planoRestaurado.getMonstruos().obtener(0));
+                Dormilon.class, planoRestaurado.getMonstruos().get(0));
 
         assertFalse(restaurado.estaDespierto());
         assertEquals(1, restaurada.getAgenda().cantidadDeEventos());

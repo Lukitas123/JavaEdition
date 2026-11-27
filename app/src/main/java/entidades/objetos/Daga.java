@@ -1,6 +1,7 @@
 package entidades.objetos;
 
-import estructuras.Lista;
+import java.util.ArrayList;
+import java.util.List;
 import modelo.Agenda;
 import modelo.Heroe;
 import modelo.Plano;
@@ -26,20 +27,18 @@ public class Daga implements Objeto{
             throw new IllegalArgumentException("Heroe, plano y agenda son obligatorios");
         }
 
-        Lista<Monstruo> candidatos = new Lista<>();
-        Lista<Monstruo> monstruos = plano.getMonstruos();
+        List<Monstruo> candidatos = new ArrayList<>();
 
-        for (int i = 0; i < monstruos.cantidad(); i++) {
-            Monstruo monstruo = monstruos.obtener(i);
+        for (Monstruo monstruo : plano.getMonstruos()) {
             if (heroe.getUbicacion().posicion()
                     .distanciaManhattan(monstruo.getPosicion()) == 1) {
-                candidatos.agregar(monstruo);
+                candidatos.add(monstruo);
             }
         }
 
-        if (!candidatos.estaVacia()) {
-            int elegido = random.nextInt(candidatos.cantidad());
-            plano.quitarMonstruo(candidatos.obtener(elegido));
+        if (!candidatos.isEmpty()) {
+            int elegido = random.nextInt(candidatos.size());
+            plano.quitarMonstruo(candidatos.get(elegido));
             return new ResultadoUso(true, null);
         }
         return new ResultadoUso(false, null);

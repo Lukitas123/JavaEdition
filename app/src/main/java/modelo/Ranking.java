@@ -1,7 +1,8 @@
 package modelo;
 
 import estructuras.ArbolAVL;
-import estructuras.Lista;
+
+import java.util.List;
 
 /**Guarda las entradas del ranking ordenadas de mayor a menor puntaje */
 public class Ranking {
@@ -19,20 +20,16 @@ public class Ranking {
     }
 
     /**Mejores 10 entradas*/
-    public Lista<EntradaDeRanking> top10() {
-        Lista<EntradaDeRanking> entradasTotales = entradas.inorden();
-        Lista<EntradaDeRanking> mejores = new Lista<>();
+    public List<EntradaDeRanking> top10() {
+        List<EntradaDeRanking> entradasTotales = entradas.inorden();
 
-        if (entradasTotales.cantidad()<CANTIDAD_MEJORES){
+        if (entradasTotales.size()<CANTIDAD_MEJORES){
             return entradasTotales;
         }
-        for (int i=0;i<CANTIDAD_MEJORES;i++){
-            mejores.agregar(entradasTotales.obtener(i));
-        }
-        return mejores;
+        return entradasTotales.subList(0, CANTIDAD_MEJORES);
     }
     //**Devuelve TODAS las entradas en orden */
-    public Lista<EntradaDeRanking> totalEntradas(){
+    public List<EntradaDeRanking> totalEntradas(){
         return entradas.inorden();
     }
 }

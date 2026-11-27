@@ -2,7 +2,8 @@ package modelo;
 
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
-import estructuras.Lista;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * La partida: junta el mundo, el héroe y la agenda, y aplica las reglas del juego.
@@ -224,12 +225,9 @@ public class Mazmorra {
      */
     private void moverMonstruos() {
         Plano plano = planoActual();
-        Lista<Monstruo> copia = new Lista<>();
-        for (int i = 0; i < plano.getMonstruos().cantidad(); i++) {
-            copia.agregar(plano.getMonstruos().obtener(i));
-        }
-        for (int i = 0; i < copia.cantidad(); i++) {
-            copia.obtener(i).actuar(plano, heroe, agenda);
+        List<Monstruo> copia = new ArrayList<>(plano.getMonstruos());
+        for (Monstruo monstruo : copia) {
+            monstruo.actuar(plano, heroe, agenda);
         }
     }
 

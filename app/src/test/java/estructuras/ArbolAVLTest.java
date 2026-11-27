@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -274,7 +275,7 @@ public class ArbolAVLTest {
     // 5. RECORRIDO INORDEN
 
     /**
-     * Verifica que el recorrido inorden devuelva los elementos en orden estrictamente ascendente, * utilizando la estructura propia Lista. */@Test
+     * Verifica que el recorrido inorden devuelva los elementos en orden estrictamente ascendente, * utilizando la lista que devuelve inorden(). */@Test
     @DisplayName("El recorrido inorden devuelve todos los elementos ordenados ascendentemente")
     public void testRecorridoInordenOrdenado() {
         int[] desordenados = {50, 20, 80, 10, 30, 70, 90, 5, 15, 25, 35};
@@ -282,27 +283,27 @@ public class ArbolAVLTest {
             this.arbol.insertar(v);
         }
 
-        Lista<Integer> listaInorden = this.arbol.inorden();
-        assertEquals(desordenados.length, listaInorden.cantidad());
+        List<Integer> listaInorden = this.arbol.inorden();
+        assertEquals(desordenados.length, listaInorden.size());
 
         // Verificar que cada elemento sea menor que el siguiente
-        for (int i = 0; i < listaInorden.cantidad() - 1; i++) {
-            assertTrue(listaInorden.obtener(i) < listaInorden.obtener(i + 1),
-                    "El elemento " + listaInorden.obtener(i) + " debe ser menor que " + listaInorden.obtener(i + 1));
+        for (int i = 0; i < listaInorden.size() - 1; i++) {
+            assertTrue(listaInorden.get(i) < listaInorden.get(i + 1),
+                    "El elemento " + listaInorden.get(i) + " debe ser menor que " + listaInorden.get(i + 1));
         }
 
         // Primer y último elemento
-        assertEquals(5, listaInorden.obtener(0));
-        assertEquals(90, listaInorden.obtener(listaInorden.cantidad() - 1));
+        assertEquals(5, listaInorden.get(0));
+        assertEquals(90, listaInorden.get(listaInorden.size() - 1));
     }
 
     /**
      * Verifica que en un árbol vacío el recorrido inorden retorne una lista vacía. */@Test
     @DisplayName("El recorrido inorden en un árbol vacío retorna una lista vacía")
     public void testRecorridoInordenArbolVacio() {
-        Lista<Integer> lista = this.arbol.inorden();
-        assertTrue(lista.estaVacia());
-        assertEquals(0, lista.cantidad());
+        List<Integer> lista = this.arbol.inorden();
+        assertTrue(lista.isEmpty());
+        assertEquals(0, lista.size());
     }
 
     // GENÉRICOS
@@ -326,12 +327,12 @@ public class ArbolAVLTest {
 
         assertTrue(arbolStrings.esAVLValido());
 
-        Lista<String> ordenado = arbolStrings.inorden();
-        assertEquals("alfa", ordenado.obtener(0));
-        assertEquals("bravo", ordenado.obtener(1));
-        assertEquals("charlie", ordenado.obtener(2));
-        assertEquals("delta", ordenado.obtener(3));
-        assertEquals("echo", ordenado.obtener(4));
+        List<String> ordenado = arbolStrings.inorden();
+        assertEquals("alfa", ordenado.get(0));
+        assertEquals("bravo", ordenado.get(1));
+        assertEquals("charlie", ordenado.get(2));
+        assertEquals("delta", ordenado.get(3));
+        assertEquals("echo", ordenado.get(4));
     }
 
     // PRUEBAS DE VOLUMEN Y GARANTÍA LOGARÍTMICA
@@ -366,9 +367,9 @@ public class ArbolAVLTest {
         assertTrue(this.arbol.altura() <= 8, "La altura fue " + this.arbol.altura() + ", debía ser <= 8");
         assertTrue(this.arbol.esAVLValido());
 
-        Lista<Integer> ordenado = this.arbol.inorden();
-        assertEquals(1, ordenado.obtener(0));
-        assertEquals(100, ordenado.obtener(99));
+        List<Integer> ordenado = this.arbol.inorden();
+        assertEquals(1, ordenado.get(0));
+        assertEquals(100, ordenado.get(99));
     }
 
     /**
@@ -389,9 +390,9 @@ public class ArbolAVLTest {
         assertTrue(this.arbol.altura() <= 12, "La altura fue " + this.arbol.altura() + ", debía ser <= 12");
 
         // El inorden debe estar siempre ordenado
-        Lista<Integer> inorden = this.arbol.inorden();
-        for (int i = 0; i < inorden.cantidad() - 1; i++) {
-            assertTrue(inorden.obtener(i) <= inorden.obtener(i + 1),
+        List<Integer> inorden = this.arbol.inorden();
+        for (int i = 0; i < inorden.size() - 1; i++) {
+            assertTrue(inorden.get(i) <= inorden.get(i + 1),
                     "Violación de orden en el recorrido inorden");
         }
     }

@@ -21,7 +21,7 @@ class MazmorraCofresTest {
         assertTrue(cofre.estaAbierto());
         assertEquals(1, mazmorra.getHeroe().getCofresAbiertos());
         assertNull(plano.cofreEn(new Posicion(2, 3)));
-        assertEquals(0, plano.getCofres().cantidad());
+        assertEquals(0, plano.getCofres().size());
     }
 
     @Test

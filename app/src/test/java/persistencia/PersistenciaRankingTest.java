@@ -11,7 +11,7 @@ import modelo.Ranking;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import estructuras.Lista;
+import java.util.List;
 
 
 public class PersistenciaRankingTest {
@@ -75,12 +75,12 @@ public class PersistenciaRankingTest {
         PersistenciaRanking.guardarRanking(original.totalEntradas(), ruta);
 
         Ranking armado=PersistenciaRanking.armarRanking(ruta);
-        Lista<EntradaDeRanking> entradas=armado.totalEntradas();
+        List<EntradaDeRanking> entradas=armado.totalEntradas();
 
-        assertEquals(3, entradas.cantidad());
-        assertEquals("Pedro", entradas.obtener(0).nombre());
-        assertEquals("Caro", entradas.obtener(1).nombre());
-        assertEquals("Ana", entradas.obtener(2).nombre());
+        assertEquals(3, entradas.size());
+        assertEquals("Pedro", entradas.get(0).nombre());
+        assertEquals("Caro", entradas.get(1).nombre());
+        assertEquals("Ana", entradas.get(2).nombre());
     }
 
     /**Dos partidas de la misma persona con igual puntaje pero distinta fecha no se confunden */

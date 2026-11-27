@@ -1,40 +1,45 @@
 package estructuras;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
- * Representación de un Grafo con Pesos utilizando estructuras 100% propias (TablaHash y Lista).
+ * Representación de un Grafo con Pesos utilizando HashMap y ArrayList de la API de Java.
  * Soporta aristas dirigidas y no dirigidas con pesos no negativos.
  *
  * @param <T> Tipo de dato almacenado en los vértices (ej: Posicion, Celda, String).
  */
 public class GrafoConPesos<T> {
 
-    // TablaHash para acceder a los vértices por su valor en O(1)
-    private TablaHash<T, Vertice<T>> vertices;
+    // HashMap para acceder a los vértices por su valor en O(1)
+    private Map<T, Vertice<T>> vertices;
     // Lista para poder iterar sobre todos los vértices del grafo en O(N)
-    private Lista<Vertice<T>> listaVertices;
+    private List<Vertice<T>> listaVertices;
 
     /**
      * Clase interna que representa un Vértice del grafo.
      */
     public static class Vertice<T> {
         private T dato;
-        private Lista<Arista<T>> adyacentes;
+        private List<Arista<T>> adyacentes;
 
         public Vertice(T dato) {
             this.dato = dato;
-            this.adyacentes = new Lista<>();
+            this.adyacentes = new ArrayList<>();
         }
 
         public T getDato() {
             return this.dato;
         }
 
-        public Lista<Arista<T>> getAdyacentes() {
+        public List<Arista<T>> getAdyacentes() {
             return this.adyacentes;
         }
 
         public int cantidadAdyacentes() {
-            return this.adyacentes.cantidad();
+            return this.adyacentes.size();
         }
     }
 
@@ -67,11 +72,11 @@ public class GrafoConPesos<T> {
     }
 
     /**
-     * Constructor por defecto: inicializa el grafo con estructuras propias.
+     * Constructor por defecto: inicializa el grafo vacío.
      */
     public GrafoConPesos() {
-        this.vertices = new TablaHash<>();
-        this.listaVertices = new Lista<>();
+        this.vertices = new HashMap<>();
+        this.listaVertices = new ArrayList<>();
     }
 
     /**
@@ -85,10 +90,10 @@ public class GrafoConPesos<T> {
         if (dato == null) {
             throw new IllegalArgumentException("El vértice no puede ser nulo.");
         }
-        if (!this.vertices.contiene(dato)) {
+        if (!this.vertices.containsKey(dato)) {
             Vertice<T> nuevoVertice = new Vertice<>(dato);
-            this.vertices.insertar(dato, nuevoVertice);
-            this.listaVertices.agregar(nuevoVertice);
+            this.vertices.put(dato, nuevoVertice);
+            this.listaVertices.add(nuevoVertice);
         }
     }
 
@@ -103,7 +108,7 @@ public class GrafoConPesos<T> {
         if (dato == null) {
             return false;
         }
-        return this.vertices.contiene(dato);
+        return this.vertices.containsKey(dato);
     }
 
     /**
@@ -113,7 +118,7 @@ public class GrafoConPesos<T> {
      * @return Número de vértices.
      */
     public int cantidadVertices() {
-        return this.listaVertices.cantidad();
+        return this.listaVertices.size();
     }
 
     /**
@@ -149,20 +154,18 @@ public class GrafoConPesos<T> {
         agregarVertice(origen);
         agregarVertice(destino);
 
-        Vertice<T> vOrigen = this.vertices.obtener(origen);
-        Vertice<T> vDestino = this.vertices.obtener(destino);
+        Vertice<T> vOrigen = this.vertices.get(origen);
+        Vertice<T> vDestino = this.vertices.get(destino);
 
         // Si ya existe la arista, actualizamos su peso
-        Lista<Arista<T>> ady = vOrigen.getAdyacentes();
-        for (int i = 0; i < ady.cantidad(); i++) {
-            Arista<T> arista = ady.obtener(i);
+        for (Arista<T> arista : vOrigen.getAdyacentes()) {
             if (arista.getDestino().getDato().equals(destino)) {
                 arista.setPeso(peso);
                 return;
             }
         }
 
-        vOrigen.getAdyacentes().agregar(new Arista<>(vDestino, peso));
+        vOrigen.getAdyacentes().add(new Arista<>(vDestino, peso));
     }
 
     /**
@@ -191,9 +194,8 @@ public class GrafoConPesos<T> {
             return false;
         }
 
-        Lista<Arista<T>> ady = vOrigen.getAdyacentes();
-        for (int i = 0; i < ady.cantidad(); i++) {
-            if (ady.obtener(i).getDestino().getDato().equals(destino)) {
+        for (Arista<T> arista : vOrigen.getAdyacentes()) {
+            if (arista.getDestino().getDato().equals(destino)) {
                 return true;
             }
         }
@@ -214,9 +216,7 @@ public class GrafoConPesos<T> {
             throw new IllegalArgumentException("El vértice de origen no existe en el grafo: " + origen);
         }
 
-        Lista<Arista<T>> ady = vOrigen.getAdyacentes();
-        for (int i = 0; i < ady.cantidad(); i++) {
-            Arista<T> arista = ady.obtener(i);
+        for (Arista<T> arista : vOrigen.getAdyacentes()) {
             if (arista.getDestino().getDato().equals(destino)) {
                 return arista.getPeso();
             }
@@ -226,7 +226,7 @@ public class GrafoConPesos<T> {
     }
 
     /**
-     * Retorna el objeto Vertice asociado a un valor determinado usando la TablaHash interna.
+     * Retorna el objeto Vertice asociado a un valor determinado usando el HashMap interno.
      * Complejidad: O(1) promedio
      *
      * @param dato Valor del vértice a buscar.
@@ -236,7 +236,7 @@ public class GrafoConPesos<T> {
         if (dato == null) {
             return null;
         }
-        return this.vertices.obtener(dato);
+        return this.vertices.get(dato);
     }
 
     /**
@@ -246,7 +246,7 @@ public class GrafoConPesos<T> {
      * @param dato Valor del vértice.
      * @return Lista de aristas, o null si el vértice no existe en el grafo.
      */
-    public Lista<Arista<T>> obtenerAdyacentes(T dato) {
+    public List<Arista<T>> obtenerAdyacentes(T dato) {
         Vertice<T> v = obtenerVertice(dato);
         return (v == null) ? null : v.getAdyacentes();
     }
@@ -258,7 +258,7 @@ public class GrafoConPesos<T> {
      *
      * @return Lista de vértices del grafo.
      */
-    public Lista<Vertice<T>> obtenerVertices() {
+    public List<Vertice<T>> obtenerVertices() {
         return this.listaVertices;
     }
 
@@ -269,6 +269,6 @@ public class GrafoConPesos<T> {
      * @return true si no contiene vértices, false en caso contrario.
      */
     public boolean estaVacio() {
-        return this.vertices.estaVacia();
+        return this.vertices.isEmpty();
     }
 }

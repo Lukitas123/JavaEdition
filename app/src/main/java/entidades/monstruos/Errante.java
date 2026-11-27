@@ -5,7 +5,7 @@ import modelo.Posicion;
 import modelo.Agenda;
 import modelo.Plano;
 
-import estructuras.Lista;
+import java.util.List;
 
 import java.util.Random;
 
@@ -62,12 +62,12 @@ public class Errante extends Monstruo{
         if(plano == null || posicionHeroe== null){
             throw new IllegalArgumentException("El plano y la posicion del heroe no pueden ser null");
         }
-        Lista<Posicion> vecinos = plano.vecinosTransitables(getPosicion());
+        List<Posicion> vecinos = plano.vecinosTransitables(getPosicion());
 
-        if(vecinos.estaVacia()){
+        if(vecinos.isEmpty()){
             return getPosicion();
         }
-        int indice = random.nextInt(vecinos.cantidad());
-        return vecinos.obtener(indice);
+        int indice = random.nextInt(vecinos.size());
+        return vecinos.get(indice);
     }
 }

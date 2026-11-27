@@ -1,6 +1,7 @@
 package modelo;
 
-import estructuras.Lista;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -28,8 +29,8 @@ public class ColocadorDeConexiones {
      * @throws IllegalStateException si no hay ninguna celda que abrir
      */
     private Posicion abrirCelda(Mundo mundo, int tablero, int piso, Plano abajo, Plano arriba) {
-        Lista<Posicion> candidatas = celdasAbribles(mundo, tablero, piso, abajo, arriba);
-        if (candidatas.estaVacia()) {
+        List<Posicion> candidatas = celdasAbribles(mundo, tablero, piso, abajo, arriba);
+        if (candidatas.isEmpty()) {
             throw new IllegalStateException(
                     "No se pudo colocar la escalera: no hay una celda libre ni una pared que abrir");
         }
@@ -42,8 +43,8 @@ public class ColocadorDeConexiones {
         return elegida;
     }
 
-    private Lista<Posicion> celdasAbribles(Mundo mundo, int tablero, int piso, Plano abajo, Plano arriba) {
-        Lista<Posicion> candidatas = new Lista<>();
+    private List<Posicion> celdasAbribles(Mundo mundo, int tablero, int piso, Plano abajo, Plano arriba) {
+        List<Posicion> candidatas = new ArrayList<>();
         int filas = Math.min(abajo.getFilas(), arriba.getFilas());
         int columnas = Math.min(abajo.getColumnas(), arriba.getColumnas());
         for (int f = 2; f < filas; f++) {
@@ -53,7 +54,7 @@ public class ColocadorDeConexiones {
                 boolean libreArriba = esCeldaLibre(mundo, tablero, piso + 1, arriba, pos);
                 if ((libreAbajo && esPared(arriba, pos) && tieneVecinoTransitable(arriba, pos))
                         || (libreArriba && esPared(abajo, pos) && tieneVecinoTransitable(abajo, pos))) {
-                    candidatas.agregar(pos);
+                    candidatas.add(pos);
                 }
             }
         }
@@ -65,7 +66,7 @@ public class ColocadorDeConexiones {
     }
 
     private boolean tieneVecinoTransitable(Plano plano, Posicion pos) {
-        return plano.vecinosTransitables(pos).cantidad() > 0;
+        return !plano.vecinosTransitables(pos).isEmpty();
     }
 
     /**
@@ -82,9 +83,9 @@ public class ColocadorDeConexiones {
         Plano abajo = mundo.planoEn(tablero, piso);
         Plano arriba = mundo.planoEn(tablero, piso + 1);
 
-        Lista<Posicion> candidatas = celdasLibresEnAmbos(mundo, tablero, piso, abajo, arriba);
+        List<Posicion> candidatas = celdasLibresEnAmbos(mundo, tablero, piso, abajo, arriba);
         Posicion elegida;
-        if (candidatas.estaVacia()) {
+        if (candidatas.isEmpty()) {
             elegida = abrirCelda(mundo, tablero, piso, abajo, arriba);
         } else {
             elegida = elegir(candidatas);
@@ -98,7 +99,7 @@ public class ColocadorDeConexiones {
     }
 
     private Posicion elegirBorde(Mundo mundo, int tablero, int piso, Plano plano) {
-        Lista<Posicion> candidatas = new Lista<>();
+        List<Posicion> candidatas = new ArrayList<>();
         for (int f = 1; f <= plano.getFilas(); f++) {
             for (int c = 1; c <= plano.getColumnas(); c++) {
                 Posicion borde = new Posicion(f, c);
@@ -106,11 +107,11 @@ public class ColocadorDeConexiones {
                 if (interior != null
                         && plano.esTransitable(interior)
                         && mundo.conexionEn(new Ubicacion(tablero, piso, borde)) == null) {
-                    candidatas.agregar(borde);
+                    candidatas.add(borde);
                 }
             }
         }
-        if (candidatas.estaVacia()) {
+        if (candidatas.isEmpty()) {
             throw new IllegalStateException(
                     "No se pudo colocar el pasillo: el plano del tablero " + tablero + " no tiene un borde posible.");
         }
@@ -188,14 +189,14 @@ public class ColocadorDeConexiones {
         }
     }
 
-    private Lista<Posicion> celdasLibresEnAmbos(Mundo mundo, int tablero, int piso, Plano abajo, Plano arriba) {
-        Lista<Posicion> candidatas = new Lista<>();
+    private List<Posicion> celdasLibresEnAmbos(Mundo mundo, int tablero, int piso, Plano abajo, Plano arriba) {
+        List<Posicion> candidatas = new ArrayList<>();
         for (int f = 1; f <= abajo.getFilas(); f++) {
             for (int c = 1; c <= abajo.getColumnas(); c++) {
                 Posicion pos = new Posicion(f, c);
                 if (esCeldaLibre(mundo, tablero, piso, abajo, pos)
                         && esCeldaLibre(mundo, tablero, piso + 1, arriba, pos)) {
-                    candidatas.agregar(pos);
+                    candidatas.add(pos);
                 }
             }
         }
@@ -212,7 +213,7 @@ public class ColocadorDeConexiones {
                 && mundo.conexionEn(new Ubicacion(tablero, piso, pos)) == null;
     }
 
-    private Posicion elegir(Lista<Posicion> candidatas) {
-        return candidatas.obtener(azar.nextInt(candidatas.cantidad()));
+    private Posicion elegir(List<Posicion> candidatas) {
+        return candidatas.get(azar.nextInt(candidatas.size()));
     }
 }

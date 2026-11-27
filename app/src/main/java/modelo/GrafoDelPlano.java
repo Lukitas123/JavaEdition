@@ -1,11 +1,16 @@
 package modelo;
 
-import estructuras.Cola;
-import estructuras.ColaDePrioridad;
 import estructuras.GrafoConPesos;
-import estructuras.Lista;
-import estructuras.Pila;
-import estructuras.TablaHash;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class GrafoDelPlano {
     private final Plano plano;
@@ -51,9 +56,7 @@ public class GrafoDelPlano {
                     grafo.agregarVertice(actual);
 
                     //para cada vecino transitable agrego la arista con el peso de entrar a ese terreno
-                    Lista<Posicion> vecinos = plano.vecinosTransitables(actual);
-                    for (int i = 0; i < vecinos.cantidad(); i++) {
-                        Posicion vecino = vecinos.obtener(i);
+                    for (Posicion vecino : plano.vecinosTransitables(actual)) {
                         int peso = costoDeTerreno(plano.terrenoEn(vecino));
                         grafo.agregarArista(actual, vecino, peso);
                     }
@@ -96,34 +99,33 @@ public class GrafoDelPlano {
         return grafo.obtenerPeso(origen, destino);
     }
 
-    public Lista<Posicion> obtenerVecinos(Posicion posicion) {
+    public List<Posicion> obtenerVecinos(Posicion posicion) {
         if (!contienePosicion(posicion)) {
             throw new IllegalArgumentException("La posicion no pertenece al grafo: " + posicion);
         }
-        Lista<GrafoConPesos.Arista<Posicion>> aristas = grafo.obtenerAdyacentes(posicion);
-        Lista<Posicion> vecinos = new Lista<>();
-        for (int i = 0; i < aristas.cantidad(); i++) {
-            vecinos.agregar(aristas.obtener(i).getDestino().getDato());
+        List<Posicion> vecinos = new ArrayList<>();
+        for (GrafoConPesos.Arista<Posicion> arista : grafo.obtenerAdyacentes(posicion)) {
+            vecinos.add(arista.getDestino().getDato());
         }
         return vecinos;
     }
 
-    public Lista<Posicion> caminoMinimo(Posicion origen, Posicion destino) {
+    public List<Posicion> caminoMinimo(Posicion origen, Posicion destino) {
         //si alguna de las posiciones no existe en el grafo, devuelvo una lista vacia
         if (!contienePosicion(origen) || !contienePosicion(destino)) {
-            return new Lista<>();
+            return new ArrayList<>();
         }
 
-        TablaHash<Posicion, Integer> distancias = new TablaHash<>();
-        TablaHash<Posicion, Posicion> padres = new TablaHash<>();
-        ColaDePrioridad<PasoDijkstra> cola = new ColaDePrioridad<>();
+        Map<Posicion, Integer> distancias = new HashMap<>();
+        Map<Posicion, Posicion> padres = new HashMap<>();
+        PriorityQueue<PasoDijkstra> cola = new PriorityQueue<>();
 
         //arranco desde el origen con costo acumulado 0
-        distancias.insertar(origen, 0);
-        cola.insertar(new PasoDijkstra(origen, 0));
+        distancias.put(origen, 0);
+        cola.add(new PasoDijkstra(origen, 0));
 
-        while (!cola.estaVacia()) {
-            PasoDijkstra actual = cola.extraerProximo();
+        while (!cola.isEmpty()) {
+            PasoDijkstra actual = cola.poll();
             Posicion posActual = actual.posicion();
             int costoActual = actual.costoAcumulado();
 
@@ -133,28 +135,26 @@ public class GrafoDelPlano {
             }
 
             //si este paso quedo viejo porque ya encontre un costo menor antes, lo salto
-            if (costoActual > distancias.obtener(posActual)) {
+            if (costoActual > distancias.get(posActual)) {
                 continue;
             }
 
             //recorro las aristas adyacentes y relajo los costos si encuentro un camino mas barato
-            Lista<GrafoConPesos.Arista<Posicion>> adyacentes = grafo.obtenerAdyacentes(posActual);
-            for (int i = 0; i < adyacentes.cantidad(); i++) {
-                GrafoConPesos.Arista<Posicion> arista = adyacentes.obtener(i);
+            for (GrafoConPesos.Arista<Posicion> arista : grafo.obtenerAdyacentes(posActual)) {
                 Posicion vecino = arista.getDestino().getDato();
                 int nuevoCosto = costoActual + arista.getPeso();
 
-                if (!distancias.contiene(vecino) || nuevoCosto < distancias.obtener(vecino)) {
-                    distancias.insertar(vecino, nuevoCosto);
-                    padres.insertar(vecino, posActual);
-                    cola.insertar(new PasoDijkstra(vecino, nuevoCosto));
+                if (!distancias.containsKey(vecino) || nuevoCosto < distancias.get(vecino)) {
+                    distancias.put(vecino, nuevoCosto);
+                    padres.put(vecino, posActual);
+                    cola.add(new PasoDijkstra(vecino, nuevoCosto));
                 }
             }
         }
 
         //si nunca alcance el destino devuelvo lista vacia
-        if (!distancias.contiene(destino)) {
-            return new Lista<>();
+        if (!distancias.containsKey(destino)) {
+            return new ArrayList<>();
         }
 
         return reconstruirCamino(origen, destino, padres);
@@ -169,75 +169,74 @@ public class GrafoDelPlano {
             return 0;
         }
 
-        Lista<Posicion> camino = caminoMinimo(origen, destino);
-        if (camino.estaVacia()) {
+        List<Posicion> camino = caminoMinimo(origen, destino);
+        if (camino.isEmpty()) {
             return -1;
         }
 
         //sumo el peso de cada paso del camino minimo encontrado
         int costoTotal = 0;
-        for (int i = 0; i < camino.cantidad() - 1; i++) {
-            Posicion desde = camino.obtener(i);
-            Posicion hasta = camino.obtener(i + 1);
+        for (int i = 0; i < camino.size() - 1; i++) {
+            Posicion desde = camino.get(i);
+            Posicion hasta = camino.get(i + 1);
             costoTotal += grafo.obtenerPeso(desde, hasta);
         }
         return costoTotal;
     }
 
-    public Lista<Posicion> caminoMasCortoEnPasos(Posicion origen, Posicion destino) {
-        //busco el camino con menos casillas usando BFS con nuestra Cola
+    public List<Posicion> caminoMasCortoEnPasos(Posicion origen, Posicion destino) {
+        //busco el camino con menos casillas usando BFS con una cola (ArrayDeque)
         if (!contienePosicion(origen) || !contienePosicion(destino)) {
-            return new Lista<>();
+            return new ArrayList<>();
         }
 
-        TablaHash<Posicion, Boolean> visitados = new TablaHash<>();
-        TablaHash<Posicion, Posicion> padres = new TablaHash<>();
-        Cola<Posicion> cola = new Cola<>();
+        Set<Posicion> visitados = new HashSet<>();
+        Map<Posicion, Posicion> padres = new HashMap<>();
+        Deque<Posicion> cola = new ArrayDeque<>();
 
-        visitados.insertar(origen, true);
-        cola.encolar(origen);
+        visitados.add(origen);
+        cola.addLast(origen);
 
-        while (!cola.estaVacia()) {
-            Posicion actual = cola.desencolar();
+        while (!cola.isEmpty()) {
+            Posicion actual = cola.pollFirst();
             if (actual.equals(destino)) {
                 break;
             }
 
-            Lista<GrafoConPesos.Arista<Posicion>> adyacentes = grafo.obtenerAdyacentes(actual);
-            for (int i = 0; i < adyacentes.cantidad(); i++) {
-                Posicion vecino = adyacentes.obtener(i).getDestino().getDato();
-                if (!visitados.contiene(vecino)) {
-                    visitados.insertar(vecino, true);
-                    padres.insertar(vecino, actual);
-                    cola.encolar(vecino);
+            for (GrafoConPesos.Arista<Posicion> arista : grafo.obtenerAdyacentes(actual)) {
+                Posicion vecino = arista.getDestino().getDato();
+                if (!visitados.contains(vecino)) {
+                    visitados.add(vecino);
+                    padres.put(vecino, actual);
+                    cola.addLast(vecino);
                 }
             }
         }
 
-        if (!visitados.contiene(destino)) {
-            return new Lista<>();
+        if (!visitados.contains(destino)) {
+            return new ArrayList<>();
         }
 
         return reconstruirCamino(origen, destino, padres);
     }
 
-    private Lista<Posicion> reconstruirCamino(Posicion origen, Posicion destino,
-                                              TablaHash<Posicion, Posicion> padres) {
+    private List<Posicion> reconstruirCamino(Posicion origen, Posicion destino,
+                                             Map<Posicion, Posicion> padres) {
         //retrocedo desde el destino hasta el origen apilando cada posicion para invertir el orden
-        Pila<Posicion> pila = new Pila<>();
+        Deque<Posicion> pila = new ArrayDeque<>();
         Posicion cursor = destino;
         while (cursor != null) {
-            pila.apilar(cursor);
+            pila.push(cursor);
             if (cursor.equals(origen)) {
                 break;
             }
-            cursor = padres.obtener(cursor);
+            cursor = padres.get(cursor);
         }
 
         //desapilo y paso todo a la lista final ordenada desde origen hasta destino
-        Lista<Posicion> camino = new Lista<>();
-        while (!pila.estaVacia()) {
-            camino.agregar(pila.desapilar());
+        List<Posicion> camino = new ArrayList<>();
+        while (!pila.isEmpty()) {
+            camino.add(pila.pop());
         }
         return camino;
     }

@@ -1,9 +1,8 @@
 package modelo;
 
-import estructuras.Lista;
-import estructuras.TablaHash;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +15,7 @@ public class Heroe {
     private Ubicacion ubicacion;
     private int cofresAbiertos;
     private final Map<String, Integer> inventario = new HashMap<>();
-    private final TablaHash<EfectoHeroe, Integer> efectosActivos = new TablaHash<>();
+    private final Map<EfectoHeroe, Integer> efectosActivos = new HashMap<>();
 
 
     /**
@@ -153,17 +152,17 @@ public class Heroe {
 
     public void activarEfecto(EfectoHeroe efectoHeroe, int vencimiento) {
         validarEfecto(efectoHeroe);
-        efectosActivos.insertar(efectoHeroe, vencimiento);
+        efectosActivos.put(efectoHeroe, vencimiento);
     }
 
     public void desactivarEfecto(EfectoHeroe efectoHeroe) {
         validarEfecto(efectoHeroe);
-        efectosActivos.eliminar(efectoHeroe);
+        efectosActivos.remove(efectoHeroe);
     }
 
     public boolean tieneEfecto(EfectoHeroe efectoHeroe) {
         validarEfecto(efectoHeroe);
-        return efectosActivos.contiene(efectoHeroe);
+        return efectosActivos.containsKey(efectoHeroe);
     }
 
     private void validarNoNegativa(int cantidad) {
@@ -185,7 +184,7 @@ public class Heroe {
 
     public Integer vencimientoDe(EfectoHeroe efectoHeroe){
         validarEfecto(efectoHeroe);
-        return efectosActivos.obtener(efectoHeroe);
+        return efectosActivos.get(efectoHeroe);
     }
 
     public void finalizarEfectoSiVencio(EfectoHeroe efectoHeroe, int pasoActual) {
@@ -194,14 +193,14 @@ public class Heroe {
             throw new IllegalArgumentException("El paso no puede ser negativo");
         }
 
-        Integer vencimiento = efectosActivos.obtener(efectoHeroe);
+        Integer vencimiento = efectosActivos.get(efectoHeroe);
         if (vencimiento != null && pasoActual >= vencimiento) {
-            efectosActivos.eliminar(efectoHeroe);
+            efectosActivos.remove(efectoHeroe);
         }
     }
 
     //Devuelve un listado de los efectos activos
-    public Lista<EfectoHeroe> getListaEfectos(){
-        return efectosActivos.claves();
+    public List<EfectoHeroe> getListaEfectos(){
+        return new ArrayList<>(efectosActivos.keySet());
     }
 }

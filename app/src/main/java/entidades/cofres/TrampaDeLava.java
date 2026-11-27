@@ -1,6 +1,6 @@
 package entidades.cofres;
 
-import estructuras.Lista;
+import java.util.List;
 import modelo.*;
 import modelo.eventos.FinLava;
 
@@ -13,18 +13,18 @@ public class TrampaDeLava extends Cofre {
 
     @Override
     protected void aplicarEfecto(Heroe heroe, Plano plano, Agenda agenda) {
-        Lista<Posicion> vecinos = plano.vecinosTransitables(getPosicion());
+        List<Posicion> vecinos = plano.vecinosTransitables(getPosicion());
 
-        if (vecinos.cantidad() == 0) {
+        if (vecinos.isEmpty()) {
             return;
         }
 
         int pasoActual = agenda.getPasoActual();
         int vencimiento = 0;
 
-        for (int i = 0; i < vecinos.cantidad(); i++) {
+        for (int i = 0; i < vecinos.size(); i++) {
             vencimiento = plano.activarLava(
-                    vecinos.obtener(i), pasoActual, DURACION);
+                    vecinos.get(i), pasoActual, DURACION);
         }
 
         Ubicacion ubicacion = heroe.getUbicacion();

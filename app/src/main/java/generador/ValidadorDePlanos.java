@@ -1,7 +1,8 @@
 package generador;
 
 import com.google.gson.Gson;
-import estructuras.Cola;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import modelo.Direccion;
 import modelo.Posicion;
 import java.util.List;
@@ -397,14 +398,14 @@ public class ValidadorDePlanos {
         }
 
         //creo la cola propia y encolo la posicion de entrada E con distancia 0
-        Cola<Posicion> cola = new Cola<>();
+        Deque<Posicion> cola = new ArrayDeque<>();
         Posicion entrada = dto.entrada();
         distancias[entrada.fila() - 1][entrada.columna() - 1] = 0;
-        cola.encolar(entrada);
+        cola.addLast(entrada);
 
         //mientras haya posiciones en la cola, desencolo y visito los 4 vecinos transitables
-        while (!cola.estaVacia()){
-            Posicion actual = cola.desencolar();
+        while (!cola.isEmpty()){
+            Posicion actual = cola.pollFirst();
             int distActual = distancias[actual.fila() - 1][actual.columna() - 1];
 
             for (Direccion dir : Direccion.values()){
@@ -416,7 +417,7 @@ public class ValidadorDePlanos {
                 if (fVecino >= 0 && fVecino < filas && cVecino >= 0 && cVecino < columnas){
                     if (plano[fVecino].charAt(cVecino) != '#' && distancias[fVecino][cVecino] == -1){
                         distancias[fVecino][cVecino] = distActual + 1;
-                        cola.encolar(vecino);
+                        cola.addLast(vecino);
                     }
                 }
             }

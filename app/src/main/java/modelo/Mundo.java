@@ -1,7 +1,9 @@
 package modelo;
 
-import estructuras.Cola;
-import estructuras.Lista;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
 /**
  * El mundo: guarda los planos (cada uno identificado por tablero y piso) y las
@@ -17,7 +19,7 @@ public class Mundo {
     private final int tableros;
     private final int pisos;
     private final Plano[][] planos;
-    private final Lista<Conexion> conexiones = new Lista<>();
+    private final List<Conexion> conexiones = new ArrayList<>();
 
     /**
      * @param tableros cantidad de tableros, al menos 1
@@ -98,7 +100,7 @@ public class Mundo {
 
     // CONEXIONES -----------------------------------------
 
-    public Lista<Conexion> getConexiones() {
+    public List<Conexion> getConexiones() {
         return conexiones;
     }
 
@@ -120,13 +122,12 @@ public class Mundo {
         }
         validarExtremo(origen);
         validarExtremo(destino);
-        conexiones.agregar(conexion);
+        conexiones.add(conexion);
     }
 
     /** @return la conexión que tiene un extremo en esa ubicación, o null si no hay ninguna */
     public Conexion conexionEn(Ubicacion ubicacion) {
-        for (int i = 0; i < conexiones.cantidad(); i++) {
-            Conexion conexion = conexiones.obtener(i);
+        for (Conexion conexion : conexiones) {
             if (conexion.origen().equals(ubicacion) || conexion.destino().equals(ubicacion)) {
                 return conexion;
             }
@@ -151,20 +152,20 @@ public class Mundo {
         }
 
         boolean[][] visitado = new boolean[tableros][pisos];
-        Cola<IdPlano> cola = new Cola<>();
+        Deque<IdPlano> cola = new ArrayDeque<>();
         visitado[0][0] = true;
-        cola.encolar(new IdPlano(1, 1));
+        cola.addLast(new IdPlano(1, 1));
 
-        while (!cola.estaVacia()) {
-            IdPlano actual = cola.desencolar();
+        while (!cola.isEmpty()) {
+            IdPlano actual = cola.pollFirst();
             if (actual.tablero() == salida.tablero() && actual.piso() == salida.piso()) {
                 return true;
             }
-            for (int i = 0; i < conexiones.cantidad(); i++) {
-                IdPlano vecino = vecinoDe(conexiones.obtener(i), actual);
+            for (Conexion conexion : conexiones) {
+                IdPlano vecino = vecinoDe(conexion, actual);
                 if (vecino != null && !visitado[vecino.tablero() - 1][vecino.piso() - 1]) {
                     visitado[vecino.tablero() - 1][vecino.piso() - 1] = true;
-                    cola.encolar(vecino);
+                    cola.addLast(vecino);
                 }
             }
         }

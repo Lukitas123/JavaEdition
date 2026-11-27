@@ -3,6 +3,7 @@ package persistencia;
 import static org.junit.jupiter.api.Assertions.*;
 
 import modelo.EfectoHeroe;
+import modelo.EventoProgramado;
 import modelo.eventos.*;
 import org.junit.jupiter.api.Test;
 import com.google.gson.Gson;
@@ -34,8 +35,13 @@ public class ConversorAgendaTest {
 
         assertEquals(3, restaurada.getPasoActual());
         assertEquals(2, restaurada.cantidadDeEventos());
-        assertEquals(finInmovilizacion, restaurada.eventoEn(0).evento());
-        assertEquals(8, restaurada.eventoEn(0).pasoDeVencimiento());
+
+        EventoProgramado[] eventos = restaurada.exportarEventos();
+        assertEquals(2, eventos.length);
+        assertEquals(finZapatos, eventos[0].evento());
+        assertEquals(5, eventos[0].pasoDeVencimiento());
+        assertEquals(finInmovilizacion, eventos[1].evento());
+        assertEquals(8, eventos[1].pasoDeVencimiento());
 
         restaurada.avanzarPaso();
         restaurada.avanzarPaso();

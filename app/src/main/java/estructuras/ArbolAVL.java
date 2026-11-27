@@ -1,5 +1,8 @@
 package estructuras;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Implementación de un Árbol AVL genérico auto-balanceado.
  * Garantiza operaciones de inserción, búsqueda y recorrido en O(log N).
@@ -104,21 +107,21 @@ public class ArbolAVL<T extends Comparable<T>> {
 
     /**
      * Realiza un recorrido Inorden (Izquierda - Raíz - Derecha) y retorna los
-     * elementos ordenados ascendentemente en una Lista propia.
+     * elementos ordenados ascendentemente en una lista.
      * Complejidad: O(N)
      *
-     * @return Lista enlazada con los elementos en orden ascendente.
+     * @return Lista con los elementos en orden ascendente.
      */
-    public Lista<T> inorden() {
-        Lista<T> resultado = new Lista<>();
+    public List<T> inorden() {
+        List<T> resultado = new ArrayList<>();
         inordenRec(this.raiz, resultado);
         return resultado;
     }
 
-    private void inordenRec(NodoAVL<T> nodo, Lista<T> lista) {
+    private void inordenRec(NodoAVL<T> nodo, List<T> lista) {
         if (nodo != null) {
             inordenRec(nodo.izq, lista);
-            lista.agregar(nodo.valor);
+            lista.add(nodo.valor);
             inordenRec(nodo.der, lista);
         }
     }

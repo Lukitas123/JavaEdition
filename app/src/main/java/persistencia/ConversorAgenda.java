@@ -21,10 +21,11 @@ public class ConversorAgenda {
 
     /**Copia el paso actual y los eventos pendientes de una Agenda */
     public static AgendaGuardada aGuardada(Agenda agenda) {
-        EventoGuardado[] eventos = new EventoGuardado[agenda.cantidadDeEventos()];
+        EventoProgramado[] programados = agenda.exportarEventos();
+        EventoGuardado[] eventos = new EventoGuardado[programados.length];
 
-        for (int i = 0; i < eventos.length; i++) {
-            EventoProgramado programado = agenda.eventoEn(i);
+        for (int i = 0; i < programados.length; i++) {
+            EventoProgramado programado = programados[i];
             Evento evento = programado.evento();
 
             eventos[i] = new EventoGuardado(

@@ -1,5 +1,6 @@
 package modelo.eventos;
 
+import entidades.monstruos.Monstruo;
 import modelo.Mazmorra;
 import modelo.Plano;
 
@@ -15,8 +16,8 @@ public record DespertarDormilones(int tablero, int piso) implements Evento {
         Plano plano = partida.getMundo().planoEn(tablero, piso);
         int pasoActual = partida.getAgenda().getPasoActual();
 
-        for(int i = 0; i<plano.getMonstruos().cantidad(); i++){
-            plano.getMonstruos().obtener(i).despertarSiCorresponde(pasoActual);
+        for (Monstruo monstruo : plano.getMonstruos()) {
+            monstruo.despertarSiCorresponde(pasoActual);
         }
     }
 }

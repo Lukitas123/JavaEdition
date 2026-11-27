@@ -3,7 +3,7 @@ package modelo;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import estructuras.Lista;
+import java.util.List;
 
 public class RankingTest {
     /**Devuelve todas las entradas disponibles si no hay mas de 10 en orden*/
@@ -14,10 +14,10 @@ public class RankingTest {
         ranking.agregar(new EntradaDeRanking("Beto", 800, Dificultad.MEDIO, "2026-11-08"));
         ranking.agregar(new EntradaDeRanking("Caro", 500, Dificultad.MEDIO, "2026-11-08"));
 
-        Lista<EntradaDeRanking> mejores = ranking.top10();
+        List<EntradaDeRanking> mejores = ranking.top10();
 
-        assertEquals("Beto", mejores.obtener(0).nombre());
-        assertEquals(3, mejores.cantidad());
+        assertEquals("Beto", mejores.get(0).nombre());
+        assertEquals(3, mejores.size());
     }
     /**Solo devuelve los 10 mejores*/
     @Test 
@@ -35,12 +35,12 @@ public class RankingTest {
         ranking.agregar(new EntradaDeRanking("Pedro", 200, Dificultad.MEDIO, "2026-11-08"));
         ranking.agregar(new EntradaDeRanking("Ignacio", 100, Dificultad.DIFICIL, "2026-11-08"));
 
-        Lista<EntradaDeRanking> mejores = ranking.top10();
+        List<EntradaDeRanking> mejores = ranking.top10();
 
-        assertEquals(10, mejores.cantidad());
-        assertEquals("Ana", mejores.obtener(0).nombre());
+        assertEquals(10, mejores.size());
+        assertEquals("Ana", mejores.get(0).nombre());
         for (int i=0;i<10;i++){
-            assertNotEquals("Ignacio",mejores.obtener(i).nombre());
+            assertNotEquals("Ignacio",mejores.get(i).nombre());
         }
     }
 
@@ -52,10 +52,10 @@ public class RankingTest {
             ranking.agregar(new EntradaDeRanking("Jugador" + i, i * 100, Dificultad.MEDIO, "2026-11-08"));
         }
 
-        Lista<EntradaDeRanking> todas = ranking.totalEntradas();
+        List<EntradaDeRanking> todas = ranking.totalEntradas();
 
-        assertEquals(12, todas.cantidad());
-        assertEquals("Jugador12", todas.obtener(0).nombre());
+        assertEquals(12, todas.size());
+        assertEquals("Jugador12", todas.get(0).nombre());
 }
     
 }

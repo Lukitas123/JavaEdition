@@ -1,6 +1,6 @@
 package persistencia;
 
-import estructuras.Lista;
+import java.util.List;
 import modelo.Conexion;
 import modelo.Mundo;
 import entidades.Catalogo;
@@ -20,10 +20,10 @@ public class ConversorMundo {
             }
         }
 
-        Lista<Conexion> lista = mundo.getConexiones();
-        Conexion[] conexiones = new Conexion[lista.cantidad()];
+        List<Conexion> lista = mundo.getConexiones();
+        Conexion[] conexiones = new Conexion[lista.size()];
         for (int i = 0; i < conexiones.length; i++){
-            conexiones[i] = lista.obtener(i);
+            conexiones[i] = lista.get(i);
         }
         return new MundoGuardado(planos, conexiones);
     }

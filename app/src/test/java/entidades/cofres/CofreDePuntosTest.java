@@ -41,7 +41,7 @@ class CofreDePuntosTest {
         assertTrue(cofre.estaAbierto());
         assertEquals(1, heroe.getCofresAbiertos());
         assertNull(plano.cofreEn(cofre.getPosicion()));
-        assertEquals(0, plano.getCofres().cantidad());
+        assertEquals(0, plano.getCofres().size());
         assertEquals(100, heroe.getEnergia());
         assertEquals(0, heroe.cantidadDeObjetos());
         assertEquals(0, agenda.cantidadDeEventos());
@@ -53,7 +53,7 @@ class CofreDePuntosTest {
         cofre.abrir(heroe, plano, agenda);
 
         assertEquals(1, heroe.getCofresAbiertos());
-        assertEquals(0, plano.getCofres().cantidad());
+        assertEquals(0, plano.getCofres().size());
     }
 
     @Test

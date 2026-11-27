@@ -2,7 +2,7 @@ package persistencia;
 
 import modelo.EfectoHeroe;
 import modelo.Heroe;
-import estructuras.Lista;
+import java.util.List;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +16,11 @@ public class ConversorHeroe {
     public static HeroeGuardado aGuardado(Heroe heroe){
         Map<String,Integer> inventario = new HashMap<>(heroe.getInventario());
 
-        Lista<EfectoHeroe> listaEfectos = heroe.getListaEfectos();
+        List<EfectoHeroe> listaEfectos = heroe.getListaEfectos();
         Map<EfectoHeroe, Integer> efectos = new HashMap<>();
 
-        for (int i = 0; i < listaEfectos.cantidad(); i++) {
-            EfectoHeroe id = listaEfectos.obtener(i);
+        for (int i = 0; i < listaEfectos.size(); i++) {
+            EfectoHeroe id = listaEfectos.get(i);
             efectos.put(id, heroe.vencimientoDe(id));
         }
         return new HeroeGuardado(heroe.getEnergia(), heroe.getUbicacion(), heroe.getCofresAbiertos(), inventario, efectos);

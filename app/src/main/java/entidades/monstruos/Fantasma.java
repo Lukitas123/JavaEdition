@@ -1,6 +1,7 @@
 package entidades.monstruos;
 
-import estructuras.Lista;
+import java.util.ArrayList;
+import java.util.List;
 import modelo.Agenda;
 import modelo.Heroe;
 import modelo.Plano;
@@ -80,17 +81,17 @@ public class Fantasma extends Monstruo{
         if(plano == null || posicionHeroe == null){
             throw new IllegalArgumentException("El plano y la posicion del heroe son obligatorios");
         }
-        Lista<Posicion> destinos = new Lista<>();
+        List<Posicion> destinos = new ArrayList<>();
         for(Direccion direccion : Direccion.values()){
             Posicion candidato = getPosicion().mover(direccion);
             if(plano.estaDentro(candidato)){
-                destinos.agregar(candidato);
+                destinos.add(candidato);
             }
         }
-        if(destinos.estaVacia()){
+        if(destinos.isEmpty()){
             return getPosicion();
         }
-        return destinos.obtener(random.nextInt(destinos.cantidad()));
+        return destinos.get(random.nextInt(destinos.size()));
 
     }
 

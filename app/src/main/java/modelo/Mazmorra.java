@@ -1,12 +1,9 @@
 package modelo;
 
 import entidades.cofres.Cofre;
-import entidades.monstruos.Congelador;
-import entidades.monstruos.Dormilon;
 import entidades.monstruos.Monstruo;
-import entidades.objetos.Escudo;
-import entidades.objetos.ZapatosDeAgua;
-import estructuras.Lista;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * La partida: junta el mundo, el héroe y la agenda, y aplica las reglas del juego.
@@ -16,14 +13,12 @@ import estructuras.Lista;
  * Esta clase nunca imprime ni dibuja: quien la usa (la vista) solo lee su estado.
  */
 public class Mazmorra {
-    /** Tipo de evento de la agenda que apaga un efecto del héroe; el dato es el id del efecto. */
-    /** Id del efecto de los zapatos de agua: mientras está activo, el agua cuesta como piso. */
-
     private final Dificultad dificultad;
     private final Mundo mundo;
     private final Heroe heroe;
     private final Agenda agenda;
     private final Costo costos;
+    private final LogPartida log = new LogPartida();
     private EstadoPartida estado;
 
     /**
@@ -76,6 +71,10 @@ public class Mazmorra {
 
     public Costo getCosto(){
         return costos;
+    }
+
+    public LogPartida getLog() {
+        return log;
     }
 
     /** @return true si la partida ya se ganó o se perdió. */
@@ -142,9 +141,12 @@ public class Mazmorra {
         heroe.perderEnergia(costoDe(plano.terrenoEn(destino)));
         heroe.irA(new Ubicacion(heroe.getUbicacion().tablero(), heroe.getUbicacion().piso(), destino));
         plano.marcarVisitada(destino);
+        log.registrar(agenda.getPasoActual(),
+                "Heroe se mueve " + direccion + " a " + destino + " (energia: " + heroe.getEnergia() + ")");
 
         if (heroe.getUbicacion().equals(mundo.ubicacionDeSalida())) {
             estado = EstadoPartida.GANADA;
+            log.registrar(agenda.getPasoActual(), "Heroe llego a la salida. Partida ganada.");
             return true;
         }
         if (verificarDerrota()) {
@@ -171,6 +173,7 @@ public class Mazmorra {
     public void esperar() {
         validarEnCurso();
         comenzarPaso();
+        log.registrar(agenda.getPasoActual(), "Heroe espera (energia: " + heroe.getEnergia() + ")");
         moverMonstruos();
         verificarDerrota();
     }
@@ -183,6 +186,8 @@ public class Mazmorra {
         while (agenda.hayEventoVencido()) {
             EventoProgramado programado = agenda.sacarProximo();
             programado.evento().ejecutar(this);
+            log.registrar(agenda.getPasoActual(),
+                    "Evento ejecutado: " + programado.evento().getClass().getSimpleName());
         }
     }
 
@@ -192,6 +197,8 @@ public class Mazmorra {
         Cofre cofre = plano.cofreEn(posicion);
         if (cofre != null) {
             cofre.abrir(heroe, plano, agenda);
+            log.registrar(agenda.getPasoActual(),
+                    "Cofre abierto: " + cofre.getTipo() + " en " + posicion);
         }
     }
 
@@ -205,6 +212,9 @@ public class Mazmorra {
             Ubicacion otroExtremo = conexion.extremoOpuesto(heroe.getUbicacion());
             heroe.irA(otroExtremo);
             mundo.planoEn(otroExtremo).marcarVisitada(otroExtremo.posicion());
+            log.registrar(agenda.getPasoActual(),
+                    "Conexion usada hacia tablero " + otroExtremo.tablero()
+                            + ", piso " + otroExtremo.piso());
         }
     }
 
@@ -215,12 +225,9 @@ public class Mazmorra {
      */
     private void moverMonstruos() {
         Plano plano = planoActual();
-        Lista<Monstruo> copia = new Lista<>();
-        for (int i = 0; i < plano.getMonstruos().cantidad(); i++) {
-            copia.agregar(plano.getMonstruos().obtener(i));
-        }
-        for (int i = 0; i < copia.cantidad(); i++) {
-            copia.obtener(i).actuar(plano, heroe, agenda);
+        List<Monstruo> copia = new ArrayList<>(plano.getMonstruos());
+        for (Monstruo monstruo : copia) {
+            monstruo.actuar(plano, heroe, agenda);
         }
     }
 
@@ -228,6 +235,7 @@ public class Mazmorra {
     private boolean verificarDerrota() {
         if (heroe.estaSinEnergia()) {
             estado = EstadoPartida.PERDIDA;
+            log.registrar(agenda.getPasoActual(), "Heroe sin energia. Partida perdida.");
             return true;
         }
         return false;

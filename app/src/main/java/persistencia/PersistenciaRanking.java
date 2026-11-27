@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 import com.google.gson.Gson;
 
-import estructuras.Lista;
+import java.util.List;
 
 /**Lee, carga y guarda las entradas del ranking (a partir de un json) */
 public class PersistenciaRanking {
@@ -38,11 +38,11 @@ public class PersistenciaRanking {
         return entradas;
     }
     /**Guarda la lista de entradas en un archivo (json) */
-    public static void guardarRanking(Lista<EntradaDeRanking> entradas, String ruta){
-        EntradaDeRanking[] entradasArreglo = new EntradaDeRanking[entradas.cantidad()];
+    public static void guardarRanking(List<EntradaDeRanking> entradas, String ruta){
+        EntradaDeRanking[] entradasArreglo = new EntradaDeRanking[entradas.size()];
 
         for (int i = 0; i < entradasArreglo.length; i++) {
-            entradasArreglo[i] = entradas.obtener(i);
+            entradasArreglo[i] = entradas.get(i);
         }
         Gson gson = new Gson();
         String json=gson.toJson(entradasArreglo);

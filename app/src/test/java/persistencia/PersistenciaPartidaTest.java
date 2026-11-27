@@ -140,8 +140,7 @@ public class PersistenciaPartidaTest {
 
         restaurada.getAgenda().avanzarPaso();
         EventoProgramado evento = restaurada.getAgenda().sacarProximo();
-        assertEquals(TipoEvento.DESPERTAR_DORMILON, evento.tipo());
-        assertEquals("1,1", evento.dato());
+        assertEquals(new DespertarDormilones(1, 1), evento.evento());
 
         restaurado.despertarSiCorresponde(restaurada.getAgenda().getPasoActual());
         restaurado.actuar(planoRestaurado, restaurada.getHeroe(), restaurada.getAgenda());

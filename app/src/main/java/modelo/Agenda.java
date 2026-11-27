@@ -1,12 +1,13 @@
 package modelo;
 
-import estructuras.Lista;
 import modelo.eventos.Evento;
 
+import java.util.Arrays;
+import java.util.PriorityQueue;
 
 /**
- * Lista de cosas que pasan en pasos futuros (vencimiento de zapatos de agua,
- * despertar de un dormilón, fin de un congelamiento, etc.).
+ * Cola de prioridad de eventos que ocurren en pasos futuros (vencimiento de zapatos
+ * de agua, despertar de un dormilón, fin de un congelamiento, etc.).
  *
  * Uso típico desde Mazmorra, una vez por paso del héroe:
  *   agenda.avanzarPaso();
@@ -14,11 +15,27 @@ import modelo.eventos.Evento;
  *       ejecutar(agenda.sacarProximo());
  *   }
  *
- * Implementación actual: lista sin ordenar, con búsqueda del mínimo al sacar (O(n)).
- * Está pensada para reemplazarse por un heap sin cambiar la interfaz pública.
+ * Implementada con {@link PriorityQueue} ordenando por paso de vencimiento en O(log n)
+ * y desempatando por orden de inserción (FIFO).
  */
 public class Agenda {
-    private final Lista<EventoProgramado> eventos = new Lista<>();
+
+    private record EntradaAgenda(EventoProgramado evento, long secuencia)
+            implements Comparable<EntradaAgenda> {
+        @Override
+        public int compareTo(EntradaAgenda otra) {
+            int porPaso = Integer.compare(
+                    this.evento.pasoDeVencimiento(),
+                    otra.evento.pasoDeVencimiento());
+            if (porPaso != 0) {
+                return porPaso;
+            }
+            return Long.compare(this.secuencia, otra.secuencia);
+        }
+    }
+
+    private final PriorityQueue<EntradaAgenda> eventos = new PriorityQueue<>();
+    private long siguienteSecuencia = 0;
     private int pasoActual = 0;
 
     public int getPasoActual() {
@@ -26,26 +43,27 @@ public class Agenda {
     }
 
     public int cantidadDeEventos() {
-        return eventos.cantidad();
+        return eventos.size();
     }
 
     /**
      * Programa un evento para dentro de N pasos.
      *
      * @param pasosDesdeAhora debe ser al menos 1.
-
+     * @param evento          evento a ejecutar al vencer.
      */
     public void programar(int pasosDesdeAhora, Evento evento) {
         if (pasosDesdeAhora < 1) {
             throw new IllegalArgumentException("Los pasos desde ahora deben ser al menos 1.");
         }
-        if (evento == null ) {
+        if (evento == null) {
             throw new IllegalArgumentException("El evento no puede ser nulo.");
         }
 
-        eventos.agregar(new EventoProgramado(pasoActual + pasosDesdeAhora, evento));
+        eventos.add(new EntradaAgenda(
+                new EventoProgramado(pasoActual + pasosDesdeAhora, evento),
+                siguienteSecuencia++));
     }
-
 
     /** Pasa al paso siguiente. No ejecuta nada: eso lo hace quien saca los eventos. */
     public void avanzarPaso() {
@@ -54,7 +72,8 @@ public class Agenda {
 
     /** @return true si hay algún evento cuyo paso de vencimiento ya llegó. */
     public boolean hayEventoVencido() {
-        return indiceDelProximoVencido() != -1;
+        return !eventos.isEmpty()
+                && eventos.peek().evento().pasoDeVencimiento() <= pasoActual;
     }
 
     /**
@@ -64,24 +83,10 @@ public class Agenda {
      * @throws IllegalStateException si no hay ningún evento vencido.
      */
     public EventoProgramado sacarProximo() {
-        int indice = indiceDelProximoVencido();
-        if (indice == -1) {
+        if (!hayEventoVencido()) {
             throw new IllegalStateException("No hay eventos vencidos.");
         }
-        return eventos.eliminar(indice);
-    }
-
-    private int indiceDelProximoVencido() {
-        int mejor = -1;
-        for (int i = 0; i < eventos.cantidad(); i++) {
-            EventoProgramado evento = eventos.obtener(i);
-            if (evento.pasoDeVencimiento() <= pasoActual
-                    && (mejor == -1
-                    || evento.pasoDeVencimiento() < eventos.obtener(mejor).pasoDeVencimiento())) {
-                mejor = i;
-            }
-        }
-        return mejor;
+        return eventos.poll().evento();
     }
 
     /**
@@ -94,11 +99,20 @@ public class Agenda {
             throw new IllegalArgumentException("Evento guardado invalido");
         }
 
-        eventos.agregar(evento);
+        eventos.add(new EntradaAgenda(evento, siguienteSecuencia++));
     }
 
-    /** Devuelve el evento de la posicion dada. Utilizado en ConversorAgenda */
-    public EventoProgramado eventoEn(int indice) {
-        return eventos.obtener(indice);
+    /**
+     * Devuelve los eventos pendientes ordenados por paso de vencimiento
+     * (y por orden de programación en caso de empate). Utilizado en ConversorAgenda.
+     */
+    public EventoProgramado[] exportarEventos() {
+        EntradaAgenda[] copia = eventos.toArray(new EntradaAgenda[0]);
+        Arrays.sort(copia);
+        EventoProgramado[] resultado = new EventoProgramado[copia.length];
+        for (int i = 0; i < copia.length; i++) {
+            resultado[i] = copia[i].evento();
+        }
+        return resultado;
     }
 }

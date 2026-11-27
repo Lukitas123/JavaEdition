@@ -3,6 +3,8 @@ package modelo;
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
 import entidades.objetos.CatalogoObjetos;
+import entidades.objetos.Objeto;
+import entidades.objetos.ResultadoUso;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,6 +202,44 @@ public class Mazmorra {
         log.registrar(agenda.getPasoActual(), "Heroe espera (energia: " + heroe.getEnergia() + ")");
         moverMonstruos();
         verificarDerrota();
+    }
+
+    /**
+     * El héroe usa un objeto de su inventario (regla 2). Si el objeto se pudo usar, el
+     * objeto se saca del inventario y la acción cuenta como un paso: se ejecutan los
+     * eventos vencidos y actúan los monstruos
+     * La duración de los efectos cuenta el paso en que se usa el objeto
+     * Si el héroe no tiene el objeto, o el objeto no se pudo usar (por ejemplo, la daga
+     * sin un monstruo al lado), no pasa nada y no cuenta como paso
+     * El mensaje del objeto, si tiene, queda en el log de la partida
+     *
+     * @return true si el objeto se usó y se hizo un paso
+     * @throws IllegalArgumentException si el id es null o vacío, o si el héroe tiene un
+     * objeto que no está en el catálogo
+     * @throws IllegalStateException    si la partida ya terminp
+     */
+    public boolean usarObjeto(String idObjeto) {
+        validarEnCurso();
+        if (idObjeto == null || idObjeto.isBlank()) {
+            throw new IllegalArgumentException("El id del objeto no puede ser null ni vacio");
+        }
+        if (!heroe.tieneObjeto(idObjeto)) {
+            return false;
+        }
+
+        Objeto objeto = objetos.obtener(idObjeto);
+        ResultadoUso resultado = objeto.usar(heroe, planoActual(), agenda);
+        if (!resultado.seConsume()) {
+            return false;
+        }
+
+        heroe.quitarObjeto(idObjeto);
+        comenzarPaso();
+        String detalle = resultado.mensaje() == null ? "" : ": " + resultado.mensaje();
+        log.registrar(agenda.getPasoActual(), "Heroe usa " + idObjeto + detalle);
+        moverMonstruos();
+        verificarDerrota();
+        return true;
     }
 
     // PIEZAS DE UN PASO

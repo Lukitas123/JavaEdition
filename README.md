@@ -10,7 +10,7 @@
 
 ### 2. Mensajes de Commit
 La materia evaluará qué hizo cada uno. **Cada uno debe commitear con SU usuario.**
-- Sean descriptivos: "Implementa Pila sin java.util", "Corrige Dijkstra", "Agrega lectura json".
+- Sean descriptivos: "Implementa ArbolAVL", "Corrige Dijkstra", "Agrega lectura json".
 - Nada de commits vacíos o inentendibles como "asdasd".
 
 ### 3. Asignación de Roles 
@@ -28,7 +28,7 @@ Antes de subir algo, corran de local `./gradlew test` o verifiquen que todo comp
 Dado que estamos aprendiendo POO, Interfaces y Herencias, así se dividen físicamente nuestras piezas del rompecabezas:
 
 - `estructuras/` **(Herramientas genéricas)**
-  Acá van las clases como `Pila<T>.java`, `Cola<T>.java`, `Lista<T>.java`. Funciona igual que lo que vimos en la teórica. NO se permiten imports de `java.util`.
+  Régimen V2 del enunciado: primero se usa la API de Java (`ArrayDeque` para pila y cola, `LinkedList`/`ArrayList` para listas, `PriorityQueue` para heap, `HashMap`/`HashSet` para hash). El juego solo usa de acá las estructuras que la API no tiene: `ArbolAVL<T>.java` y `GrafoConPesos<T>.java`. Las propias `Lista`, `Pila`, `Cola`, `ColaDePrioridad` y `TablaHash` se conservan con sus tests como trabajo de la materia, pero el juego no las usa.
 
 - `entidades/` **(Herencia y Polimorfismo)**
   - `monstruos/`: Acá va la clase abstracta `Monstruo.java`, y una clase por cada hijo (ej: `Cazador.java extends Monstruo`, `Errante.java extends Monstruo`).

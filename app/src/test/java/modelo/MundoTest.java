@@ -103,7 +103,7 @@ class MundoTest {
         assertSame(conexion, mundo.conexionEn(conexion.origen()));
         assertSame(conexion, mundo.conexionEn(conexion.destino()));
         assertNull(mundo.conexionEn(new Ubicacion(1, 1, new Posicion(3, 2))));
-        assertEquals(1, mundo.getConexiones().cantidad());
+        assertEquals(1, mundo.getConexiones().size());
     }
 
     @Test

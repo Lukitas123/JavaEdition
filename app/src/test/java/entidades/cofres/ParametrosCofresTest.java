@@ -59,7 +59,7 @@ class ParametrosCofresTest {
         abrir("CofreDePuente", plano, agenda);
 
         assertEquals(Terreno.PISO, plano.terrenoEn(agua));
-        assertEquals(3, agenda.eventoEn(0).pasoDeVencimiento());
+        assertEquals(3, agenda.exportarEventos()[0].pasoDeVencimiento());
 
         plano.getEfectos().finalizarPuenteSiVencio(2);
         assertEquals(Terreno.PISO, plano.terrenoEn(agua));
@@ -77,7 +77,7 @@ class ParametrosCofresTest {
         abrir("TrampaDeLava", plano, agenda);
 
         assertEquals(Terreno.LAVA, plano.terrenoEn(agua));
-        assertEquals(4, agenda.eventoEn(0).pasoDeVencimiento());
+        assertEquals(4, agenda.exportarEventos()[0].pasoDeVencimiento());
 
         plano.getEfectos().finalizarLavaSiVencio(3);
         assertEquals(Terreno.LAVA, plano.terrenoEn(agua));

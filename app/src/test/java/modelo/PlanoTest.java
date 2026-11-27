@@ -68,7 +68,7 @@ class PlanoTest {
 
     @Test
     void vecinosTransitablesIgnoraParedes() {
-        assertEquals(2, plano.vecinosTransitables(new Posicion(2, 2)).cantidad());
+        assertEquals(2, plano.vecinosTransitables(new Posicion(2, 2)).size());
     }
 
     @Test
@@ -98,7 +98,7 @@ class PlanoTest {
         Monstruo monstruo = new Errante(new Posicion(2, 3), new Random(1),30);
         plano.agregarMonstruo(monstruo);
 
-        assertEquals(1, plano.getMonstruos().cantidad());
+        assertEquals(1, plano.getMonstruos().size());
         assertSame(monstruo, plano.monstruoEn(new Posicion(2, 3)));
         assertNull(plano.monstruoEn(new Posicion(4, 2)));
     }
@@ -109,7 +109,7 @@ class PlanoTest {
         plano.agregarMonstruo(monstruo);
 
         assertTrue(plano.quitarMonstruo(monstruo));
-        assertEquals(0, plano.getMonstruos().cantidad());
+        assertEquals(0, plano.getMonstruos().size());
         assertFalse(plano.quitarMonstruo(monstruo));
     }
 
@@ -127,7 +127,7 @@ class PlanoTest {
         Cofre cofre = new CofreDePuntos(new Posicion(4, 2));
         plano.agregarCofre(cofre);
 
-        assertEquals(1, plano.getCofres().cantidad());
+        assertEquals(1, plano.getCofres().size());
         assertSame(cofre, plano.cofreEn(new Posicion(4, 2)));
         assertNull(plano.cofreEn(new Posicion(2, 3)));
     }
@@ -138,7 +138,7 @@ class PlanoTest {
         plano.agregarCofre(cofre);
 
         assertTrue(plano.quitarCofre(cofre));
-        assertEquals(0, plano.getCofres().cantidad());
+        assertEquals(0, plano.getCofres().size());
         assertFalse(plano.quitarCofre(cofre));
     }
 

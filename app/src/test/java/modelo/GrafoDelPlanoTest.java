@@ -2,7 +2,7 @@ package modelo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import estructuras.Lista;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -65,13 +65,13 @@ class GrafoDelPlanoTest {
         Posicion origen = new Posicion(2, 2);
         Posicion destino = new Posicion(2, 4);
 
-        Lista<Posicion> caminoDijkstra = grafo.caminoMinimo(origen, destino);
-        assertEquals(5, caminoDijkstra.cantidad());
-        assertEquals(new Posicion(2, 2), caminoDijkstra.obtener(0));
-        assertEquals(new Posicion(3, 2), caminoDijkstra.obtener(1));
-        assertEquals(new Posicion(3, 3), caminoDijkstra.obtener(2));
-        assertEquals(new Posicion(3, 4), caminoDijkstra.obtener(3));
-        assertEquals(new Posicion(2, 4), caminoDijkstra.obtener(4));
+        List<Posicion> caminoDijkstra = grafo.caminoMinimo(origen, destino);
+        assertEquals(5, caminoDijkstra.size());
+        assertEquals(new Posicion(2, 2), caminoDijkstra.get(0));
+        assertEquals(new Posicion(3, 2), caminoDijkstra.get(1));
+        assertEquals(new Posicion(3, 3), caminoDijkstra.get(2));
+        assertEquals(new Posicion(3, 4), caminoDijkstra.get(3));
+        assertEquals(new Posicion(2, 4), caminoDijkstra.get(4));
 
         assertEquals(4, grafo.costoCaminoMinimo(origen, destino));
     }
@@ -90,11 +90,11 @@ class GrafoDelPlanoTest {
         Posicion origen = new Posicion(2, 2);
         Posicion destino = new Posicion(2, 4);
 
-        Lista<Posicion> caminoBfs = grafo.caminoMasCortoEnPasos(origen, destino);
-        assertEquals(3, caminoBfs.cantidad());
-        assertEquals(new Posicion(2, 2), caminoBfs.obtener(0));
-        assertEquals(new Posicion(2, 3), caminoBfs.obtener(1));
-        assertEquals(new Posicion(2, 4), caminoBfs.obtener(2));
+        List<Posicion> caminoBfs = grafo.caminoMasCortoEnPasos(origen, destino);
+        assertEquals(3, caminoBfs.size());
+        assertEquals(new Posicion(2, 2), caminoBfs.get(0));
+        assertEquals(new Posicion(2, 3), caminoBfs.get(1));
+        assertEquals(new Posicion(2, 4), caminoBfs.get(2));
     }
 
     @Test
@@ -108,9 +108,9 @@ class GrafoDelPlanoTest {
         GrafoDelPlano grafo = new GrafoDelPlano(plano, costoEstandar);
         Posicion entrada = new Posicion(2, 2);
 
-        Lista<Posicion> camino = grafo.caminoMinimo(entrada, entrada);
-        assertEquals(1, camino.cantidad());
-        assertEquals(entrada, camino.obtener(0));
+        List<Posicion> camino = grafo.caminoMinimo(entrada, entrada);
+        assertEquals(1, camino.size());
+        assertEquals(entrada, camino.get(0));
         assertEquals(0, grafo.costoCaminoMinimo(entrada, entrada));
     }
 
@@ -128,11 +128,11 @@ class GrafoDelPlanoTest {
         Posicion salida = new Posicion(2, 4);
         Posicion pared = new Posicion(1, 1);
 
-        assertTrue(grafo.caminoMinimo(entrada, salida).estaVacia());
+        assertTrue(grafo.caminoMinimo(entrada, salida).isEmpty());
         assertEquals(-1, grafo.costoCaminoMinimo(entrada, salida));
-        assertTrue(grafo.caminoMasCortoEnPasos(entrada, salida).estaVacia());
+        assertTrue(grafo.caminoMasCortoEnPasos(entrada, salida).isEmpty());
 
-        assertTrue(grafo.caminoMinimo(entrada, pared).estaVacia());
+        assertTrue(grafo.caminoMinimo(entrada, pared).isEmpty());
         assertEquals(-1, grafo.costoCaminoMinimo(entrada, pared));
     }
 

@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
-import estructuras.Lista;
+import java.util.List;
 
 public class VistaBmp implements Vista {
     private static final int TAMANIO_CELDA = 16;
@@ -87,9 +87,8 @@ public class VistaBmp implements Vista {
         g.fillOval(posXHeroe,posYHeroe,tamanioCelda,tamanioCelda);
 
         //dibujar cofres y monstruos
-        Lista<Cofre> cofres = plano.getCofres();
-        for (int i=0;i<cofres.cantidad();i++){
-            Cofre c=cofres.obtener(i);
+        List<Cofre> cofres = plano.getCofres();
+        for (Cofre c : cofres){
             Posicion posCofre=c.getPosicion();
 
             g.setColor(new Color(139, 69, 19));
@@ -97,9 +96,8 @@ public class VistaBmp implements Vista {
             int posY=(posCofre.fila()-1)*tamanioCelda;
             g.fillOval(posX,posY,tamanioCelda,tamanioCelda);
         }
-        Lista<Monstruo> monstruos=plano.getMonstruos();
-        for (int i=0;i<monstruos.cantidad();i++){
-            Monstruo m=monstruos.obtener(i);
+        List<Monstruo> monstruos=plano.getMonstruos();
+        for (Monstruo m : monstruos){
             Posicion posMonstruo=m.getPosicion();
 
             g.setColor(Color.MAGENTA);

@@ -135,7 +135,7 @@ class ColocadorDeConexionesTest {
         Conexion segunda = colocador.colocarEscalera(mundo, 1, 1);
 
         assertNotEquals(primera.origen(), segunda.origen());
-        assertEquals(2, mundo.getConexiones().cantidad());
+        assertEquals(2, mundo.getConexiones().size());
     }
 
     @Test
@@ -224,7 +224,7 @@ class ColocadorDeConexionesTest {
         dos.agregarPlano(2, 1, abierto(true));
 
         assertThrows(IllegalStateException.class, () -> colocador.colocarPasillo(dos, 1, 2, 1));
-        assertEquals(0, dos.getConexiones().cantidad());
+        assertEquals(0, dos.getConexiones().size());
     }
 
     // ---------- Conectar todo el mundo ----------
@@ -235,7 +235,7 @@ class ColocadorDeConexionesTest {
         colocador.conectarTodo(grande);
 
         // 2 escaleras (una por tablero) y 1 pasillo
-        assertEquals(3, grande.getConexiones().cantidad());
+        assertEquals(3, grande.getConexiones().size());
         assertTrue(grande.salidaEsAlcanzable());
     }
 
@@ -253,9 +253,9 @@ class ColocadorDeConexionesTest {
         new ColocadorDeConexiones(new Random(7)).conectarTodo(uno);
         new ColocadorDeConexiones(new Random(7)).conectarTodo(otro);
 
-        assertEquals(uno.getConexiones().cantidad(), otro.getConexiones().cantidad());
-        for (int i = 0; i < uno.getConexiones().cantidad(); i++) {
-            assertEquals(uno.getConexiones().obtener(i), otro.getConexiones().obtener(i));
+        assertEquals(uno.getConexiones().size(), otro.getConexiones().size());
+        for (int i = 0; i < uno.getConexiones().size(); i++) {
+            assertEquals(uno.getConexiones().get(i), otro.getConexiones().get(i));
         }
     }
 }

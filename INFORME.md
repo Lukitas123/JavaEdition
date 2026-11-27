@@ -29,15 +29,15 @@ Todos los objetos inmutables que representan valores puros o transferencia de es
 - **En la persistencia:** `MazmorraGuardada`, `MundoGuardado`, `PlanoGuardado`, `HeroeGuardado`, `MonstruoGuardado`, `CofreGuardado`, `AgendaGuardada` y `LavaGuardada`, separados del modelo mediante clases conversoras (`ConversorMazmorra`, `ConversorMundo`, `ConversorPlano`, `ConversorHeroe`, `ConversorEntidades`, `ConversorAgenda`).
 
 ### 1.3. Estructuras de Datos y Complejidad
-Cada estructura fue seleccionada según las operaciones críticas del juego:
+Cada estructura fue seleccionada según las operaciones críticas del juego. Siguiendo el régimen V2 del enunciado, se usa primero la API de Java y las estructuras propias solo donde la API no tiene equivalente (AVL y grafo):
 
 | Estructura | Ubicación y Uso en el TP | Complejidad de Operación Crítica |
 | :--- | :--- | :--- |
-| **Pila (`Pila<T>` / `ArrayDeque`)** | Backtracking en `GeneradorJavaEdition` y reconstrucción del camino inverso en `GrafoDelPlano` | Apilar y desapilar en $O(1)$ |
-| **Cola (`Cola<T>`)** | BFS en `ValidadorDePlanos` (R5 y R9), alcanzabilidad entre planos en `Mundo.salidaEsAlcanzable()` y `GrafoDelPlano.caminoMasCortoEnPasos()` | Encolar y desencolar en $O(1)$ |
-| **Lista (`Lista<T>`)** | Monstruos y cofres activos en cada `Plano`, lista de `Conexion` en `Mundo` y adyacencias en `GrafoConPesos` | Inserción al final en $O(1)$, recorrido en $O(N)$ |
-| **Cola de Prioridad (`ColaDePrioridad<T>`)** | Min-Heap binario para el algoritmo de Dijkstra en `GrafoDelPlano` y gestión de eventos temporales en `Agenda` | Inserción y extracción del mínimo en $O(\log N)$ |
-| **Tabla Hash (`TablaHash<K, V>`)** | Vértices del grafo, distancias/padres en Dijkstra, efectos activos, catálogo de fábricas (`Catalogo<T>`) e inventario | Búsqueda e inserción en $O(1)$ promedio |
+| **Pila (`ArrayDeque`)** | Backtracking en `GeneradorJavaEdition` y reconstrucción del camino inverso en `GrafoDelPlano` | Apilar y desapilar en $O(1)$ |
+| **Cola (`ArrayDeque`)** | BFS en `ValidadorDePlanos` (R5 y R9), alcanzabilidad entre planos en `Mundo.salidaEsAlcanzable()` y `GrafoDelPlano.caminoMasCortoEnPasos()` | Encolar y desencolar en $O(1)$ |
+| **Lista (`LinkedList` / `ArrayList`)** | Monstruos y cofres de cada `Plano` y log de la partida (`LinkedList`); conexiones en `Mundo`, caminos y adyacencias en `GrafoConPesos` (`ArrayList`) | Inserción al final en $O(1)$, recorrido en $O(N)$ |
+| **Cola de Prioridad (`PriorityQueue`)** | Min-Heap para Dijkstra en `GrafoDelPlano` y eventos temporales en `Agenda` (con desempate FIFO) | Inserción y extracción del mínimo en $O(\log N)$ |
+| **Tabla Hash (`HashMap` / `HashSet`)** | Inventario y efectos activos del héroe, celdas visitadas por plano, catálogo de fábricas (`Catalogo<T>`), vértices del grafo y distancias/padres en Dijkstra | Búsqueda e inserción en $O(1)$ promedio |
 | **Árbol AVL (`ArbolAVL<T>`)** | `Ranking` de puntajes ordenado de forma balanceada para obtener el Top 10 mediante recorrido in-order | Inserción y búsqueda garantizadas en $O(\log N)$ |
 | **Grafo con Pesos (`GrafoConPesos<Posicion>`)** | Base de `GrafoDelPlano`: cada celda transitable es un vértice y cada transición hacia un vecino es una arista dirigida con el costo del terreno destino | Consulta de vértices en $O(1)$ promedio y Dijkstra en $O((|V| + |E|) \log |V|)$ |
 
@@ -264,7 +264,7 @@ classDiagram
 ### 4) Dijkstra en un plano de $25 \times 40$: ¿cuántos vértices y aristas tiene el grafo? ¿Cuál es el costo de un camino mínimo?
 - **Vértices ($|V|$):** El plano de $25 \times 40$ tiene $1000$ celdas en total. Como en `GrafoDelPlano` solo agregamos las celdas transitables y la regla R7 exige que sean entre el $30\%$ y el $60\%$ del plano, el grafo tiene **entre 300 y 600 vértices**.
 - **Aristas ($|E|$):** Desde cada casilla solo nos podemos mover en 4 direcciones (arriba, abajo, izquierda, derecha), así que cada vértice tiene como máximo 4 aristas salientes. En total hay **como mucho $4 \cdot |V|$ aristas** (máximo 2400 aristas dirigidas, y en promedio alrededor de 1000).
-- **Costo de calcular el camino mínimo:** Usando Dijkstra con nuestra `ColaDePrioridad` (Min-Heap) y `TablaHash`, la complejidad es $O((|V| + |E|) \log |V|)$. Como $|E| \le 4|V|$, queda en **$O(|V| \log |V|)$**.
+- **Costo de calcular el camino mínimo:** Usando Dijkstra con `PriorityQueue` (Min-Heap) y `HashMap`, la complejidad es $O((|V| + |E|) \log |V|)$. Como $|E| \le 4|V|$, queda en **$O(|V| \log |V|)$**.
 
 ### 5) El generador usa su pila y no la recursión de Java. ¿Qué profundidad alcanza la recursión en un plano de $25 \times 40$, y qué pasaría con la pila de la JVM? ¿Por qué el laberinto resultante es conexo, y por qué hay que abrir paredes después para que tenga bifurcaciones?
 - **Profundidad y pila de la JVM:** En un plano de $25 \times 40$ ($1000$ celdas), como hasta el $60\%$ pueden ser piso y el backtracking avanza abriendo de a 2 celdas, una rama larga puede alcanzar **entre 250 y 500 niveles de profundidad**. Si usáramos la recursión de Java, cada llamada ocuparía un *stack frame* en la pila de llamadas de la JVM y en tableros grandes podría tirar un `StackOverflowError`. Usando una `Pila` propia en memoria dinámica (*Heap*), no tenemos ese límite.
@@ -336,7 +336,7 @@ Tras cada paso válido, se exporta automáticamente la imagen del turno en `sali
 ## 5. Manual del Programador
 
 ### 5.1. Organización de Paquetes
-- `estructuras/`: TDAs genéricos (`Lista<T>`, `Pila<T>`, `Cola<T>`, `ColaDePrioridad<T>`, `TablaHash<K,V>`, `ArbolAVL<T>`, `GrafoConPesos<T>`).
+- `estructuras/`: TDAs genéricos. El juego usa solo los que la API de Java no tiene (`ArbolAVL<T>`, `GrafoConPesos<T>`); el resto de las estructuras se toman de `java.util`. Las propias `Lista<T>`, `Pila<T>`, `Cola<T>`, `ColaDePrioridad<T>` y `TablaHash<K,V>` se conservan con sus tests, pero el juego no las usa.
 - `generador/`: Interfaz `GeneradorDeLaberinto`, implementación autocontenida `GeneradorJavaEdition` (backtracking con pila a distancia 2, apertura de bifurcaciones y decoración BFS) y `ValidadorDePlanos` (verificación de las reglas R1 a R11).
 - `modelo/`: Clases centrales de la lógica del juego (`Mazmorra`, `Mundo`, `Plano`, `Heroe`, `Agenda`, `ColocadorDeConexiones`, `GrafoDelPlano`, `Ranking` y records de dominio).
 - `entidades/`:

@@ -3,7 +3,7 @@ package persistencia;
 import entidades.Catalogo;
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
-import estructuras.Lista;
+import java.util.List;
 import modelo.Plano;
 import modelo.Posicion;
 import modelo.Terreno;
@@ -30,17 +30,17 @@ public class ConversorPlano{
             }
         }
           
-        Lista<Monstruo> listaMonstruos = plano.getMonstruos();
-        MonstruoGuardado[] monstruos = new MonstruoGuardado[listaMonstruos.cantidad()];
+        List<Monstruo> listaMonstruos = plano.getMonstruos();
+        MonstruoGuardado[] monstruos = new MonstruoGuardado[listaMonstruos.size()];
 
-        Lista<Cofre> listaCofres = plano.getCofres();
-        CofreGuardado[] cofres = new CofreGuardado[listaCofres.cantidad()];
+        List<Cofre> listaCofres = plano.getCofres();
+        CofreGuardado[] cofres = new CofreGuardado[listaCofres.size()];
 
-        for (int i = 0; i < listaMonstruos.cantidad();i++){
-            monstruos[i] = ConversorEntidades.monstruoAGuardado(listaMonstruos.obtener(i));
+        for (int i = 0; i < listaMonstruos.size();i++){
+            monstruos[i] = ConversorEntidades.monstruoAGuardado(listaMonstruos.get(i));
         }
-        for (int i = 0; i < listaCofres.cantidad();i++){
-            cofres[i] = ConversorEntidades.cofreAGuardado(listaCofres.obtener(i));
+        for (int i = 0; i < listaCofres.size();i++){
+            cofres[i] = ConversorEntidades.cofreAGuardado(listaCofres.get(i));
         }
         Map<Posicion, Integer> vencimientos = plano.getEfectos().getVencimientosLava();
         LavaGuardada[] lavaActiva = new LavaGuardada[vencimientos.size()];

@@ -50,7 +50,7 @@ public class ConversorMundoTest {
         String json = gson.toJson(ConversorMundo.aGuardado(original));
         Mundo restaurado = ConversorMundo.aMundo(gson.fromJson(json, MundoGuardado.class), pruebaMonstruos(), pruebaCofre());
 
-        assertEquals(1, restaurado.getConexiones().cantidad());
-        assertEquals(1, restaurado.planoEn(1, 1).getMonstruos().cantidad());
+        assertEquals(1, restaurado.getConexiones().size());
+        assertEquals(1, restaurado.planoEn(1, 1).getMonstruos().size());
     }
 }

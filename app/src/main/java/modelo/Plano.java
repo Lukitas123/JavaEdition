@@ -2,8 +2,12 @@ package modelo;
 
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
-import estructuras.Lista;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Una grilla de terreno con una entrada, una salida opcional, las celdas visitadas
@@ -12,17 +16,16 @@ import estructuras.Lista;
  * Las posiciones van de 1 a n. Esta clase nunca imprime ni dibuja.
  */
 public class Plano extends Tablero<Terreno> {
-    private final boolean[][] visitadas;
+    private final Set<Posicion> visitadas = new HashSet<>();
     private final Posicion entrada;
     private final Posicion salida;
-    private final Lista<Monstruo> monstruos = new Lista<>();
-    private final Lista<Cofre> cofres = new Lista<>();
+    private final List<Monstruo> monstruos = new LinkedList<>();
+    private final List<Cofre> cofres = new LinkedList<>();
     private final EfectosPlano efectos;
 
     public Plano(Terreno[][] terreno, Posicion entrada, Posicion salida) {
         super(terreno);
 
-        visitadas = new boolean[getFilas()][getColumnas()];
         efectos = new EfectosPlano(this);
 
         if (entrada == null || !esTransitable(entrada)) {
@@ -82,12 +85,12 @@ public class Plano extends Tablero<Terreno> {
     }
 
     /** Vecinos (arriba, abajo, izquierda, derecha) que son transitables. */
-    public Lista<Posicion> vecinosTransitables(Posicion posicion) {
-        Lista<Posicion> resultado = new Lista<>();
+    public List<Posicion> vecinosTransitables(Posicion posicion) {
+        List<Posicion> resultado = new ArrayList<>();
         for (Direccion direccion : Direccion.values()) {
             Posicion vecino = posicion.mover(direccion);
             if (esTransitable(vecino)) {
-                resultado.agregar(vecino);
+                resultado.add(vecino);
             }
         }
         return resultado;
@@ -97,17 +100,17 @@ public class Plano extends Tablero<Terreno> {
 
     public void marcarVisitada(Posicion posicion) {
         validarDentro(posicion);
-        visitadas[posicion.fila() - 1][posicion.columna() - 1] = true;
+        visitadas.add(posicion);
     }
 
     public boolean estaVisitada(Posicion posicion) {
         validarDentro(posicion);
-        return visitadas[posicion.fila() - 1][posicion.columna() - 1];
+        return visitadas.contains(posicion);
     }
 
     // ---------- Monstruos ----------
 
-    public Lista<Monstruo> getMonstruos() {
+    public List<Monstruo> getMonstruos() {
         return monstruos;
     }
 
@@ -121,24 +124,17 @@ public class Plano extends Tablero<Terreno> {
         if (!esTransitable(monstruo.getPosicion())) {
             throw new IllegalArgumentException("El monstruo debe estar sobre una celda transitable.");
         }
-        monstruos.agregar(monstruo);
+        monstruos.add(monstruo);
     }
 
     /** @return true si el monstruo estaba en el plano y se quitó. */
     public boolean quitarMonstruo(Monstruo monstruo) {
-        for (int i = 0; i < monstruos.cantidad(); i++) {
-            if (monstruos.obtener(i) == monstruo) {
-                monstruos.eliminar(i);
-                return true;
-            }
-        }
-        return false;
+        return monstruos.remove(monstruo);
     }
 
     /** @return el monstruo en esa posición, o null si no hay ninguno. */
     public Monstruo monstruoEn(Posicion posicion) {
-        for (int i = 0; i < monstruos.cantidad(); i++) {
-            Monstruo monstruo = monstruos.obtener(i);
+        for (Monstruo monstruo : monstruos) {
             if (monstruo.getPosicion().equals(posicion)) {
                 return monstruo;
             }
@@ -148,7 +144,7 @@ public class Plano extends Tablero<Terreno> {
 
     // ---------- Cofres ----------
 
-    public Lista<Cofre> getCofres() {
+    public List<Cofre> getCofres() {
         return cofres;
     }
 
@@ -162,24 +158,17 @@ public class Plano extends Tablero<Terreno> {
         if (!esTransitable(cofre.getPosicion())) {
             throw new IllegalArgumentException("El cofre debe estar sobre una celda transitable.");
         }
-        cofres.agregar(cofre);
+        cofres.add(cofre);
     }
 
     /** @return true si el cofre estaba en el plano y se quitó. */
     public boolean quitarCofre(Cofre cofre) {
-        for (int i = 0; i < cofres.cantidad(); i++) {
-            if (cofres.obtener(i) == cofre) {
-                cofres.eliminar(i);
-                return true;
-            }
-        }
-        return false;
+        return cofres.remove(cofre);
     }
 
     /** @return el cofre en esa posición, o null si no hay ninguno. */
     public Cofre cofreEn(Posicion posicion) {
-        for (int i = 0; i < cofres.cantidad(); i++) {
-            Cofre cofre = cofres.obtener(i);
+        for (Cofre cofre : cofres) {
             if (cofre.getPosicion().equals(posicion)) {
                 return cofre;
             }

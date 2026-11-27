@@ -1,6 +1,6 @@
 package entidades.monstruos;
 
-import estructuras.Lista;
+import java.util.List;
 import modelo.*;
 
 public class Cazador extends Monstruo{
@@ -38,12 +38,12 @@ public class Cazador extends Monstruo{
             throw new IllegalArgumentException("El plano y la posicion del heroe son obligatorios");
         }
         GrafoDelPlano grafo = new GrafoDelPlano(plano, costo);
-        Lista<Posicion> camino = grafo.caminoMinimo(getPosicion(), posicionHeroe);
+        List<Posicion> camino = grafo.caminoMinimo(getPosicion(), posicionHeroe);
 
-        if(camino.cantidad()<2){
+        if(camino.size()<2){
             return getPosicion();
         }
-        return camino.obtener(1);
+        return camino.get(1);
     }
 
     @Override

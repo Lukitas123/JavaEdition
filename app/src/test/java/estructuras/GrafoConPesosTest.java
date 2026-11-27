@@ -1,5 +1,7 @@
 package estructuras;
 
+import java.util.List;
+
 import modelo.Posicion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +35,7 @@ public class GrafoConPesosTest {
         assertEquals(0, this.grafo.cantidadVertices());
         assertEquals(0, this.grafo.cantidad());
         assertNotNull(this.grafo.obtenerVertices());
-        assertEquals(0, this.grafo.obtenerVertices().cantidad());
+        assertEquals(0, this.grafo.obtenerVertices().size());
     }
 
     /**
@@ -224,9 +226,9 @@ public class GrafoConPesosTest {
         this.grafo.agregarArista("Centro", "Sur", 3);
         this.grafo.agregarArista("Centro", "Este", 8);
 
-        Lista<GrafoConPesos.Arista<String>> ady = this.grafo.obtenerAdyacentes("Centro");
+        List<GrafoConPesos.Arista<String>> ady = this.grafo.obtenerAdyacentes("Centro");
         assertNotNull(ady);
-        assertEquals(3, ady.cantidad());
+        assertEquals(3, ady.size());
 
         assertEquals(1, this.grafo.obtenerPeso("Centro", "Norte"));
         assertEquals(3, this.grafo.obtenerPeso("Centro", "Sur"));
@@ -258,12 +260,12 @@ public class GrafoConPesosTest {
         this.grafo.agregarVertice("B");
         this.grafo.agregarVertice("C");
 
-        Lista<GrafoConPesos.Vertice<String>> vertices = this.grafo.obtenerVertices();
-        assertEquals(3, vertices.cantidad());
+        List<GrafoConPesos.Vertice<String>> vertices = this.grafo.obtenerVertices();
+        assertEquals(3, vertices.size());
 
         boolean tieneA = false, tieneB = false, tieneC = false;
-        for (int i = 0; i < vertices.cantidad(); i++) {
-            String dato = vertices.obtener(i).getDato();
+        for (int i = 0; i < vertices.size(); i++) {
+            String dato = vertices.get(i).getDato();
             if ("A".equals(dato)) tieneA = true;
             if ("B".equals(dato)) tieneB = true;
             if ("C".equals(dato)) tieneC = true;

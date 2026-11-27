@@ -71,7 +71,7 @@ class DagaTest {
         boolean usada = new Daga(new Random(1)).usar(heroe, plano, agenda).seConsume();
 
         assertTrue(usada);
-        assertEquals(1, plano.getMonstruos().cantidad());
+        assertEquals(1, plano.getMonstruos().size());
         assertTrue(plano.monstruoEn(new Posicion(1, 2)) == arriba
                 || plano.monstruoEn(new Posicion(2, 3)) == derecha);
     }

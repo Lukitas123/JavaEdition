@@ -74,7 +74,7 @@ public class ConversorPlanoTest {
 
         Plano restaurado = idaYVuelta(original);
 
-        Monstruo monstruo = restaurado.getMonstruos().obtener(0);
+        Monstruo monstruo = restaurado.getMonstruos().get(0);
         assertEquals(new Posicion(1, 3), monstruo.getPosicion());
         assertEquals(new Posicion(2, 3), monstruo.getPosicionInicial());
     }
@@ -87,8 +87,8 @@ public class ConversorPlanoTest {
 
         Plano restaurado = idaYVuelta(original);
 
-        assertEquals(1, restaurado.getCofres().cantidad());
-        Cofre cofre = restaurado.getCofres().obtener(0);
+        assertEquals(1, restaurado.getCofres().size());
+        Cofre cofre = restaurado.getCofres().get(0);
         assertEquals("TrampaDeEnergia", cofre.getTipo());
         assertEquals(new Posicion(3, 2), cofre.getPosicion());
         assertEquals(25, cofre.getDanio());

@@ -4,7 +4,9 @@ import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
 import estructuras.Lista;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Una grilla de terreno con una entrada, una salida opcional, las celdas visitadas
@@ -16,7 +18,7 @@ public class Plano {
     private final int filas;
     private final int columnas;
     private final Terreno[][] celdas;
-    private final boolean[][] visitadas;
+    private final Set<Posicion> visitadas = new HashSet<>();
     private final Posicion entrada;
     private final Posicion salida; // null si este plano no tiene la salida
     private final Lista<Monstruo> monstruos = new Lista<>();
@@ -49,8 +51,6 @@ public class Plano {
                 this.celdas[f][c] = terreno[f][c];
             }
         }
-        this.visitadas = new boolean[filas][columnas];
-
         this.efectoPuente = new EfectoPuente(filas, columnas);
         this.efectoLava = new EfectoDeLava(filas, columnas);
 
@@ -141,12 +141,12 @@ public class Plano {
 
     public void marcarVisitada(Posicion posicion) {
         validarDentro(posicion);
-        visitadas[posicion.fila() - 1][posicion.columna() - 1] = true;
+        visitadas.add(posicion);
     }
 
     public boolean estaVisitada(Posicion posicion) {
         validarDentro(posicion);
-        return visitadas[posicion.fila() - 1][posicion.columna() - 1];
+        return visitadas.contains(posicion);
     }
 
     // ---------- Monstruos ----------

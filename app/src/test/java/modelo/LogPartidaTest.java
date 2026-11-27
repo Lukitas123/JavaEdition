@@ -72,7 +72,7 @@ class LogPartidaTest {
         assertTrue(entradas.get(1).contains("[Paso 2] Heroe se mueve DERECHA"));
         assertTrue(entradas.get(2).contains("[Paso 2] Cofre abierto: CofreDePuntos"));
         assertTrue(entradas.get(3).contains("[Paso 3] Heroe se mueve DERECHA"));
-        assertTrue(entradas.get(4).contains("Partida ganada"));
+        assertTrue(entradas.get(4).contains("partida ganada"));
     }
 
     @Test
@@ -84,7 +84,7 @@ class LogPartidaTest {
         List<String> entradas = mazmorra.getLog().getEntradas();
         assertEquals(2, entradas.size());
         assertTrue(entradas.get(0).contains("[Paso 1] Heroe se mueve DERECHA"));
-        assertTrue(entradas.get(1).contains("[Paso 1] Heroe sin energia. Partida perdida."));
+        assertTrue(entradas.get(1).contains("[Paso 1] Heroe sin energia, partida perdida"));
     }
 
     @Test

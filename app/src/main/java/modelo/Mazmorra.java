@@ -3,8 +3,7 @@ package modelo;
 import entidades.cofres.Cofre;
 import entidades.monstruos.Monstruo;
 import entidades.objetos.CatalogoObjetos;
-import entidades.objetos.Objeto;
-import entidades.objetos.ResultadoUso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +24,7 @@ public class Mazmorra {
     private final LogPartida log = new LogPartida();
     private EstadoPartida estado;
     private final ParametrosEntidades parametrosEntidades;
+    private final MotorDeJuego motor = new MotorDeJuego();
 
     /**
      * Crea una partida nueva, en curso y sin objetos usables (catálogo vacío)
@@ -105,6 +105,21 @@ public class Mazmorra {
         return log;
     }
 
+    public CatalogoObjetos getObjetos() {
+        return objetos;
+    }
+
+    /**
+     * Deja la partida ganada o perdida. Lo usa el motor cuando se cumple una condición
+     * de fin del juego
+     */
+    void terminar(EstadoPartida nuevoEstado) {
+        if (nuevoEstado == null || nuevoEstado == EstadoPartida.EN_CURSO) {
+            throw new IllegalArgumentException("Una partida solo termina ganada o perdida");
+        }
+        this.estado = nuevoEstado;
+    }
+
     public ParametrosEntidades getParametrosEntidades() {
         return parametrosEntidades;
     }
@@ -144,111 +159,19 @@ public class Mazmorra {
         };
     }
 
-    /**
-     * El héroe intenta moverse una celda. Si el destino es pared o está fuera del plano
-     * no es una acción válida: no pasa nada y no cuenta como paso
-     * Si es válida: se ejecutan los eventos vencidos, el héroe paga el costo del terreno,
-     * y se resuelve la celda (salida, cofre, conexión) y el turno de los monstruos.
-     * Si pisa la salida gana, aunque el movimiento le deje la energía en 0
-     *
-     * @return true si la acción fue válida y se hizo un paso
-     * @throws IllegalArgumentException si la dirección es null
-     * @throws IllegalStateException    si la partida ya terminó
-     */
     public boolean moverHeroe(Direccion direccion) {
-        validarEnCurso();
-        if (direccion == null) {
-            throw new IllegalArgumentException("La direccion no puede ser null");
-        }
-        if (debeEsperarPorInmovilizacion()) {
-            return false;
-        }
-        Plano plano = planoActual();
-        Posicion destino = heroe.getUbicacion().posicion().mover(direccion);
-        if (!plano.esTransitable(destino)) {
-            return false;
-        }
-
-        comenzarPaso();
-        heroe.perderEnergia(costoDe(plano.terrenoEn(destino)));
-        heroe.irA(new Ubicacion(heroe.getUbicacion().tablero(), heroe.getUbicacion().piso(), destino));
-        plano.marcarVisitada(destino);
-        log.registrar(agenda.getPasoActual(),
-                "Heroe se mueve " + direccion + " a " + destino + " (energia: " + heroe.getEnergia() + ")");
-
-        if (heroe.getUbicacion().equals(mundo.ubicacionDeSalida())) {
-            estado = EstadoPartida.GANADA;
-            log.registrar(agenda.getPasoActual(), "Heroe llego a la salida, partida ganada");
-            return true;
-        }
-        if (verificarDerrota()) {
-            return true;
-        }
-
-        abrirCofreSiHay(plano, destino);
-        usarConexionSiHay();
-        if (verificarDerrota()) {
-            return true;
-        }
-
-        moverMonstruos();
-        verificarDerrota();
-        return true;
+        return motor.moverHeroe(this, direccion);
     }
 
-    /**
-     * El héroe espera: no gasta energía, pero pasa un paso (corren los eventos y actúan
-     * los monstruos)
-     *
-     * @throws IllegalStateException si la partida ya terminó
-     */
     public void esperar() {
-        validarEnCurso();
-        comenzarPaso();
-        log.registrar(agenda.getPasoActual(), "Heroe espera (energia: " + heroe.getEnergia() + ")");
-        moverMonstruos();
-        verificarDerrota();
+        motor.esperar(this);
     }
 
-    /**
-     * El héroe usa un objeto de su inventario (regla 2). Si el objeto se pudo usar, el
-     * objeto se saca del inventario y la acción cuenta como un paso: se ejecutan los
-     * eventos vencidos y actúan los monstruos
-     * La duración de los efectos cuenta el paso en que se usa el objeto
-     * Si el héroe no tiene el objeto, o el objeto no se pudo usar (por ejemplo, la daga
-     * sin un monstruo al lado), no pasa nada y no cuenta como paso
-     * El mensaje del objeto, si tiene, queda en el log de la partida
-     *
-     * @return true si el objeto se usó y se hizo un paso
-     * @throws IllegalArgumentException si el id es null o vacío, o si el héroe tiene un
-     * objeto que no está en el catálogo
-     * @throws IllegalStateException    si la partida ya terminp
-     */
     public boolean usarObjeto(String idObjeto) {
-        validarEnCurso();
-        if (idObjeto == null || idObjeto.isBlank()) {
-            throw new IllegalArgumentException("El id del objeto no puede ser null ni vacio");
-        }
-        if (!heroe.tieneObjeto(idObjeto)) {
-            return false;
-        }
-
-        Objeto objeto = objetos.obtener(idObjeto);
-        ResultadoUso resultado = objeto.usar(heroe, planoActual(), agenda);
-        if (!resultado.seConsume()) {
-            return false;
-        }
-
-        heroe.quitarObjeto(idObjeto);
-        comenzarPaso();
-        String detalle = resultado.mensaje() == null ? "" : ": " + resultado.mensaje();
-        log.registrar(agenda.getPasoActual(), "Heroe usa " + idObjeto + detalle);
-        moverMonstruos();
-        verificarDerrota();
-        return true;
+        return motor.usarObjeto(this, idObjeto);
     }
 
-    // PIEZAS DE UN PASO
+    // PIEZAS DE UN PASO ------------------------------------------
 
     /** Empieza un paso: avanza la agenda y ejecuta los eventos que ya vencieron, en orden */
     private void comenzarPaso() {

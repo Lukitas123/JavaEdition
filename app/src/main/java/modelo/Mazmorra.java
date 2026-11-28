@@ -105,6 +105,21 @@ public class Mazmorra {
         return log;
     }
 
+    public CatalogoObjetos getObjetos() {
+        return objetos;
+    }
+
+    /**
+     * Deja la partida ganada o perdida. Lo usa el motor cuando se cumple una condición
+     * de fin del juego
+     */
+    void terminar(EstadoPartida nuevoEstado) {
+        if (nuevoEstado == null || nuevoEstado == EstadoPartida.EN_CURSO) {
+            throw new IllegalArgumentException("Una partida solo termina ganada o perdida");
+        }
+        this.estado = nuevoEstado;
+    }
+
     public ParametrosEntidades getParametrosEntidades() {
         return parametrosEntidades;
     }
